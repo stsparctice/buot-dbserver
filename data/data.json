@@ -1,0 +1,603 @@
+[
+    {
+        "dbName": "Bubble",
+        "db": [
+            {
+                "type": "sql",
+                "collections": [
+                    {
+                        "collectionName": {
+                            "patient": "Patient"
+                        },
+                        "description": {
+                            "description": ""
+                        },
+                        "databaseConnection": {
+                            "databaseConnection": ""
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "id": "id"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(25) NOT NULL"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "name": "name"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(30)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "medicalDocsDate": "medicalDocsDate"
+                                },
+                                "type": {
+                                    "type": "date"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "selectedGenders": "selectedGenders"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "treatmentLevel": "treatmentLevel"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "treatmentPreference": "treatmentPreference"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "evaluated": "evaluated"
+                                },
+                                "type": {
+                                    "type": "bit"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "evaluationDate": "evaluationDate"
+                                },
+                                "type": {
+                                    "type": "date"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "userInsetrted": "userInsetrted"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "remarks": "remarks"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(100)"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "collectionName": {
+                            "patientTechers": "PatientTechers"
+                        },
+                        "description": {
+                            "description": ""
+                        },
+                        "databaseConnection": {
+                            "databaseConnection": ""
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "patientId": "PatientId"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(25) NOT NULL FOREIGN KEY REFERENCES Patient(id)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "techerName": "TecherName"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(25)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "desired": "Desired"
+                                },
+                                "type": {
+                                    "type": "bit"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "collectionName": {
+                            "patientDays": "PatientDays"
+                        },
+                        "description": {
+                            "description": ""
+                        },
+                        "databaseConnection": {
+                            "databaseConnection": ""
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "patientId": "PatientId"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR (25) NOT NULL FOREIGN KEY REFERENCES Patient(id)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "day": "Day"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR (10)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "startLesson": "StartLesson"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR (10)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "endLesson": "EndLesson"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR (10)"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "collectionName": {
+                            "patientSwimmingPools": "PatientSwimmingPools"
+                        },
+                        "description": {
+                            "description": ""
+                        },
+                        "databaseConnection": {
+                            "databaseConnection": ""
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "patientId": "PatientId"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(25) NOT NULL FOREIGN KEY REFERENCES Patient(id)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "swimmingPoolName": "SwimmingPoolName"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "collectionName": {
+                            "teachers": "Teachers"
+                        },
+                        "description": {
+                            "description": ""
+                        },
+                        "databaseConnection": {
+                            "databaseConnection": ""
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "name": "name"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "years": "years"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "school": "school"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "mongoDB",
+                "collections": [
+                    {
+                        "collectionName": {
+                            "SwimmingPool": "SwimmingPools"
+                        },
+                        "fields": [
+                            {
+                                "poolName": {
+                                    "name": "poolName"
+                                }
+                            },
+                            {
+                                "poolColor": {
+                                    "name": "poolColor"
+                                }
+                            },
+                            {
+                                "poolAddress": {
+                                    "name": "poolAddress"
+                                }
+                            },
+                            {
+                                "schedule": {
+                                    "name": "schedule",
+                                    "type": "array",
+                                    "value": {
+                                        "day": {
+                                            "name": "day"
+                                        },
+                                        "activeHours": {
+                                            "name": "activeHours",
+                                            "type": "array",
+                                            "value": {
+                                                "startActiveHour": {
+                                                    "name": "startActiveHour"
+                                                },
+                                                "endActiveHour": {
+                                                    "name": "endActiveHour"
+                                                }
+                                            }
+                                        },
+                                        "hours": {
+                                            "name": "hours",
+                                            "type": "array",
+                                            "value": {
+                                                "startHour": {
+                                                    "name": "startHour"
+                                                },
+                                                "endHour": {
+                                                    "name": "endHour"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "status": {
+                                    "name": "status"
+                                }
+                            },
+                            {
+                                "addedDate": {
+                                    "name": "addedDate"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "collectionName": {
+                            "GenderCollection": "gender"
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "name": "name"
+                                }
+                            },
+                            {
+                                "sex": {
+                                    "name": "sex"
+                                }
+                            },
+                            {
+                                "maleMaxAge": {
+                                    "name": "mmaxAge"
+                                }
+                            },
+                            {
+                                "femaleMaxAge": {
+                                    "name": "fmaxAge"
+                                }
+                            },
+                            {
+                                "genderColor": {
+                                    "name": "genderColor"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "collectionName": {
+                            "TeachersCollection": "teachers"
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "name": "name"
+                                }
+                            },
+                            {
+                                "phone": {
+                                    "name": "phone"
+                                }
+                            },
+                            {
+                                "address": {
+                                    "name": "address"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "collectionName": {
+                            "TeacherScheduleCollection": "teacher-schedule"
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "name": "name"
+                                }
+                            },
+                            {
+                                "weekSchedule": {
+                                    "name": "weekSchedule",
+                                    "type": "array",
+                                    "value": {
+                                        "day": {
+                                            "name": "day"
+                                        },
+                                        "schedule": {
+                                            "name": "schedule",
+                                            "type": "array",
+                                            "value": {
+                                                "swimmingPool": {
+                                                    "name": "swimmingPool"
+                                                },
+                                                "start": {
+                                                    "name": "start"
+                                                },
+                                                "end": {
+                                                    "name": "end"
+                                                },
+                                                "pauses": {
+                                                    "name": "pauses",
+                                                    "type": "array",
+                                                    "value": {
+                                                        "start": {
+                                                            "name": "start"
+                                                        },
+                                                        "during": {
+                                                            "name": "during"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "collectionName": {
+                            "Patients": "Patients"
+                        },
+                        "fields": [
+                            {
+                                "id": {
+                                    "name": "id"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "name": "name"
+                                }
+                            },
+                            {
+                                "medicalDocsDate": {
+                                    "name": "medicalDocsDate"
+                                }
+                            },
+                            {
+                                "selectedGenders": {
+                                    "name": "selectedGenders"
+                                }
+                            },
+                            {
+                                "treatmentLevel": {
+                                    "name": "treatmentLevel"
+                                }
+                            },
+                            {
+                                "treatmentPreference": {
+                                    "name": "treatmentPreference"
+                                }
+                            },
+                            {
+                                "evaluated": {
+                                    "name": "evaluated"
+                                }
+                            },
+                            {
+                                "evaluationDate": {
+                                    "name": "evaluationDate"
+                                }
+                            },
+                            {
+                                "swimmingPools": {
+                                    "name": "swimmingPools",
+                                    "type": "array",
+                                    "value": ""
+                                }
+                            },
+                            {
+                                "teachers": {
+                                    "name": "teachers",
+                                    "type": "array",
+                                    "value": {
+                                        "name": {
+                                            "name": "name"
+                                        },
+                                        "desired": {
+                                            "name": "desired"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "days": {
+                                    "name": "days",
+                                    "type": "array",
+                                    "value": {
+                                        "day": {
+                                            "name": "day"
+                                        },
+                                        "start": {
+                                            "name": "start"
+                                        },
+                                        "end": {
+                                            "name": "end"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "remarks": {
+                                    "name": "remarks"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "dbName": "RapidMed",
+        "db": [
+            {
+                "type": "sql",
+                "collections": [
+                    {
+                        "collectionName": {
+                            "patients": "Patients"
+                        },
+                        "description": {
+                            "description": ""
+                        },
+                        "databaseConnection": {
+                            "databaseConnection": ""
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "name": "name"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "phone": "phone"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            },
+                            {
+                                "name": {
+                                    "email": "email"
+                                },
+                                "type": {
+                                    "type": "NVARCHAR(20)"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "dbName": "Users",
+        "db": [
+            {
+                "type": "mongoDB",
+                "collections": [
+                    {
+                        "collectionName": {
+                            "users": "users"
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "name": "name"
+                                }
+                            },
+                            {
+                                "phone": {
+                                    "name": "phone"
+                                }
+                            },
+                            {
+                                "email": {
+                                    "name": "email"
+                                }
+                            },
+                            {
+                                "profile": {
+                                    "name": "profile"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

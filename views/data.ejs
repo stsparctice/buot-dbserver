@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tables</title>
+    <h1>data</h1>
+    <% for(let db of data) { %>
+        <fieldset>
+            <legend><%= db.db %> <span>data</span></legend>
+                <% db.collections.forEach(collection => { %>
+                    <fieldset>
+                        <legend><%= Object.keys(collection.collectionName)[0] %></legend>
+                        <p>the variables are as follows:</p>
+                        <ul>
+                            <% collection.fields.forEach(field=>{ %>
+                                <li><%= Object.keys(field)[0] %></li>
+                                <% if(Object.values(field)[0].type=='array'){ %>
+                                    <ul>
+                                        <% let schedule=Object.values(field)[0].value %>
+                                        <% for (let field2 in schedule) { %>
+                                            <li><%= field2 %>
+                                                <% if(schedule[field2].type=='array'){ %>
+                                                    <ul>
+                                                        <% for (let field3 in schedule[field2].value) { %>
+                                                            <li><%= field3 %>
+                                                                <% if(schedule[field2].value[field3].type=="array"){ %>
+                                                                    <ul>
+                                                                       <% for (let field4 in schedule[field2].value[field3].value) { %> 
+                                                                            <li><%=field4 %></li>
+                                                                        <% } %>
+                                                                    </ul>
+                                                                <% } %>
+                                                            </li>
+                                                        <% } %>
+                                                    </ul>
+                                                <% } %>
+                                            </li>
+                                        <% } %>
+                                    </ul>
+                                <% } %>
+                            <% }) %>
+                        </ul>
+                    </fieldset> 
+                <% }) %>
+        </fieldset>
+    <% } %>
+</head>
+<body>
+    
+</body>
+</html>

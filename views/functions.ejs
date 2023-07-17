@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>functions</title>
+</head>
+
+<body>
+    <h1>functions</h1>
+    <% for(let i of functions) { %>
+        <fieldset>
+            <legend><%= i.db %><span> functions:</span></legend>
+                <ul>
+                    <% i.functions.forEach(func => { %>
+                        <li class="functions">/crud_db/<%= func.func_name %> 
+                            <ul>
+                                <li class="featureFunc">
+                                    <span>description:</span> <%= func.description %>
+                                </li>
+                                <li class="featureFunc">
+                                    <span>variables:</span>
+                                    <ul>
+                                        <% func.variables.forEach(variable => {%>
+                                            <li class="variable"><%= variable %></li>
+                                        <% }) %>
+                                    </ul>
+                                </li>
+                                <li class="featureFunc">
+                                    <span>example:</span>  <%= func.example %>
+                                </li>
+                            </ul>
+                        </li>
+                    <% }) %>
+                </ul>
+        </fieldset>
+    <% } %>
+</body>
+
+</html>

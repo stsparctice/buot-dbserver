@@ -1,0 +1,89 @@
+[
+    {
+        "db": "sql",
+        "functions": [
+            {
+                "func_name": "read",
+                "description": "read data from db",
+                "variables": [
+                    "table_name",
+                    "columns",
+                    "condition"
+                ],
+                "example": "{table_name:'patients',columns:'phone as 'ph' ',condition:'name = 'aaa' '}"
+            },
+            {
+                "func_name": "insert",
+                "description": "insert new data to db",
+                "variables": [
+                    "table_name",
+                    "values"
+                ],
+                "example": "{table_name:'patients',values: ['123','456','789']} "
+            },
+            {
+                "func_name": "delete",
+                "description": "delete data from db",
+                "variables": [
+                    "table_name",
+                    "condition"
+                ],
+                "example": "{table_name:'patients',condition:' name='bbb' '}"
+            },
+            {
+                "func_name": "update",
+                "description": "update data from db",
+                "variables": [
+                    "table_name",
+                    "set",
+                    "condition"
+                ],
+                "example": "{table_name:'patients',set:' email='a@gmail.com' ',condition:' name='abc' '}"
+            }
+        ]
+    },
+    {
+        "db": "mongoDB",
+        "functions": [
+            {
+                "func_name": "insert",
+                "description": "insert new data to db",
+                "variables": [
+                    "collectionName",
+                    "object with keys & values"
+                ],
+                "example": "{table_name:'SwimmingPool',poolName:'ddd', poolColor: 'gray',poolAddress: 'Bne Braq',schedule:[],status:1}"
+            },
+            {
+                "func_name": "delete",
+                "description": "delete data from db",
+                "variables": [
+                    "collectionName",
+                    "filter to delete"
+                ],
+                "example": "{table_name:'SwimmingPool',filter:{poolName:'aaa'}}"
+            },
+            {
+                "func_name": "read",
+                "description": "read data from db",
+                "variables": [
+                    "collectionName",
+                    "filter to look for",
+                    "project"
+                ],
+                "example": "{table_name:'SwimmingPool',filter:{poolName:'abc'},project:{status:1}}"
+            },
+            {
+                "func_name": "update",
+                "description": "update item in db.(it can be also delete from an array or insert to array etc.)",
+                "variables": [
+                    "collectionName",
+                    "filter to look for",
+                    "update",
+                    "options"
+                ],
+                "example": "{table_name:'SwimmingPool',filter:{poolName:'abc'},update:{$set:{poolColor:'blue'}}}"
+            }
+        ]
+    }
+]
