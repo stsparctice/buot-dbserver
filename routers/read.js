@@ -1,13 +1,13 @@
 const express = require('express');
 const router = require('express').Router()
 const data = require('../data/data.json')
-const { connectTables, readManyInQuery } = require('../modules/read');
+const { readSql } = require('../modules/read');
 
-//!
+//שליחה בפרמס שם טבלה ותנאי בקווארי
 router.get('/readMany/:entity', async (req, res) => {
     try {
-        console.log(req.params.entity,req.query,'req.params.entity,req.query');
-        let result = await connectTables(req.params.entity,req.query)
+        let n = 100
+        let result = await readSql(req.params.entity, req.query, n)
         if (result) {
             res.status(201).send(result)
         }
@@ -19,10 +19,12 @@ router.get('/readMany/:entity', async (req, res) => {
         res.status(500).send(error.message)
     }
 })
-//!
+
+//שליחה בבודי שם טבלה ותנאי באוביקט
 router.post('/readMany', express.json(), async (req, res) => {
     try {
-        let ans = await connectTables(req.body.entity, req.body.condition)
+        let n = 100
+        let ans = await readSql(req.body.entity, req.body.condition, n)
         if (ans)
             res.status(201).send(ans)
         else
@@ -33,10 +35,10 @@ router.post('/readMany', express.json(), async (req, res) => {
     }
 })
 
-
-router.get('/readOne', async (req, res) => {
+//שליחה בפרמס שם טבלה ותנאי בקווארי
+router.get('/readOne/:entity', async (req, res) => {
     try {
-        let result = await connectTables(req.query)
+        let result = await readSql(req.params.entity, req.query)
         if (result) {
             res.status(201).send(result)
         }
@@ -49,9 +51,10 @@ router.get('/readOne', async (req, res) => {
     }
 })
 
+//שליחה בבודי שם טבלה ותנאי באוביקט
 router.post('/readOne', express.json(), async (req, res) => {
     try {
-        let ans = await connectTables(req.body)
+        let ans = await readSql(req.body.entity, req.body.condition)
         if (ans)
             res.status(201).send(ans)
         else
@@ -62,17 +65,24 @@ router.post('/readOne', express.json(), async (req, res) => {
     }
 })
 
-router.get('/readOne/:id', async (req, res) => {
+//שליחה בפרמס שם טבלה ואידי רצוי
+router.get('/readOne/:entity/:id', async (req, res) => {
+
     try {
-        let ans = await connectTables(req.params)
-        if (ans)
-            res.status(201).send(ans)
-        else
-            res.status(500).send(ans)
+        let condition = { Id: req.params.id }
+        const result = await readSql(req.params.entity, condition)
+        if (result) {
+            res.status(201).send({ "result": result })
+        }
+        else {
+            res.status(500).send(result)
+        }
     }
+
     catch (error) {
         res.status(500).send(error.message)
     }
+
 })
 
 module.exports = router

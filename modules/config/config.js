@@ -2,7 +2,7 @@ const config = require('../../data/newConfig.json')
 require('dotenv');
 const { SQL_DBNAME } = process.env
 
-//from buyton db server
+
 function getTableFromConfig(tableName) {
     let sql = config.find(db => db.db[0].type == 'sql')//????????????????????????????
     sql = sql.db[0]
@@ -12,7 +12,7 @@ function getTableFromConfig(tableName) {
     return table
 
 }
-//from buyton db server
+
 function buildSqlCondition(tableName, condition) {
     const tablealias = getTableFromConfig(tableName).MTDTable.collectionName.name
     if (condition) {
@@ -29,7 +29,7 @@ function buildSqlCondition(tableName, condition) {
     return condition
 }
 
-function buildSqlJoinAndSelect(tableName) {
+function buildSqlJoinAndSelect(tableName, n) {
     const myTable = getTableFromConfig(tableName)
     const columns = myTable.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
     let columnsSelect = [{ tableName: myTable.MTDTable.collectionName.name, columnsName: [...myTable.columns.map(({ sqlName }) => sqlName)] }];
@@ -51,14 +51,13 @@ function buildSqlJoinAndSelect(tableName) {
     })
     select = select.slice(0, select.length - 1);
 
-    return `SELECT ${select} FROM ${join}`
+    return `SELECT TOP ${n} ${select} FROM ${join}`
 }
 
-//from buyton db server
-const viewConnectionsTables = (tableName, condition = {}) => {
+const viewConnectionsTables = (tableName, condition = {}, n) => {
 
-    let join = buildSqlJoinAndSelect(tableName)
-    
+    let join = buildSqlJoinAndSelect(tableName, n)
+
     if (Object.keys(condition).length > 0) {
         let conditionString = buildSqlCondition(tableName, condition)
         join = `${join} WHERE ${conditionString}`;
@@ -66,7 +65,7 @@ const viewConnectionsTables = (tableName, condition = {}) => {
     return `use ${SQL_DBNAME} ${join}`;
 }
 
-//from buyton db server
+
 function getPrimaryKeyField(tablename) {
     const table = getTableFromConfig(tablename)
     let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))

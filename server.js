@@ -10,7 +10,7 @@ connect().then(_ => {
     connectSQL().then(_ => {
         console.log('connect to sql');
         createTables().then(_ => {
-            app.listen(PORT, HOST,  () => {
+            app.listen(PORT, HOST, () => {
                 console.log(`http://${HOST}:${PORT}`);
             });
         });
