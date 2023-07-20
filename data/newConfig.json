@@ -451,11 +451,6 @@
                                 "type": "INT IDENTITY NOT NULL"
                             },
                             {
-                                "name": "InsertDate",
-                                "sqlName": "InsertDate",
-                                "type": "DATE NOT NULL"
-                            },
-                            {
                                 "name": "FirstName",
                                 "sqlName": "FirstName",
                                 "type": "NVARCHAR(20) NOT NULL"

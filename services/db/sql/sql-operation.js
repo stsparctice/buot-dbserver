@@ -2,7 +2,7 @@ const { getPool } = require('./sql-connection');
 const { getTableFromConfig } = require('../../../modules/config/config')
 
 const create = async function (database, entity, columns, values) {
-
+     
      const result = await getPool().request().query(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} )`);
      return result;
 };
