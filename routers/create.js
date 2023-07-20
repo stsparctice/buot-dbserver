@@ -1,12 +1,13 @@
 const express = require('express');
 const router = require('express').Router()
 const data = require('../data/data.json')
-const { createOneSQL, createManySQL } = require('../modules/create');
+const { startCreate } = require('../modules/create');
 
 router.post('/createOne', express.json(), async (req, res) => {
     try {
-        const result = await createOneSQL(req.body)
+        const result = await startCreate({ project: res.project, entityName: req.body.entity, values: req.body.values })
         if (result) {
+
             res.status(201).send({ "result": result })
         }
         else {
@@ -20,7 +21,7 @@ router.post('/createOne', express.json(), async (req, res) => {
 
 router.post('/createMany', express.json(), async (req, res) => {
     try {
-        const result = await createManySQL(req.body)
+        const result = await startCreate({ project: res.project, entityName: req.body.entity, values: req.body.values })
         if (result)
             res.status(201).send(result)
         else {
