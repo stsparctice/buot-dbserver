@@ -9,15 +9,18 @@ const create_db = require('./routers/create')
 const delete_db = require('./routers/delete')
 const read_db = require('./routers/read')
 const update_db = require('./routers/update')
-const compare = require('./routers/totry')
+const { getProject } = require('./utils/middlewares/url')
 
 app.use(cors())
-app.use('/create_db', create_db)
-app.use('/delete_db', delete_db)
-app.use('/read_db', read_db)
-app.use('/update_db', update_db)
 
-app.use('/compare', compare)
+app.use(getProject())
+
+app.use('/:project/create_db', create_db)
+app.use('/:project/delete_db', delete_db)
+app.use('/:project/read_db', read_db)
+app.use('/:project/update_db', update_db)
+
+
 
 app.set('view engine', 'ejs')
 

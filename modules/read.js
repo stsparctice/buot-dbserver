@@ -1,8 +1,30 @@
 const { read } = require("../services/db/sql/sql-operation")
-const { viewConnectionsTables } = require("./config/config")
+const { viewConnectionsTables, DBTypes } = require("./config/config")
+const { getEntityConfigData } = require('./functions')
+
+async function startRead({ project, entityName, condition }) {
+    try {
+        const entity = getEntityConfigData({ project, entityName })
+        let n = 100
+        if (condition.n) {
+            n = condition.n
+            condition = [condition].map(({ n, ...rest }) => rest)[0]
+        }
+        if (entity.type === DBTypes.SQL) {
+            const items = await readSql(entity.collectionName.sqlName, condition, n)
+            console.log({ items })
+            return items
+        }
+    }
+    catch (error) {
+        throw error
+    }
+}
+
 
 
 async function readSql(tableName = "", condition = {}, n = '1') {
+
     try {
         const query = viewConnectionsTables(tableName, condition, n);
         const values = await read(query);
@@ -57,6 +79,7 @@ async function ArrangeObjects(values) {
 }
 
 module.exports = {
+    startRead,
     ArrangeObjects,
     readSql
 }

@@ -1,0 +1,7 @@
+[
+    {
+        "projectname": "waiting-list",
+        "url": "wl",
+        "dbConfigFile": "./data/newConfig.json"
+    }
+]
