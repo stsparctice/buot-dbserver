@@ -4,7 +4,6 @@ const { getDBConfig } = require('./config/project.config')
 
 function getEntityConfigData({ project, entityName }) {
     const configUrl = getDBConfig(project)
-    console.log({ configUrl })
     const config = getEntityFromConfig(entityName, configUrl)
     let entity = findCollection(config, entityName)
     return entity

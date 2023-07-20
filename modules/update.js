@@ -8,7 +8,6 @@ async function startupdate({ project, entityName, set, condition }) {
         const entity = getEntityConfigData({ project, entityName })
         if (entity.type === DBTypes.SQL) {
             const items = await updateManySql({ type: entity.dbName, entity: entity.collectionName.sqlName, set: set, condition: condition })
-            console.log({ items })
             return items
         }
     }

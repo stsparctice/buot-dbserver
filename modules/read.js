@@ -12,7 +12,6 @@ async function startRead({ project, entityName, condition }) {
         }
         if (entity.type === DBTypes.SQL) {
             const items = await readSql(entity.collectionName.sqlName, condition, n)
-            console.log({ items })
             return items
         }
     }
@@ -21,10 +20,7 @@ async function startRead({ project, entityName, condition }) {
     }
 }
 
-
-
 async function readSql(tableName = "", condition = {}, n = '1') {
-
     try {
         const query = viewConnectionsTables(tableName, condition, n);
         const values = await read(query);

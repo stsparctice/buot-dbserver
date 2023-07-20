@@ -22,7 +22,7 @@ router.get('/readMany/:entity', async (req, res) => {
 //שליחה בבודי שם טבלה ותנאי באוביקט
 router.post('/readMany/:entity', express.json(), async (req, res) => {
     try {
-        let ans = await startRead({ project: res.project, entityName: req.params.entity, condition: req.body })
+        let ans = await startRead({ project: res.project, entityName: req.params.entity, condition: req.body.condition })
         if (ans)
             res.status(201).send(ans)
         else
@@ -53,7 +53,7 @@ router.get('/readOne/:entity', async (req, res) => {
 //שליחה בבודי שם טבלה ותנאי באוביקט
 router.post('/readOne/:entity', express.json(), async (req, res) => {
     try {
-        let ans = await startRead({ project: res.project, entityName: req.params.entity, condition: { ...req.body, n: 1 } })
+        let ans = await startRead({ project: res.project, entityName: req.params.entity, condition: { ...req.body.condition, n: 1 } })
         if (ans)
             res.status(201).send(ans)
         else

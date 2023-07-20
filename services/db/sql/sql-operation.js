@@ -11,7 +11,6 @@ const create = async function (database, entity, columns, values) {
      catch (error) {
           throw error
      }
-
 };
 
 const read = async function (query = "") {
@@ -26,7 +25,6 @@ const read = async function (query = "") {
      }
 
 };
-
 
 const update = async function (database, entity, set, condition) {
      try {
@@ -48,7 +46,6 @@ const innerJoin = async function (firstTableName, secondTableName, columns, on, 
      const result = await getPool().request().query(`use ${database} SELECT ${columns} FROM ${firstTableName} INNER JOIN ${secondTableName} ON ${on} WHERE ${condition}`);
      return result.recordset;
 };
-
 
 module.exports = {
      create,
