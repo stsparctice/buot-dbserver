@@ -1,11 +1,11 @@
 const express = require('express');
 const router = require('express').Router()
 const data = require('../data/data.json')
-const { updateOneSQL, updateMenySql } = require('../modules/update');
+const { startupdate } = require('../modules/update');
 
 router.post('/deleteMany', express.json(), async (req, res) => {
     try {
-        result = await updateMenySql(req.body)
+        result = await startupdate({project:res.project,entityName:req.body.entity,set:{...req.body.set,Disabled:1},condition:req.body.condition})
         if (result)
             res.status(201).send(result)
         else {
@@ -19,7 +19,7 @@ router.post('/deleteMany', express.json(), async (req, res) => {
 
 router.post('/deleteOne', express.json(), async (req, res) => {
     try {
-        result = await updateOneSQL(req.body)
+        result = await startupdate({project:res.project,entityName:req.body.entity,set:{...req.body.set,Disabled:1},condition:req.body.condition})
         if (result)
             res.status(201).send(result)
         else {

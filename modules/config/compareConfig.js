@@ -39,22 +39,6 @@ async function compareConfigWithSql(database = SQL_DBNAME, tableName = 'Teachers
 
 
 
-// function compareTables(table,tableToCompare,types){
-//     let object = []
-//     let arr= table.map((itemSql) => {
-//         let obj = {}
-//         let ans = tableToCompare.some((itemConfig) => {
-//             return itemSql.COLUMN_NAME.toLowerCase() == itemConfig.name.toLowerCase()
-//                 && (itemConfig.type.toLowerCase().includes(itemSql.DATA_TYPE.toLowerCase()) || itemConfig.type.toLowerCase() == itemSql.DATA_TYPE.toLowerCase())
-//         })
-//         if (!ans) { obj[types] = itemSql }
-
-//         if (obj.extra) { object.push(obj) }
-//     })
-//     return object
-// }
-
 module.exports = { compareConfigWithSql }
 
 
-//from postman=>http://localhost:3485/config/config

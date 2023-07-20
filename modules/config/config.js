@@ -1,7 +1,17 @@
 const config = require('../../data/newConfig.json')
+const fs = require('fs')
 require('dotenv');
 const { SQL_DBNAME } = process.env
 
+const DBTypes = {
+    SQL:'sql', MONGODB:'mongoDB'
+}
+
+function getEntityFromConfig(entityName, configUrl){
+    const response = fs.readFileSync(configUrl)
+    console.log(JSON.parse(response))
+    return JSON.parse(response)
+}
 
 function getTableFromConfig(tableName) {
     let sql = config.find(db => db.db[0].type == 'sql')//????????????????????????????
@@ -89,6 +99,8 @@ async function composeSQLColumns(columns) {
 
 
 module.exports = {
+    DBTypes,
+    getEntityFromConfig,
     getTableFromConfig,
     buildSqlCondition,
     viewConnectionsTables,

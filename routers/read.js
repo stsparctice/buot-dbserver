@@ -1,13 +1,12 @@
 const express = require('express');
 const router = require('express').Router()
-const data = require('../data/data.json')
-const { readSql } = require('../modules/read');
+const data = require('../data/data.json');
+const { startRead } = require('../modules/read');
 
 //שליחה בפרמס שם טבלה ותנאי בקווארי
 router.get('/readMany/:entity', async (req, res) => {
     try {
-        let n = 100
-        let result = await readSql(req.params.entity, req.query, n)
+        let result = await startRead({ project: res.project, entityName: req.params.entity, condition: req.query })
         if (result) {
             res.status(201).send(result)
         }
@@ -21,10 +20,9 @@ router.get('/readMany/:entity', async (req, res) => {
 })
 
 //שליחה בבודי שם טבלה ותנאי באוביקט
-router.post('/readMany', express.json(), async (req, res) => {
+router.post('/readMany/:entity', express.json(), async (req, res) => {
     try {
-        let n = 100
-        let ans = await readSql(req.body.entity, req.body.condition, n)
+        let ans = await startRead({ project: res.project, entityName: req.params.entity, condition: req.body })
         if (ans)
             res.status(201).send(ans)
         else
@@ -38,7 +36,8 @@ router.post('/readMany', express.json(), async (req, res) => {
 //שליחה בפרמס שם טבלה ותנאי בקווארי
 router.get('/readOne/:entity', async (req, res) => {
     try {
-        let result = await readSql(req.params.entity, req.query)
+
+        let result = await startRead({ project: res.project, entityName: req.params.entity, condition: { ...req.query, n: 1 } })
         if (result) {
             res.status(201).send(result)
         }
@@ -52,9 +51,9 @@ router.get('/readOne/:entity', async (req, res) => {
 })
 
 //שליחה בבודי שם טבלה ותנאי באוביקט
-router.post('/readOne', express.json(), async (req, res) => {
+router.post('/readOne/:entity', express.json(), async (req, res) => {
     try {
-        let ans = await readSql(req.body.entity, req.body.condition)
+        let ans = await startRead({ project: res.project, entityName: req.params.entity, condition: { ...req.body, n: 1 } })
         if (ans)
             res.status(201).send(ans)
         else
@@ -70,7 +69,7 @@ router.get('/readOne/:entity/:id', async (req, res) => {
 
     try {
         let condition = { Id: req.params.id }
-        const result = await readSql(req.params.entity, condition)
+        let result = await startRead({ project: res.project, entityName: req.params.entity, condition: { ...condition, n: 1 } })
         if (result) {
             res.status(201).send({ "result": result })
         }

@@ -111,17 +111,17 @@
                             {
                                 "name": "startHour",
                                 "sqlName": "startHour",
-                                "type": "Date Not Null"
+                                "type": "DATETIME Not Null"
                             },
                             {
                                 "name": "EndHour",
                                 "sqlName": "EndHour",
-                                "type": "Date Not Null"
+                                "type": "DATETIME Not Null"
                             },
                             {
                                 "name": "AddedDate",
                                 "sqlName": "AddedDate",
-                                "type": "Date Not Null"
+                                "type": "DATETIME Not Null"
                             },
                             {
                                 "name": "UserName",
@@ -136,7 +136,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date Not Null"
+                                "type": "DATETIME Not Null"
                             },
                             {
                                 "name": "DisableUser",
@@ -198,7 +198,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATE NULL"
+                                "type": "DATETIME NULL"
                             },
                             {
                                 "name": "DisableUser",
@@ -250,12 +250,12 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": "NVARCHAR(50)" 
                             },
                             {
                                 "name": "DisableReason",
@@ -292,17 +292,17 @@
                             {
                                 "name": "startHour",
                                 "sqlName": "startHour",
-                                "type": "Date Not Null"
+                                "type": "DATETIME Not Null"
                             },
                             {
                                 "name": "EndHour",
                                 "sqlName": "EndHour",
-                                "type": "Date Not Null"
+                                "type": "DATETIME Not Null"
                             },
                             {
                                 "name": "AddedDate",
                                 "sqlName": "AddedDate",
-                                "type": "Date Not Null"
+                                "type": "DATETIME Not Null"
                             },
                             {
                                 "name": "UserName",
@@ -317,7 +317,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date Not Null"
+                                "type": "DATETIME Not Null"
                             },
                             {
                                 "name": "DisableUser",
@@ -401,7 +401,7 @@
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "UserName",
@@ -416,7 +416,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",
@@ -473,7 +473,7 @@
                             {
                                 "name": "BirthDate",
                                 "sqlName": "BirthDate",
-                                "type": "DATE NOT NULL"
+                                "type": "DATETIME NOT NULL"
                             },
                             {
                                 "name": "Sex",
@@ -493,7 +493,7 @@
                             {
                                 "name": "LastEvaluationDate",
                                 "sqlName": "LastEvaluationDate",
-                                "type": "DATE NOT NULL"
+                                "type": "DATETIME NOT NULL"
                             },
                             {
                                 "name": "NoEvaluation",
@@ -508,12 +508,12 @@
                             {
                                 "name": "SendMedDocumentsDate",
                                 "sqlName": "SendMedDocumentsDate",
-                                "type": "DATE NOT NULL"
+                                "type": "DATETIME NOT NULL"
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATE"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "UserName",
@@ -528,7 +528,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",
@@ -565,7 +565,7 @@
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "UserName",
@@ -580,7 +580,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",
@@ -669,7 +669,7 @@
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "UserName",
@@ -684,7 +684,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",
@@ -721,7 +721,7 @@
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "UserName",
@@ -736,7 +736,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",
@@ -773,7 +773,7 @@
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "UserName",
@@ -788,7 +788,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",
@@ -831,7 +831,7 @@
                             {
                                 "name": "AddedDate",
                                 "sqlName": "AddedDate",
-                                "type": "Date Not Null"
+                                "type": "DATETIME Not Null"
                             },
                             {
                                 "name": "UserName",
@@ -846,7 +846,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "Date NOT NULL"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",
