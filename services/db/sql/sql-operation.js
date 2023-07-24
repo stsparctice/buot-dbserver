@@ -14,9 +14,9 @@ const create = async function (database, entity, columns, values) {
 
 };
 
-const read = async function (query = "") {
+const read = async function (query = "", n) {
      try {
-          const result = await getPool().request().query(query.trim());
+          const result = await getPool().request().query(`${query.trim()} ORDER BY ${Object.values(n)[1]} OFFSET (${Object.keys(n)[0]}) ROWS FETCH NEXT (${Object.values(n)[0]}) ROWS ONLY`);
           if (result.recordset)
                return result.recordset;
           return false
@@ -49,10 +49,71 @@ const innerJoin = async function (firstTableName, secondTableName, columns, on, 
      return result.recordset;
 };
 
+const searchSQL = async function (entity, search) {
+     let select = ''
+     if (search.fields.length > 0) {
+          _ = search.fields.forEach(field => {
+               console.log(field);
+               select += `${field} +' '+ `
+          })
+          select = select.slice(0, select.length - 6);
+          console.log(select);
+     }
+     else {
+          select = search.fields[0]
+     }
+     const view = await buildView(entity, select)
+     const values = search.value.split(' ')
+     let str = `select * from SearchView where `
+     values.forEach(v => {
+          str += `combination like '%${v}%' and `
+     });
+     str = str.slice(0, str.length - 4);
+     const result = await getPool().request().query(str)
+
+     const result2 = await getPool().request().query(` DROP VIEW SearchView`)
+}
+
+const buildView = async function (entityName, select) {
+     try {
+          const result = await getPool().request().query(`CREATE VIEW SearchView AS SELECT *,  ${select} AS combination FROM Bubble.dbo.${entityName}`)
+          if (result) {
+               return result
+          }
+          return false
+     }
+     catch (error) {
+          console.log({ error })
+          throw error
+     }
+}
+
+const count = async function (entityName, condition) {
+     try {
+          const result = await getPool().request().query(`SELECT count(*)  FROM ${entityName} where ${condition}`);
+          if (result.recordset)
+               return result.recordset;
+          return false
+     }
+     catch (error) {
+          throw error
+     }
+
+};
+
+
+
+// let condition ={
+//      CONTAINS:{value:'xl ft', fields:["FirstName", "LastName"]}
+//  }
+
+
 
 module.exports = {
      create,
      read,
      update,
-     innerJoin
+     innerJoin,
+     searchSQL,
+     count
 };

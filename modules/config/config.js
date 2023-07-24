@@ -39,7 +39,26 @@ function buildSqlCondition(tableName, condition) {
     return condition
 }
 
-function buildSqlJoinAndSelect(tableName, n) {
+function buildSimpleSqlCondition( condition) {
+    // const tablealias = getTableFromConfig(tableName).MTDTable.collectionName.sqlName
+    if (condition) {
+        const entries = Object.entries(condition)
+        const conditionList = entries.map(c =>
+            `${c[0]} =  ${c[1]}`
+        )
+        condition = conditionList.join(' AND ')
+        console.log(condition,'in the function');
+    }
+    else {
+        condition = "1 = 1"
+    }
+    return condition
+}
+
+
+
+function buildSqlJoinAndSelect(tableName) {
+  
     const myTable = getTableFromConfig(tableName)
     const columns = myTable.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
     let columnsSelect = [{ tableName: myTable.MTDTable.collectionName.name, columnsName: [...myTable.columns.map(({ sqlName }) => sqlName)] }];
@@ -61,12 +80,12 @@ function buildSqlJoinAndSelect(tableName, n) {
     })
     select = select.slice(0, select.length - 1);
 
-    return `SELECT TOP ${n} ${select} FROM ${join}`
+    return `SELECT ${select} FROM ${join}`
 }
 
-const viewConnectionsTables = (tableName, condition = {}, n) => {
+const viewConnectionsTables = (tableName, condition = {}) => {
 
-    let join = buildSqlJoinAndSelect(tableName, n)
+    let join = buildSqlJoinAndSelect(tableName, joinFields)
 
     if (Object.keys(condition).length > 0) {
         let conditionString = buildSqlCondition(tableName, condition)
@@ -105,5 +124,6 @@ module.exports = {
     buildSqlCondition,
     viewConnectionsTables,
     getPrimaryKeyField,
-    composeSQLColumns
+    composeSQLColumns,
+    buildSimpleSqlCondition
 }
