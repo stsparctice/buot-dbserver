@@ -24,7 +24,6 @@ async function startReadMany({ project, entityName, condition }) {
                 return answer
             }
             const items = await readSql(entity.collectionName.sqlName, condition, n)
-            console.log({ items })
             return items
         }
     }

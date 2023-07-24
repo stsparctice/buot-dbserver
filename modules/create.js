@@ -7,7 +7,6 @@ async function startCreate({ project, entityName, values }) {
         const entity = getEntityConfigData({ project, entityName })
         if (entity.type === DBTypes.SQL) {
             const items = await createManySQL({ type: entity.dbName, entity: entity.collectionName.sqlName, values: values })
-            console.log({ items })
             return items
         }
     }
@@ -19,7 +18,6 @@ async function startCreate({ project, entityName, values }) {
 
 async function createOneSQL(obj) {
     try {
-        console.log(obj, 'obj in creatOne');
         let arr = createArrColumns(Object.keys(obj.values))
         let arr2 = createArrValues(Object.values(obj.values))
         let ans = await create(obj.type, obj.entity, arr.join(','), arr2.join(','))
@@ -40,10 +38,10 @@ async function createManySQL(obj) {
             newObj = { type: obj.type, entity: obj.entity, values: obj.values[i] }
             ans = await createOneSQL(newObj)
             if (ans) {
-                ans.rowsAffected ++
+                ans.rowsAffected++
             }
         }
-        if (ans)
+        if (ans.rowsAffected > 0)
             return ans
         return 'no effect'
     }

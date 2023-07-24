@@ -11,7 +11,6 @@ const create = async function (database, entity, columns, values) {
      catch (error) {
           throw error
      }
-
 };
 
 const read = async function (query = "", n) {
@@ -26,7 +25,6 @@ const read = async function (query = "", n) {
      }
 
 };
-
 
 const update = async function (database, entity, set, condition) {
      try {

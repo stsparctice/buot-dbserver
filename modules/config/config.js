@@ -9,7 +9,6 @@ const DBTypes = {
 
 function getEntityFromConfig(entityName, configUrl){
     const response = fs.readFileSync(configUrl)
-    console.log(JSON.parse(response))
     return JSON.parse(response)
 }
 

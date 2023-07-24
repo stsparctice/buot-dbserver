@@ -53,7 +53,11 @@ router.get('/readOne/:entity', async (req, res) => {
 //שליחה בבודי שם טבלה ותנאי באוביקט
 router.post('/readOne/:entity', express.json(), async (req, res) => {
     try {
+<<<<<<< HEAD
         let ans = await startReadOne({ project: res.project, entityName: req.params.entity, condition: req.body.condition })
+=======
+        let ans = await startRead({ project: res.project, entityName: req.params.entity, condition: { ...req.body.condition, n: 1 } })
+>>>>>>> 7f3a4b457ecd523cc494779af05815d513be1fe5
         if (ans)
             res.status(201).send(ans)
         else
