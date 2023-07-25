@@ -1,14 +1,105 @@
 const { getPool } = require('./sql-connection');
-const { getTableFromConfig, parseSQLTypeForColumn } = require('../../../modules/config/config')
+const { getTableFromConfig, parseSQLTypeForColumn, getPrimaryKeyField, getSqlTableColumnsType, parseSQLType } = require('../../../modules/config/config')
+const { PreparedStatement, ConnectionPool } = require('mssql');
+const sql = require('mssql');
+const { createArrColumns } = require('../../../modules/functions');
+const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
 const create = async function (database, entity, columns, values) {
      try {
-          const result = await getPool().request().query(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} )`);
+          let primarykey = getPrimaryKeyField(entity)
+          const result = await getPool().request().query(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`);
           if (result)
                return result;
           return false;
      }
      catch (error) {
+          throw error
+     }
+};
+const poolConfig = () => ({
+     driver: SQL_PORT,
+     server: SQL_SERVER,
+     database: 'master',
+     user: SQL_USERNAME,
+     password: SQL_PASSWORD,
+     options: {
+          encrypt: false,
+          enableArithAbort: false
+     }
+});
+// const teacher = {
+//      entity: 'Teachers',
+//      values: {
+//           TeacherName: 'x', Phone: '1234', Email: 'gfhd',
+//           TeachersPoolGenders: {
+//                values: { GenderId: 1, teacherId: 888 }
+//           },
+//           TeacherSchedule: {
+
+//           }
+
+//      }
+// }
+// database: Bubble
+// entity: teachers
+// columns: [TeacherName,Phone,Email]
+// values: ['x','1234','gfhd']
+// tran: {
+//        TeachersPoolGenders: { GenderId: 1, teacherId: 'teacherId' },
+//        TeacherSchedule: {}
+// }
+const createTrac = async function ({ database, entity, columns, values, tran }) {
+     try {
+          console.log("____createTran", { database, entity, columns, values, tran });
+          let primarykey = getPrimaryKeyField(entity)
+          let connectionPool = new sql.ConnectionPool(poolConfig());
+          await connectionPool.connect();
+
+          //    const transaction: Transaction = new sql.Transaction(this.connectionPool);
+
+          const transaction = new sql.Transaction(connectionPool);
+          const tr = new sql.PreparedStatement(transaction);
+          // tr.input('number', sql.Numeric(18, 0));
+          try {
+               await transaction.begin();
+               console.log("_____________________");
+               let ans = await tr.prepare(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY ${primarykey}`);
+               let id=await tr.execute();
+               await tr.unprepare();
+               id = Object.values(id.recordset[0])[0]
+               for (const key in tran) {
+                    console.log(key, "___key");
+                    entity = key
+                    Object.keys(tran[key]).map(t => {
+                         console.log(t);
+                         t == tran[key][t] ? tran[key][t] = id : null
+                         // return t
+                    })
+                    console.log(tran[key], "tran[key]");
+                    const types = getSqlTableColumnsType(entity)
+                    primarykey = getPrimaryKeyField(entity)
+                    columns = createArrColumns(Object.keys(tran[key])).join(',')
+                    console.log(columns, "__co");
+                    values = parseSQLType(tran[key], types).join(',')
+                    console.log({ entity, columns, values, primarykey });
+
+                    await tr.prepare(`use ${database} INSERT INTO tbl_${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY `);
+                    await tr.execute();
+                    await tr.unprepare();
+               }
+
+               await transaction.commit();
+
+          } catch (error) {
+               console.log({ error });
+               await transaction.rollback();
+               console.log('execution failed...');
+          }
+          console.log('done...');
+     }
+     catch (error) {
+          console.log({ error });
           throw error
      }
 };
@@ -114,5 +205,6 @@ module.exports = {
      update,
      innerJoin,
      searchSQL,
+     createTrac,
      count
 };
