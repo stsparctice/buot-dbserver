@@ -15,10 +15,10 @@ app.use(cors())
 
 app.use(getProject())
 
-app.use('/:project/create_db', create_db)
-app.use('/:project/delete_db', delete_db)
-app.use('/:project/read_db', read_db)
-app.use('/:project/update_db', update_db)
+app.use('/:project/create', create_db)
+app.use('/:project/delete', delete_db)
+app.use('/:project/read', read_db)
+app.use('/:project/update', update_db)
 
 
 

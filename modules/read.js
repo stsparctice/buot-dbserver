@@ -1,15 +1,41 @@
-const { read } = require("../services/db/sql/sql-operation")
-const { viewConnectionsTables, DBTypes } = require("./config/config")
+const { read, searchSQL, count } = require("../services/db/sql/sql-operation")
+const { viewConnectionsTables, DBTypes, buildSqlCondition, buildSimpleSqlCondition } = require("./config/config")
 const { getEntityConfigData } = require('./functions')
 
-async function startRead({ project, entityName, condition }) {
+// {
+//     "entity":"teachers",
+//     "condition":{
+//         "id":3,
+//          "n":{100:200}
+//     }
+// }
+async function startReadMany({ project, entityName, condition }) {
     try {
         const entity = getEntityConfigData({ project, entityName })
-        let n = 100
+        let n = { 0: 100, otderBy: `${entity.collectionName.name}.Id` }
         if (condition.n) {
-            n = condition.n
+            n = { ...condition.n, otderBy: `${entity.collectionName.name}.Id` }
             condition = [condition].map(({ n, ...rest }) => rest)[0]
         }
+
+        if (entity.type === DBTypes.SQL) {
+            if (Object.keys(condition).includes('CONTAINS')) {
+                const answer = await searchSQL(entity.collectionName.sqlName, condition.CONTAINS)
+                return answer
+            }
+            const items = await readSql(entity.collectionName.sqlName, condition, n)
+            return items
+        }
+    }
+    catch (error) {
+        throw error
+    }
+}
+
+async function startReadOne({ project, entityName, condition }) {
+    try {
+        const entity = getEntityConfigData({ project, entityName })
+        let n = { 0: 1, otderBy: `${entity.collectionName.name}.Id` }
         if (entity.type === DBTypes.SQL) {
             const items = await readSql(entity.collectionName.sqlName, condition, n)
             return items
@@ -20,10 +46,13 @@ async function startRead({ project, entityName, condition }) {
     }
 }
 
-async function readSql(tableName = "", condition = {}, n = '1') {
+
+
+async function readSql(tableName = "", condition = {}, n) {
+
     try {
-        const query = viewConnectionsTables(tableName, condition, n);
-        const values = await read(query);
+        const query = viewConnectionsTables(tableName, condition, joinFields);
+        const values = await read(query, n);
         const items = ArrangeObjects(values)
         return items
     }
@@ -74,8 +103,27 @@ async function ArrangeObjects(values) {
     return items;
 }
 
+
+async function getCount({ project, entityName, condition }) {
+    try {
+
+        const entity = getEntityConfigData({ project, entityName })
+        const query = buildSimpleSqlCondition(condition)
+        if (entity.type === DBTypes.SQL) {
+            const items = await count(entity.collectionName.sqlName, query)
+            return items
+        }
+    }
+    catch (error) {
+        throw error
+    }
+}
+
+
 module.exports = {
-    startRead,
+    startReadOne,
+    startReadMany,
     ArrangeObjects,
-    readSql
+    readSql,
+    getCount
 }
