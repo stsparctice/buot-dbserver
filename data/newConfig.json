@@ -292,7 +292,7 @@
                             },
                             {
                                 "name": "PooldayScheduleId",
-                                "sqlName": "Day",
+                                "sqlName": "PooldayScheduleId",
                                 "type": "INT NOT NULL FOREIGN KEY(PooldayScheduleId) REFERENCES tbl_PoolDaySchedule(Id)"
                             },
                             {
