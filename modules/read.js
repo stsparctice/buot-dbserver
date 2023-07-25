@@ -11,6 +11,7 @@ const { getEntityConfigData } = require('./functions')
 // }
 async function startReadMany({ project, entityName, condition }) {
     try {
+
         const entity = getEntityConfigData({ project, entityName })
         let n = { 0: 100, otderBy: `${entity.collectionName.name}.Id` }
         if (condition.n) {
@@ -23,6 +24,7 @@ async function startReadMany({ project, entityName, condition }) {
                 const answer = await searchSQL(entity.collectionName.sqlName, condition.CONTAINS)
                 return answer
             }
+          
             const items = await readSql(entity.collectionName.sqlName, condition, n)
             return items
         }
@@ -49,9 +51,8 @@ async function startReadOne({ project, entityName, condition }) {
 
 
 async function readSql(tableName = "", condition = {}, n) {
-
     try {
-        const query = viewConnectionsTables(tableName, condition, joinFields);
+        const query = viewConnectionsTables(tableName, condition);
         const values = await read(query, n);
         const items = ArrangeObjects(values)
         return items

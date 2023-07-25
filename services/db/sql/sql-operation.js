@@ -1,9 +1,10 @@
 const { getPool } = require('./sql-connection');
-const { getTableFromConfig, parseSQLTypeForColumn } = require('../../../modules/config/config')
+const { getTableFromConfig, parseSQLTypeForColumn, getPrimaryKeyField } = require('../../../modules/config/config')
 
 const create = async function (database, entity, columns, values) {
      try {
-          const result = await getPool().request().query(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} )`);
+          let primarykey = getPrimaryKeyField(entity)
+          const result = await getPool().request().query(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ) ; select @@IDENTITY ${primarykey}`);
           if (result)
                return result;
           return 'no create';
@@ -52,11 +53,9 @@ const searchSQL = async function (entity, search) {
      let select = ''
      if (search.fields.length > 0) {
           _ = search.fields.forEach(field => {
-               console.log(field);
                select += `${field} +' '+ `
           })
           select = select.slice(0, select.length - 6);
-          console.log(select);
      }
      else {
           select = search.fields[0]
@@ -82,7 +81,6 @@ const buildView = async function (entityName, select) {
           return false
      }
      catch (error) {
-          console.log({ error })
           throw error
      }
 }
