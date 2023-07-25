@@ -1,13 +1,14 @@
 const config = require('../../data/newConfig.json')
-const fs = require('fs')
+const fs = require('fs');
+const types = require('./config.objects');
 require('dotenv');
 const { SQL_DBNAME } = process.env
 
 const DBTypes = {
-    SQL:'sql', MONGODB:'mongoDB'
+    SQL: 'sql', MONGODB: 'mongoDB'
 }
 
-function getEntityFromConfig(entityName, configUrl){
+function getEntityFromConfig(entityName, configUrl) {
     const response = fs.readFileSync(configUrl)
     return JSON.parse(response)
 }
@@ -38,7 +39,7 @@ function buildSqlCondition(tableName, condition) {
     return condition
 }
 
-function buildSimpleSqlCondition( condition) {
+function buildSimpleSqlCondition(condition) {
     // const tablealias = getTableFromConfig(tableName).MTDTable.collectionName.sqlName
     if (condition) {
         const entries = Object.entries(condition)
@@ -46,7 +47,7 @@ function buildSimpleSqlCondition( condition) {
             `${c[0]} =  ${c[1]}`
         )
         condition = conditionList.join(' AND ')
-        console.log(condition,'in the function');
+        console.log(condition, 'in the function');
     }
     else {
         condition = "1 = 1"
@@ -57,7 +58,7 @@ function buildSimpleSqlCondition( condition) {
 
 
 function buildSqlJoinAndSelect(tableName) {
-  
+
     const myTable = getTableFromConfig(tableName)
     const columns = myTable.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
     let columnsSelect = [{ tableName: myTable.MTDTable.collectionName.name, columnsName: [...myTable.columns.map(({ sqlName }) => sqlName)] }];
@@ -115,6 +116,70 @@ async function composeSQLColumns(columns) {
     }
 }
 
+function getSqlTableColumnsType(tablename) {
+    try {
+        const table = getTableFromConfig(tablename)
+        let col = table.columns.map(col => ({ sqlName: col.sqlName, type: col.type.trim().split(' ')[0] }))
+        return col
+    }
+    catch (error) {
+        throw error
+    }
+};
+
+function parseSQLType(obj, tabledata) {
+    try {
+        console.log(tabledata,'tabledata');
+        const keys = Object.keys(obj)
+        let str = []
+        for (let i = 0; i < keys.length; i++) {
+            if (obj[keys[i]] != null) {
+                console.log();
+                let type = tabledata.find(td => td.sqlName.trim().toLowerCase() == keys[i].trim().toLowerCase()).type
+                let parse
+                try {
+                    parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
+                }
+                catch {
+                    let error = notifictaions.find(n => n.status == 513)
+                    error.description = `Type: ${type} does not exist.`
+                    throw error
+                }
+                // console.log(obj[keys[i]]);
+                const val = parse.parseNodeTypeToSqlType(obj[keys[i]]);
+                str.push(val);
+            }
+            else {
+                str.push('NULL')
+            }
+        }
+        return str
+    }
+    catch (error) {
+        console.log({ error });
+        // if (error.status == 513) {
+        throw error
+        // }
+        // throw notifictaions.find(n => n.status == 400)
+    }
+}
+
+function parseSQLTypeForColumn(col, tableName) {
+    const tabledata = getSqlTableColumnsType(tableName)
+    let type = tabledata.find(td => td.sqlName.trim().toLowerCase() == col.name.trim().toLowerCase()).type
+    let parse
+    try {
+        parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
+    }
+    catch {
+        let error = notifictaions.find(n => n.status == 513)
+        error.description = `Type: ${type} does not exist.`
+        throw error
+    }
+    const val = parse.parseNodeTypeToSqlType(col.value);
+    return val
+}
+
 
 module.exports = {
     DBTypes,
@@ -124,5 +189,8 @@ module.exports = {
     viewConnectionsTables,
     getPrimaryKeyField,
     composeSQLColumns,
-    buildSimpleSqlCondition
+    buildSimpleSqlCondition,
+    parseSQLType,
+    getSqlTableColumnsType,
+    parseSQLTypeForColumn
 }

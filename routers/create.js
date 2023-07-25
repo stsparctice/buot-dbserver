@@ -33,3 +33,12 @@ router.post('/createMany', express.json(), async (req, res) => {
 })
 
 module.exports = router
+
+
+// const teacher= {
+//     entity:'Teacher',
+//     values:{
+//         TeacherName:'x', Phone:'1234', Email:'gfhd'
+//     }
+// }
+
