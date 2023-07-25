@@ -11,7 +11,7 @@ const create = async function (database, entity, columns, values) {
           const result = await getPool().request().query(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`);
           if (result)
                return result;
-          return false;
+          return 'no create';
      }
      catch (error) {
           throw error
@@ -121,12 +121,12 @@ const update = async function (database, entity, set, condition) {
      try {
           const alias = await getTableFromConfig(entity).MTDTable.collectionName.name
           const entries = Object.entries(set)
-          // 
           const updateValues = entries.map(value => `${alias}.${value[0]}=${parseSQLTypeForColumn({ name: value[0], value: value[1] }, entity)}`).join(',')
           const result = await getPool().request().query(`use ${database} UPDATE ${alias} SET ${updateValues} FROM ${entity} AS ${alias} WHERE ${condition}`);
           if (result)
                return result;
-          return false;
+          else
+               return false;
      }
      catch (error) {
           throw error
@@ -143,11 +143,9 @@ const searchSQL = async function (entity, search) {
      let select = ''
      if (search.fields.length > 0) {
           _ = search.fields.forEach(field => {
-               console.log(field);
                select += `${field} +' '+ `
           })
           select = select.slice(0, select.length - 6);
-          console.log(select);
      }
      else {
           select = search.fields[0]
@@ -173,7 +171,6 @@ const buildView = async function (entityName, select) {
           return false
      }
      catch (error) {
-          console.log({ error })
           throw error
      }
 }

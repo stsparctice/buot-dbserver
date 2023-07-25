@@ -85,7 +85,6 @@ router.get('/readOne/:entity/:id', async (req, res) => {
 })
 
 router.post('/count/:entity', express.json(), async (req, res) => {
-
     try {
         let result = await getCount({ project: res.project, entityName: req.params.entity, condition: req.body.condition })
         if (result) {
@@ -95,7 +94,6 @@ router.post('/count/:entity', express.json(), async (req, res) => {
             res.status(500).send(result)
         }
     }
-
     catch (error) {
         res.status(500).send(error.message)
     }

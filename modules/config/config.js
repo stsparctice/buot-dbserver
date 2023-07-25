@@ -47,7 +47,6 @@ function buildSimpleSqlCondition(condition) {
             `${c[0]} =  ${c[1]}`
         )
         condition = conditionList.join(' AND ')
-        console.log(condition, 'in the function');
     }
     else {
         condition = "1 = 1"
@@ -85,7 +84,7 @@ function buildSqlJoinAndSelect(tableName) {
 
 const viewConnectionsTables = (tableName, condition = {}) => {
 
-    let join = buildSqlJoinAndSelect(tableName, joinFields)
+    let join = buildSqlJoinAndSelect(tableName)
 
     if (Object.keys(condition).length > 0) {
         let conditionString = buildSqlCondition(tableName, condition)
@@ -129,12 +128,10 @@ function getSqlTableColumnsType(tablename) {
 
 function parseSQLType(obj, tabledata) {
     try {
-        console.log(tabledata,'tabledata');
         const keys = Object.keys(obj)
         let str = []
         for (let i = 0; i < keys.length; i++) {
             if (obj[keys[i]] != null) {
-                console.log();
                 let type = tabledata.find(td => td.sqlName.trim().toLowerCase() == keys[i].trim().toLowerCase()).type
                 let parse
                 try {
@@ -145,7 +142,6 @@ function parseSQLType(obj, tabledata) {
                     error.description = `Type: ${type} does not exist.`
                     throw error
                 }
-                // console.log(obj[keys[i]]);
                 const val = parse.parseNodeTypeToSqlType(obj[keys[i]]);
                 str.push(val);
             }
@@ -156,7 +152,6 @@ function parseSQLType(obj, tabledata) {
         return str
     }
     catch (error) {
-        console.log({ error });
         // if (error.status == 513) {
         throw error
         // }

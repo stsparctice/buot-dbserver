@@ -11,7 +11,8 @@
                                 "name": "SwimmingPools",
                                 "sqlName": "tbl_SwimmingPools"
                             },
-                            "description": "Table for the details of swimming-pools"
+                            "description": "Table for the details of swimming-pools",
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -22,17 +23,17 @@
                             {
                                 "name": "Name",
                                 "sqlName": "Name",
-                                "type": "nvarchar(50) UNIQUE NOT NULL"
+                                "type": "NVARCHAR(50) UNIQUE NOT NULL"
                             },
                             {
                                 "name": "Address",
                                 "sqlName": "Address",
-                                "type": "nvarchar(50)  NOT NULL"
+                                "type": "NVARCHAR(50) NOT NULL"
                             },
                             {
                                 "name": "Color",
                                 "sqlName": "Color",
-                                "type": "nvarchar(50)  NOT NULL"
+                                "type": "NVARCHAR(50) NOT NULL"
                             }
                         ]
                     },
@@ -43,7 +44,7 @@
                                 "sqlName": "tbl_Genders"
                             },
                             "description": "",
-                            "defaultColumn":"Name"
+                            "defaultColumn": "Name"
                         },
                         "columns": [
                             {
@@ -52,27 +53,27 @@
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "name",
+                                "name": "Name",
                                 "sqlName": "Name",
-                                "type": "NVARCHAR(50) UNIQUE NOT NULL "
+                                "type": "NVARCHAR(50) UNIQUE NOT NULL"
                             },
                             {
-                                "name": "sex1",
+                                "name": "Sex1",
                                 "sqlName": "Sex1",
-                                "type": "INT "
+                                "type": "INT"
                             },
                             {
-                                "name": "maxAge1",
+                                "name": "MaxAge1",
                                 "sqlName": "MaxAge1",
-                                "type": "INT "
+                                "type": "INT"
                             },
                             {
-                                "name": "sex2",
+                                "name": "Sex2",
                                 "sqlName": "Sex2",
                                 "type": "INT "
                             },
                             {
-                                "name": "maxAge2",
+                                "name": "MaxAge2",
                                 "sqlName": "MaxAge2",
                                 "type": "INT "
                             }
@@ -85,7 +86,7 @@
                                 "sqlName": "tbl_PoolDaySchedule"
                             },
                             "description": "",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -101,7 +102,7 @@
                             {
                                 "name": "Day",
                                 "sqlName": "Day",
-                                "type": "Int Not Null"
+                                "type": "INT NOT NULL"
                             },
                             {
                                 "name": "GenderId",
@@ -157,7 +158,7 @@
                                 "sqlName": "tbl_Teachers"
                             },
                             "description": "Tale for the details of teachers",
-                            "defaultColumn":"TeacherName"
+                            "defaultColumn": "TeacherName"
                         },
                         "columns": [
                             {
@@ -204,6 +205,11 @@
                                 "name": "DisableUser",
                                 "sqlName": "DisableUser",
                                 "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(20) NULL"
                             }
                         ]
                     },
@@ -214,7 +220,7 @@
                                 "sqlName": "tbl_TeachersPoolGenders"
                             },
                             "description": " ",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -255,7 +261,7 @@
                             {
                                 "name": "DisableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)" 
+                                "type": "NVARCHAR(50)"
                             },
                             {
                                 "name": "DisableReason",
@@ -271,7 +277,7 @@
                                 "sqlName": "tbl_TeacherSchedule"
                             },
                             "description": "Table for the Schedule of every Teacher",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -286,28 +292,28 @@
                             },
                             {
                                 "name": "PooldayScheduleId",
-                                "sqlName": "Day",
-                                "type": "INT NOT NULL FOREIGN KEY(TeacherPoolGenderId) REFERENCES tbl_PoolDaySchedule(Id)"
+                                "sqlName": "PooldayScheduleId",
+                                "type": "INT NOT NULL FOREIGN KEY(PooldayScheduleId) REFERENCES tbl_PoolDaySchedule(Id)"
                             },
                             {
                                 "name": "startHour",
                                 "sqlName": "startHour",
-                                "type": "DATETIME Not Null"
+                                "type": "DATETIME NOT NULL"
                             },
                             {
                                 "name": "EndHour",
                                 "sqlName": "EndHour",
-                                "type": "DATETIME Not Null"
+                                "type": "DATETIME NOT NULL"
                             },
                             {
                                 "name": "AddedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME Not Null"
+                                "type": "DATETIME NOT NULL"
                             },
                             {
                                 "name": "UserName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(20) Not Null"
+                                "type": "NVARCHAR(20) NOT NULL"
                             },
                             {
                                 "name": "Disabled",
@@ -317,7 +323,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME Not Null"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",
@@ -327,7 +333,7 @@
                             {
                                 "name": "DisableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(20) NULL"
+                                "type": "NVARCHAR(50) NULL"
                             }
                         ]
                     },
@@ -338,7 +344,7 @@
                                 "sqlName": "tbl_Levels"
                             },
                             "description": "Table for the details of levels",
-                            "defaultColumn":"Name"
+                            "defaultColumn": "Name"
                         },
                         "columns": [
                             {
@@ -349,12 +355,12 @@
                             {
                                 "name": "UserName",
                                 "sqlName": "UserName",
-                                "type": "nvarchar(50)  NOT NULL"
+                                "type": "NVARCHAR(50) NOT NULL"
                             },
                             {
                                 "name": "Name",
                                 "sqlName": "Name",
-                                "type": "nvarchar(50) UNIQUE NOT NULL"
+                                "type": "NVARCHAR(50) UNIQUE NOT NULL"
                             },
                             {
                                 "name": "AddedDate",
@@ -370,6 +376,16 @@
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
                                 "type": "DATETIME NULL"
+                            },
+                            {
+                                "name": "DisableUser",
+                                "sqlName": "DisableUser",
+                                "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(50) NULL"
                             }
                         ]
                     },
@@ -380,7 +396,7 @@
                                 "sqlName": "tbl_TeachersLevels"
                             },
                             "description": " ",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -399,7 +415,7 @@
                                 "type": "INT NOT NULL FOREIGN KEY(LevelId) REFERENCES tbl_Levels(Id)"
                             },
                             {
-                                "name": "addedDate",
+                                "name": "AddedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME"
                             },
@@ -426,7 +442,7 @@
                             {
                                 "name": "DisableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(20)"
+                                "type": "NVARCHAR(50)"
                             }
                         ]
                     },
@@ -436,8 +452,8 @@
                                 "name": "Patient",
                                 "sqlName": "tbl_Patient"
                             },
-                            "description": " Table for the details of patients",
-                            "defaultColumn":"LastName"
+                            "description": "Table for the details of patients",
+                            "defaultColumn": "LastName"
                         },
                         "columns": [
                             {
@@ -513,12 +529,12 @@
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME"
+                                "type": "DATETIME NOT NULL"
                             },
                             {
                                 "name": "UserName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50)"
+                                "type": "NVARCHAR(50) NOT NULL"
                             },
                             {
                                 "name": "Disabled",
@@ -534,6 +550,11 @@
                                 "name": "DisableUser",
                                 "sqlName": "DisableUser",
                                 "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(50)"
                             }
                         ]
                     },
@@ -544,7 +565,7 @@
                                 "sqlName": "tbl_PatientsGenders"
                             },
                             "description": " ",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -586,6 +607,11 @@
                                 "name": "DisableUser",
                                 "sqlName": "DisableUser",
                                 "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(20)"
                             }
                         ]
                     },
@@ -596,7 +622,7 @@
                                 "sqlName": "tbl_PatientUrgency"
                             },
                             "description": "",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -622,7 +648,7 @@
                             {
                                 "name": "UserName",
                                 "sqlName": "UserName",
-                                "type": "nvarchar(50)  NOT NULL"
+                                "type": "NVARCHAR(50) NOT NULL"
                             },
                             {
                                 "name": "Disabled",
@@ -632,12 +658,17 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisabledUser",
                                 "sqlName": "DisabledUser",
-                                "type": "nvarchar(50)  NOT NULL"
+                                "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(50)"
                             }
                         ]
                     },
@@ -648,7 +679,7 @@
                                 "sqlName": "tbl_PatientsTreatmentLevels"
                             },
                             "description": " ",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -667,7 +698,7 @@
                                 "type": "INT NOT NULL FOREIGN KEY(TreatmentLevelId) REFERENCES tbl_Levels(Id)"
                             },
                             {
-                                "name": "addedDate",
+                                "name": "AddedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME"
                             },
@@ -689,6 +720,11 @@
                             {
                                 "name": "DisableUser",
                                 "sqlName": "DisableUser",
+                                "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
                                 "type": "NVARCHAR(50)"
                             }
                         ]
@@ -700,7 +736,7 @@
                                 "sqlName": "tbl_PatientsComment"
                             },
                             "description": "Table for the Patient's Comment ",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -714,12 +750,12 @@
                                 "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
                             },
                             {
-                                "name": "comment",
+                                "name": "Comment",
                                 "sqlName": "Comment",
                                 "type": "NVARCHAR(100)"
                             },
                             {
-                                "name": "addedDate",
+                                "name": "AddedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME"
                             },
@@ -741,6 +777,11 @@
                             {
                                 "name": "DisableUser",
                                 "sqlName": "DisableUser",
+                                "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
                                 "type": "NVARCHAR(50)"
                             }
                         ]
@@ -752,7 +793,7 @@
                                 "sqlName": "tbl_PatientsPools"
                             },
                             "description": "Table for the details of patients-pools",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -761,24 +802,24 @@
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "patientId",
+                                "name": "PatientId",
                                 "sqlName": "PatientId",
                                 "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
                             },
                             {
-                                "name": "poolId",
+                                "name": "PoolId",
                                 "sqlName": "PoolId",
                                 "type": "INT NOT NULL FOREIGN KEY(PoolId) REFERENCES tbl_SwimmingPools(Id)"
                             },
                             {
-                                "name": "addedDate",
+                                "name": "AddedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME"
+                                "type": "DATETIME NOT NULL"
                             },
                             {
                                 "name": "UserName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50)"
+                                "type": "NVARCHAR(50) NOT NULL"
                             },
                             {
                                 "name": "Disabled",
@@ -794,6 +835,11 @@
                                 "name": "DisableUser",
                                 "sqlName": "DisableUser",
                                 "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(50)"
                             }
                         ]
                     },
@@ -804,7 +850,7 @@
                                 "sqlName": "tbl_PatientPreferenceTeachers"
                             },
                             "description": " ",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -831,12 +877,12 @@
                             {
                                 "name": "AddedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME Not Null"
+                                "type": "DATETIME NOT NULL"
                             },
                             {
                                 "name": "UserName",
                                 "sqlName": "UserName",
-                                "type": "nvarchar(20) NOT NULL"
+                                "type": "NVARCHAR(20) NOT NULL"
                             },
                             {
                                 "name": "Disabled",
@@ -852,6 +898,11 @@
                                 "name": "DisableUser",
                                 "sqlName": "DisableUser",
                                 "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(50)"
                             }
                         ]
                     },
@@ -862,7 +913,7 @@
                                 "sqlName": "tbl_PatientPreferenceDays"
                             },
                             "description": "",
-                            "defaultColumn":""
+                            "defaultColumn": ""
                         },
                         "columns": [
                             {
@@ -898,7 +949,7 @@
                             {
                                 "name": "UserName",
                                 "sqlName": "UserName",
-                                "type": "nvarchar(50) NOT NULL"
+                                "type": "NVARCHAR(50) NOT NULL"
                             },
                             {
                                 "name": "Disabled",
@@ -913,7 +964,12 @@
                             {
                                 "name": "DisabledUser",
                                 "sqlName": "DisabledUser",
-                                "type": "nvarchar(50)  NOT NULL"
+                                "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(20)"
                             }
                         ]
                     }

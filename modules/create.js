@@ -40,9 +40,9 @@ async function createSQL(obj) {
         for (let i = 0; i < obj.values.length; i++) {
             newObj = { type: obj.type, entity: obj.entity, values: obj.values[i] }
             ans = await createOneSQL(newObj)
-            if (ans) {
-                ans.rowsAffected++
-            }
+            // if (ans.rowsAffected[0]) {
+            //     ans.rowsAffected++
+            // }
         }
         if (ans.rowsAffected > 0) {
             ans.rowsAffected--
