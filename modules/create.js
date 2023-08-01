@@ -23,10 +23,13 @@ async function createOneSQL(obj) {
         const types = getSqlTableColumnsType(obj.entity.collectionName.sqlName)
         let arr = createArrColumns(Object.keys(obj.values))
         let values = parseSQLType(obj.values, types)
-        let ans = await create(obj.type, obj.entity.collectionName.sqlName, arr.join(','), values.join(','))
-        if (ans)
+        const ans = await create(obj.type, obj.entity.collectionName.sqlName, arr.join(','), values.join(','))
+        if (ans){
+            console.log("!!!!!!!!!!!");
             return ans
-        return 'no effect'
+        }
+        else
+            return 'no effect'
     }
     catch (error) {
         throw error
@@ -44,11 +47,11 @@ async function createSQL(obj) {
             //     ans.rowsAffected++
             // }
         }
-        if (ans.rowsAffected > 0) {
-            ans.rowsAffected--
-            return ans
-        }
-        return 'no effect'
+        // if (ans.rowsAffected > 0) {
+        //     ans.rowsAffected--
+        //     return ans
+        // }
+        return ans
     }
     catch (error) {
         throw error
@@ -68,14 +71,14 @@ async function createTranzaction({ project, entityName, value }) {
                 obj[key] = value[key]
                 tran = { ...tran, ...obj }
             }
-        
+
             else {
                 let obj = {}
                 obj[key] = value[key]
                 finalyValues = { ...finalyValues, ...obj }
             }
         }
-        console.log(tran,'tran');
+        console.log(tran, 'tran');
         const types = getSqlTableColumnsType(entity.collectionName.sqlName)
         let columns = createArrColumns(Object.keys(finalyValues)).join(',')
         let values = parseSQLType(finalyValues, types).join(',')
