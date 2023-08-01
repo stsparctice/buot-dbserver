@@ -19,7 +19,7 @@
                     },
                     "arguments": {
                         "entity": {
-                            "jsType": "string",
+                            "jsType": "nvarchar",
                             "example": "Teachers",
                             "required": true,
                             "description": "You nead to send a name of the table that you want to use",
@@ -28,7 +28,11 @@
                         "values": {
                             "jsType": "object",
                             "example": {
-                                "TeacherName": "Sari"
+                                "TeacherName": "Sari",
+                                "Phone": "0583286477",
+                                "Email": "S@gmail.come",
+                                "AddedDate": "07/08/25",
+                                "UserName": "lea"
                             },
                             "required": true,
                             "description": "You are aloud to send any of the headers in this table",
@@ -37,7 +41,7 @@
                                 "jsType": "nvarchar",
                                 "example": "Sari",
                                 "required": true,
-                                "description": "this is example to one header in this entity but You are aloud to send any of the headers in this entity",
+                                "description": "this is example to one header in this table but You are aloud to send any of the headers in this tabl",
                                 "sort": "req.body.values.teacherName"
                             }
                         }
@@ -352,16 +356,18 @@
                             "id": 10
                         }
                     },
-                    "arguments": {
-                        "entity":{
+                    "arguments": [
+                        {
+                            "name": "entity",
                             "jsType": "nvarchar",
                             "example": "Teachers",
                             "required": true,
                             "description": "You are aloud to send any of the headers in this table instead of Id",
                             "sort": "params"
                         },
-                        "set":{
-                            "jsType": "object",
+                        {
+                            "name": "set",
+                            "jsType": "json",
                             "example": {
                                 "TeacherName": "ruti"
                             },
@@ -369,8 +375,9 @@
                             "description": "You are aloud to send any of the headers in this table instead of Id",
                             "sort": "req.body.set"
                         },
-                        "condition":{
-                            "jsType": "object",
+                        {
+                            "name": "condition",
+                            "jsType": "json",
                             "example": {
                                 "id": 10
                             },
@@ -378,10 +385,7 @@
                             "description": "You are aloud to send any of the headers in this table instead of Id",
                             "sort": "req.body.condition"
                         }
-
-                    }
-                        
-                    ,
+                    ],
                     "response": "arr",
                     "exampleResponse": [
                         {

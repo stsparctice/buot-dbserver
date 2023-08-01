@@ -1,12 +1,14 @@
-const { create } = require('../services/db/sql/sql-operation')
+const { create, createTrac } = require('../services/db/sql/sql-operation')
 const { createArrColumns, createArrValues, findCollection, getEntityConfigData } = require('../modules/functions')
 const { DBTypes, parseSQLType, getTableFromConfig, getSqlTableColumnsType } = require('./config/config')
 
 async function startCreate({ project, entityName, values }) {
     try {
         const entity = getEntityConfigData({ project, entityName })
+
         if (entity.type === DBTypes.SQL) {
-            const items = await createManySQL({ type: entity.dbName, entity: entity, values: values })
+
+            const items = await createSQL({ type: entity.dbName, entity: entity, values: values })
             return items
         }
     }
@@ -31,7 +33,7 @@ async function createOneSQL(obj) {
     }
 }
 
-async function createManySQL(obj) {
+async function createSQL(obj) {
     try {
         let newObj
         let ans
@@ -42,7 +44,7 @@ async function createManySQL(obj) {
             //     ans.rowsAffected++
             // }
         }
-        if (ans.rowsAffected > 0){
+        if (ans.rowsAffected > 0) {
             ans.rowsAffected--
             return ans
         }
@@ -53,4 +55,41 @@ async function createManySQL(obj) {
     }
 }
 
-module.exports = { createOneSQL, createManySQL, startCreate }
+async function createTranzaction({ project, entityName, value }) {
+    try {
+        // database, entity, columns, values, tran
+        const entity = getEntityConfigData({ project, entityName })
+
+        let tran = []
+        let finalyValues = {}
+        for (const key in value) {
+            if (typeof value[key] == 'object') {
+                let obj = {}
+                obj[key] = value[key]
+                tran = { ...tran, ...obj }
+            }
+        
+            else {
+                let obj = {}
+                obj[key] = value[key]
+                finalyValues = { ...finalyValues, ...obj }
+            }
+        }
+        console.log(tran,'tran');
+        const types = getSqlTableColumnsType(entity.collectionName.sqlName)
+        let columns = createArrColumns(Object.keys(finalyValues)).join(',')
+        let values = parseSQLType(finalyValues, types).join(',')
+        if (entity.type === DBTypes.SQL) {
+            const items = await createTrac({ database: entity.dbName, entity: entity.collectionName.sqlName, columns: columns, values: values, tran: tran })
+            return items
+        }
+
+    }
+    catch (error) {
+
+    }
+}
+
+
+
+module.exports = { createOneSQL, createSQL, startCreate, createTranzaction }
