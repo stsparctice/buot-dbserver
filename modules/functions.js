@@ -1,4 +1,3 @@
-const data = require('../data/newConfig.json')
 const { getEntityFromConfig } = require('./config/config')
 const { getDBConfig } = require('./config/project.config')
 

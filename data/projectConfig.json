@@ -2,6 +2,12 @@
     {
         "projectname": "waiting-list",
         "url": "wl",
-        "dbConfigFile": "./data/newConfig.json"
+        "dbConfigFile": "./data/waiting-list.json"
+    }, 
+    {
+        "projectname":"rapidmed",
+        "url":"rp",
+        "dbConfigFile": "./data/rapid.json"
+
     }
 ]

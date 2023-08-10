@@ -5,5 +5,10 @@ const getDBConfig = (projectUrl)=>{
     return projectMTD.dbConfigFile
 }
 
+const getAllDBConfig = ()=>{
+    const dbConfigList = projectConfig.map(item=>item.dbConfigFile)
+    return dbConfigList
+}
 
-module.exports = {getDBConfig}
+
+module.exports = {getDBConfig, getAllDBConfig}

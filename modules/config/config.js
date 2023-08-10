@@ -1,6 +1,5 @@
 require('dotenv');
 const fs = require('fs');
-const config = require('../../data/newConfig.json')
 const {types} = require('./config.objects');
 const { SQL_DBNAME } = process.env
 const {DBTypes} = require('../../utils/types')
