@@ -1,12 +1,11 @@
-const config = require('../../data/newConfig.json')
-const fs = require('fs');
-const types = require('./config.objects');
 require('dotenv');
+const fs = require('fs');
+const config = require('../../data/newConfig.json')
+const {types} = require('./config.objects');
 const { SQL_DBNAME } = process.env
+const {DBTypes} = require('../../utils/types')
 
-const DBTypes = {
-    SQL: 'sql', MONGODB: 'mongoDB'
-}
+
 
 function getEntityFromConfig(entityName, configUrl) {
     const response = fs.readFileSync(configUrl)
@@ -14,7 +13,7 @@ function getEntityFromConfig(entityName, configUrl) {
 }
 
 function getTableFromConfig(tableName) {
-    let sql = config.find(db => db.db[0].type == 'sql')//????????????????????????????
+    let sql = config.find(db => db.db[0].type == DBTypes.SQL)//????????????????????????????
     sql = sql.db[0]
     // let tables = sql.collections.find(obj => obj.type == 'Tables').list
     let table = sql.collections.find(tbl => tbl.MTDTable.collectionName.sqlName.toLowerCase() == tableName.toLowerCase() ||
@@ -177,7 +176,6 @@ function parseSQLTypeForColumn(col, tableName) {
 
 
 module.exports = {
-    DBTypes,
     getEntityFromConfig,
     getTableFromConfig,
     buildSqlCondition,

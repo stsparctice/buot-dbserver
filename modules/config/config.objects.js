@@ -78,5 +78,5 @@ const types = {
 }
 
 
-module.exports = types
+module.exports = {types,convertToSQLString}
 
