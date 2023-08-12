@@ -977,44 +977,7 @@
             }
         ]
     },
-    {
-        "dbName": "RapidMed",
-        "db": [
-            {
-                "type": "sql",
-                "collections": [
-                    {
-                        "MTDTable": {
-                            "collectionName": {
-                                "name": "Patients",
-                                "sqlName": "tbl_Patients"
-                            },
-                            "description": {
-                                "description": ""
-                            },
-                            "databaseConnection": {
-                                "databaseConnection": ""
-                            }
-                        },
-                        "columns": [
-                            {
-                                "name": "name",
-                                "type": "NVARCHAR(20)"
-                            },
-                            {
-                                "name": "phone",
-                                "type": "NVARCHAR(20)"
-                            },
-                            {
-                                "name": "email",
-                                "type": "NVARCHAR(20)"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
+   
     {
         "dbName": "Users",
         "db": [

@@ -3,7 +3,7 @@ const { getDBConfig } = require('./config/project.config')
 
 function getEntityConfigData({ project, entityName }) {
     const configUrl = getDBConfig(project)
-    const config = getEntityFromConfig(entityName, configUrl)
+    const config = getEntityFromConfig( configUrl)
     let entity = findCollection(config, entityName)
     return entity
 }

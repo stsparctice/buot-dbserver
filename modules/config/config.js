@@ -6,7 +6,7 @@ const {DBTypes} = require('../../utils/types')
 
 
 
-function getEntityFromConfig(entityName, configUrl) {
+function getEntityFromConfig( configUrl) {
     const response = fs.readFileSync(configUrl)
     return JSON.parse(response)
 }
