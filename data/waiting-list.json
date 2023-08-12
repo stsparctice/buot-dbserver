@@ -976,43 +976,7 @@
                 ]
             }
         ]
-    },
-   
-    {
-        "dbName": "Users",
-        "db": [
-            {
-                "type": "mongoDB",
-                "collections": [
-                    {
-                        "collectionName": {
-                            "users": "users"
-                        },
-                        "fields": [
-                            {
-                                "name": {
-                                    "name": "name"
-                                }
-                            },
-                            {
-                                "phone": {
-                                    "name": "phone"
-                                }
-                            },
-                            {
-                                "email": {
-                                    "name": "email"
-                                }
-                            },
-                            {
-                                "profile": {
-                                    "name": "profile"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
     }
+   
+   
 ]
