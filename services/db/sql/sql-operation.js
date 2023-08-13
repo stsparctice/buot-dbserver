@@ -106,6 +106,7 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
 
 const read = async function (query = "", n) {
      try {
+          console.log({query})
           const result = await getPool().request().query(`${query.trim()} ORDER BY ${Object.values(n)[1]} OFFSET (${Object.keys(n)[0]}) ROWS FETCH NEXT (${Object.values(n)[0]}) ROWS ONLY`);
           if (result.recordset)
                return result.recordset;

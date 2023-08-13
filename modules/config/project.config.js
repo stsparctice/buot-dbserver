@@ -6,7 +6,7 @@ const getDBConfig = (projectUrl)=>{
 }
 
 const getAllDBConfig = ()=>{
-    const dbConfigList = projectConfig.map(item=>item.dbConfigFile)
+    const dbConfigList = projectConfig.map(({dbConfigFile})=>dbConfigFile)
     return dbConfigList
 }
 

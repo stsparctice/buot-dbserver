@@ -8,7 +8,7 @@
                     {
                         "MTDTable": {
                             "collectionName": {
-                                "name": "Patients",
+                                "name": "patients",
                                 "sqlName": "Patients"
                             },
                             "description": {
@@ -655,7 +655,364 @@
                                 "type": "NVARCHAR(50) NULL"
                             }
                         ]
-                    }
+                    },
+                    {
+                        "MTDTable": {
+                            "collectionName": {
+                                "name": "medProbs",
+                                "sqlName": "MedProbs"
+                            },
+                            "description": {
+                                "description": ""
+                            },
+                            "databaseConnection": {
+                                "databaseConnection": ""
+                            }
+                        },
+                        "columns": [
+                            {
+                                "name": "patientName",
+                                "sqlName": "[PatientName]",
+                                "type": "NVARCHAR(50) NULL"
+                            },
+                            {
+                                "name": "medProp",
+                                "sqlName": "[MedProp]",
+                                "type": "NVARCHAR(255) NULL"
+                            },
+                            {
+                                "name": "check1",
+                                "sqlName": "[check1]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check2",
+                                "sqlName": "[check2]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check3",
+                                "sqlName": "[check3]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check4",
+                                "sqlName": "[check4]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check5",
+                                "sqlName": "[check5]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check6",
+                                "sqlName": "[check6]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check7",
+                                "sqlName": "[check7]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check8",
+                                "sqlName": "[check8]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check9",
+                                "sqlName": "[check9]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check10",
+                                "sqlName": "[check10]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check11",
+                                "sqlName": "[check11]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check12",
+                                "sqlName": "[check12]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check13",
+                                "sqlName": "[check13]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check14",
+                                "sqlName": "[check14]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check15",
+                                "sqlName": "[check15]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check16",
+                                "sqlName": "[check16]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check17",
+                                "sqlName": "[check17]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check18",
+                                "sqlName": "[check18]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check19",
+                                "sqlName": "[check19]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check20",
+                                "sqlName": "[check20]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check21",
+                                "sqlName": "[check21]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check22",
+                                "sqlName": "[check22]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check23",
+                                "sqlName": "[check23]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check24",
+                                "sqlName": "[check24]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check25",
+                                "sqlName": "[check25]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check26",
+                                "sqlName": "[check26]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check27",
+                                "sqlName": "[check27]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check28",
+                                "sqlName": "[check28]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check29",
+                                "sqlName": "[check29]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "check30",
+                                "sqlName": "[check30]",
+                                "type": "BIT NOT NULL"
+                            },
+                            {
+                                "name": "patID",
+                                "sqlName": "[PatID]",
+                                "type": "NUMERIC(10, 0) NULL"
+                            },
+                            {
+                                "name": "probOptions",
+                                "sqlName": "[ProbOptions]",
+                                "type": "NTEXT NULL"
+                            },
+                            {
+                                "name": "recordID",
+                                "sqlName": "[RecordID]",
+                                "type": "NUMERIC(18, 0) IDENTITY(1,1) NOT NULL PRIMARY KEY"
+                            }
+                        ]
+                    },
+                    {
+                        "MTDTable": {
+                            "collectionName": {
+                                "name": "priceList",
+                                "sqlName": "PriceList"
+                            },
+                            "description": {
+                                "description": ""
+                            },
+                            "databaseConnection": {
+                                "databaseConnection": ""
+                            }
+                        },
+                        "columns": [
+                            {
+                                "name": "recordID",
+                                "sqlName": "RecordID",
+                                "type": "NUMERIC(18, 0) IDENTITY(1,1) NOT NULL PRIMARY KEY"
+                            },
+                            {
+                                "name": "number",
+                                "sqlName": "Number",
+                                "type": "INT NULL"
+                            },
+                            {
+                                "name": "name",
+                                "sqlName": "Name",
+                                "type": "NVARCHAR(50) NULL"
+                            },
+                            {
+                                "name": "sectionID",
+                                "sqlName": "SectionID",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "active",
+                                "sqlName": "Active",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "requireMemberCard",
+                                "sqlName": "RequireMemberCard",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "agreement",
+                                "sqlName": "Agreement",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "agreementPercent",
+                                "sqlName": "AgreementPercent",
+                                "type": "NVARCHAR(10) NULL"
+                            },
+                            {
+                                "name": "patID",
+                                "sqlName": "PatID",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "grades",
+                                "sqlName": "Grades",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "cardLength",
+                                "sqlName": "CardLength",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "blockDiscountRequest",
+                                "sqlName": "BlockDiscountRequest",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "patID2",
+                                "sqlName": "PatID2",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "defaultDoctor",
+                                "sqlName": "DefaultDoctor",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "discount2nd",
+                                "sqlName": "Discount2nd",
+                                "type": "FLOAT NULL"
+                            },
+                            {
+                                "name": "discount3rd",
+                                "sqlName": "Discount3rd",
+                                "type": "FLOAT NULL"
+                            },
+                            {
+                                "name": "comission",
+                                "sqlName": "Comission",
+                                "type": "FLOAT NULL"
+                            },
+                            {
+                                "name": "creditsPL",
+                                "sqlName": "CreditsPL",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "labPL",
+                                "sqlName": "LabPL",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "minAge",
+                                "sqlName": "MinAge",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                             {
+                                "name": "maxAge",
+                                "sqlName": "MaxAge",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "maxDailySum",
+                                "sqlName": "MaxDailySum",
+                                "type": "NUMERIC(18, 2) NULL"
+                            },
+                            {
+                                "name": "basePL",
+                                "sqlName": "BasePL",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "noDiscount",
+                                "sqlName": "NoDiscount",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "anonymous",
+                                "sqlName": "Anonymous",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "isDefault",
+                                "sqlName": "IsDefault",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "blockSelection",
+                                "sqlName": "BlockSelection",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "clubOnly",
+                                "sqlName": "ClubOnly",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "oncePerYear",
+                                "sqlName": "OncePerYear",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "rBSyncEnable",
+                                "sqlName": "RBSyncEnable",
+                                "type": "BIT NULL"
+                            }
+                        ]}
+                        
                 ]
             }
         ]
