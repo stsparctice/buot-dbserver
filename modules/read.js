@@ -1,5 +1,8 @@
+const {DBTypes} = require('../utils/types')
 const { read, searchSQL, count } = require("../services/db/sql/sql-operation")
-const { viewConnectionsTables, DBTypes, buildSqlCondition, buildSimpleSqlCondition } = require("./config/config")
+const {getDBConfig} = require('../modules/config/project.config')
+const { viewConnectionsTables, buildSqlCondition, buildSimpleSqlCondition, getPrimaryKeyField, getTableAlias } = require("./config/config")
+
 const { getEntityConfigData } = require('./functions')
 
 // {
@@ -11,8 +14,9 @@ const { getEntityConfigData } = require('./functions')
 // }
 async function startReadMany({ project, entityName, condition }) {
     try {
-
+        const projectConfigUrl  = getDBConfig(project)
         const entity = getEntityConfigData({ project, entityName })
+        console.log({entity})
         let n = { 0: 100, otderBy: `${entity.collectionName.name}.Id` }
         if (condition.n) {
             n = { ...condition.n, otderBy: `${entity.collectionName.name}.Id` }
@@ -21,38 +25,50 @@ async function startReadMany({ project, entityName, condition }) {
 
         if (entity.type === DBTypes.SQL) {
             if (Object.keys(condition).includes('CONTAINS')) {
-                const answer = await searchSQL(entity.collectionName.sqlName, condition.CONTAINS)
+                const answer = await searchSQL(projectConfigUrl,entity, condition.CONTAINS)
                 return answer
             }
-          
-            const items = await readSql(entity.collectionName.sqlName, condition, n)
+          console.log({projectConfigUrl})
+            const items = await readSql(projectConfigUrl,entity, condition, n)
             return items
         }
     }
     catch (error) {
+        console.log({error})
         throw error
     }
 }
 
 async function startReadOne({ project, entityName, condition }) {
     try {
+        const projectConfigUrl  = getDBConfig(project)
         const entity = getEntityConfigData({ project, entityName })
-        let n = { 0: 1, otderBy: `${entity.collectionName.name}.Id` }
+        const primaryKey = getPrimaryKeyField(projectConfigUrl, entityName)
+        console.log({primaryKey})
+        const alias = getTableAlias(projectConfigUrl, entityName)
+        let n = { 0: 1, otderBy: `${alias}.${primaryKey}` }
         if (entity.type === DBTypes.SQL) {
-            const items = await readSql(entity.collectionName.sqlName, condition, n)
+            if(condition.key){
+                condition[primaryKey]= condition.key
+                delete condition.key
+            }
+            console.log({condition})
+            const items = await readSql(projectConfigUrl,entity, condition, n)
             return items
         }
     }
     catch (error) {
+        console.log({error})
         throw error
     }
 }
 
 
 
-async function readSql(tableName = "", condition = {}, n) {
+async function readSql(configUrl, entity, condition = {}, n) {
     try {
-        const query = viewConnectionsTables(tableName, condition);
+console.log({configUrl,entity, condition })
+        const query = viewConnectionsTables(configUrl, entity, condition);
         const values = await read(query, n);
         const items = ArrangeObjects(values)
         return items

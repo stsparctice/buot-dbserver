@@ -3,11 +3,15 @@
         "projectname": "waiting-list",
         "url": "wl",
         "dbConfigFile": "./data/waiting-list.json"
-    }, 
+    },
     {
-        "projectname":"rapidmed",
-        "url":"rp",
+        "projectname": "rapidmed",
+        "url": "rp",
         "dbConfigFile": "./data/rapid.json"
-
+    },
+    {
+        "projectname": "users",
+        "url": "users",
+        "dbConfigFile": "./data/users.json"
     }
 ]

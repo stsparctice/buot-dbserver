@@ -1,17 +1,20 @@
 require('dotenv');
 const fs = require('fs');
-const {types} = require('./config.objects');
+const { types } = require('./config.objects');
 const { SQL_DBNAME } = process.env
-const {DBTypes} = require('../../utils/types')
+const { DBTypes } = require('../../utils/types')
 
 
 
-function getEntityFromConfig( configUrl) {
+function getEntityFromConfig(configUrl) {
+    console.log({ configUrl })
     const response = fs.readFileSync(configUrl)
     return JSON.parse(response)
 }
 
-function getTableFromConfig(tableName) {
+function getTableFromConfig(configUrl, tableName) {
+
+    const config = getEntityFromConfig(configUrl)
     let sql = config.find(db => db.db[0].type == DBTypes.SQL)//????????????????????????????
     sql = sql.db[0]
     // let tables = sql.collections.find(obj => obj.type == 'Tables').list
@@ -21,8 +24,40 @@ function getTableFromConfig(tableName) {
 
 }
 
-function buildSqlCondition(tableName, condition) {
-    const tablealias = getTableFromConfig(tableName).MTDTable.collectionName.name
+function getTableAlias(config, tableSqlName) {
+    console.log({ config, tableSqlName })
+    try {
+        const table = getTableFromConfig(config, tableSqlName)
+        return table.MTDTable.collectionName.name
+    }
+    catch (error) {
+        throw error
+    }
+}
+
+function getPrimaryKeyField(configUrl, tablename) {
+    const table = getTableFromConfig(configUrl, tablename)
+    let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))
+    if (col) {
+        return col.sqlName
+    }
+    return undefined
+}
+
+function getSqlTableColumnsType(configUrl, tablename) {
+    try {
+        const table = getTableFromConfig(configUrl, tablename)
+        let col = table.columns.map(col => ({ sqlName: col.sqlName, type: col.type.trim().split(' ')[0] }))
+        return col
+    }
+    catch (error) {
+        throw error
+    }
+};
+
+function buildSqlCondition(configUrl, tableName, condition) {
+    console.log({ configUrl, tableName, condition })
+    const tablealias = getTableAlias(configUrl, tableName)
     if (condition) {
         const entries = Object.entries(condition)
         const conditionList = entries.map(c =>
@@ -53,10 +88,9 @@ function buildSimpleSqlCondition(condition) {
 }
 
 
+function buildSqlJoinAndSelect(configUrl, tableName) {
 
-function buildSqlJoinAndSelect(tableName) {
-
-    const myTable = getTableFromConfig(tableName)
+    const myTable = getTableFromConfig(configUrl, tableName)
     const columns = myTable.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
     let columnsSelect = [{ tableName: myTable.MTDTable.collectionName.name, columnsName: [...myTable.columns.map(({ sqlName }) => sqlName)] }];
     let join = `${myTable.MTDTable.collectionName.sqlName} ${myTable.MTDTable.collectionName.name}`;
@@ -80,49 +114,26 @@ function buildSqlJoinAndSelect(tableName) {
     return `SELECT ${select} FROM ${join}`
 }
 
-const viewConnectionsTables = (tableName, condition = {}) => {
-
-    let join = buildSqlJoinAndSelect(tableName)
+const viewConnectionsTables = (configUrl, entity, condition = {}) => {
+    const tableName = entity.collectionName.sqlName
+    let join = buildSqlJoinAndSelect(configUrl, tableName)
 
     if (Object.keys(condition).length > 0) {
-        let conditionString = buildSqlCondition(tableName, condition)
+        let conditionString = buildSqlCondition(configUrl, tableName, condition)
         join = `${join} WHERE ${conditionString}`;
     }
-    return `use ${SQL_DBNAME} ${join}`;
+    return `use ${entity.dbName} ${join}`;
 }
 
 
-function getPrimaryKeyField(tablename) {
-    const table = getTableFromConfig(tablename)
-    let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))
-    if (col) {
-        return col.sqlName
-    }
-    return false
-}
+
 
 async function composeSQLColumns(columns) {
-    let string = ''
-    for (let col of columns) {
-        string += "'" + col + "'"
-        string += ','
-
-        return string
-
-
-    }
+    const columnsList = columns.reduce((arr, col) => arr = [...arr, `'${col}'`], [])
+    return columnsList.join(',')
 }
 
-function getSqlTableColumnsType(tablename) {
-    try {
-        const table = getTableFromConfig(tablename)
-        let col = table.columns.map(col => ({ sqlName: col.sqlName, type: col.type.trim().split(' ')[0] }))
-        return col
-    }
-    catch (error) {
-        throw error
-    }
-};
+
 
 function parseSQLType(obj, tabledata) {
     try {
@@ -177,12 +188,13 @@ function parseSQLTypeForColumn(col, tableName) {
 module.exports = {
     getEntityFromConfig,
     getTableFromConfig,
-    buildSqlCondition,
-    viewConnectionsTables,
+    getTableAlias,
     getPrimaryKeyField,
+    getSqlTableColumnsType,
+    viewConnectionsTables,
+    buildSqlCondition,
     composeSQLColumns,
     buildSimpleSqlCondition,
     parseSQLType,
-    getSqlTableColumnsType,
     parseSQLTypeForColumn
 }

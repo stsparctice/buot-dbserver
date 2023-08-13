@@ -139,7 +139,7 @@ const innerJoin = async function (firstTableName, secondTableName, columns, on, 
      return result.recordset;
 };
 
-const searchSQL = async function (entity, search) {
+const searchSQL = async function (config,entity, search) {
      let select = ''
      if (search.fields.length > 0) {
           _ = search.fields.forEach(field => {
