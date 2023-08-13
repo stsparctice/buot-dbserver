@@ -1,7 +1,7 @@
 const { create, createTrac } = require('../services/db/sql/sql-operation')
 const { createArrColumns, createArrValues, findCollection, getEntityConfigData } = require('../modules/functions')
-const { DBTypes, parseSQLType, getTableFromConfig, getSqlTableColumnsType } = require('./config/config')
-
+const {  parseSQLType, getTableFromConfig, getSqlTableColumnsType } = require('./config/config')
+const {DBTypes} = require('../utils/types')
 async function startCreate({ project, entityName, values }) {
     try {
         const entity = getEntityConfigData({ project, entityName })
