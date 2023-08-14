@@ -833,7 +833,7 @@
                             {
                                 "name": "patID",
                                 "sqlName": "[PatID]",
-                                "type": "NUMERIC(10, 0) NULL"
+                                "type": "NUMERIC(10, 0) NULL FOREIGN KEY(PatId) REFERENCES Patients([PatID])"
                             },
                             {
                                 "name": "probOptions",
@@ -904,7 +904,7 @@
                             {
                                 "name": "patID",
                                 "sqlName": "PatID",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "type": "NUMERIC(18, 0) NULL FOREIGN KEY(PatId) REFERENCES Patients([PatID])"
                             },
                             {
                                 "name": "grades",
