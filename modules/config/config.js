@@ -50,7 +50,7 @@ function getTableColumns(configUrl, tablename, columns = []) {
         if (columns.length != 0)
             cols = table.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
         else
-            cols = table.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type:type.trim().split(' ')[0] }))
+            cols = table.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
         return cols
     }
     catch (error) {
@@ -75,7 +75,7 @@ function buildSqlCondition(configUrl, tableName, condition) {
     let sqlCondition = ''
     if (condition) {
         const columns = getTableColumns(configUrl, tableName, Object.keys(condition))
-        columnNames = columns.map(({name}) => name)
+        columnNames = columns.map(({ name }) => name)
         if (Object.keys(condition).every(c => columnNames.includes(c))) {
             const entries = Object.entries(condition)
             const sqlNames = entries.map(col => ({ key: col[0], sqlCol: columns.find(c => c.name === col[0]).sqlName, type: columns.find(c => c.name === col[0]).type, value: col[1] }))
@@ -92,40 +92,56 @@ function buildSqlCondition(configUrl, tableName, condition) {
     return sqlCondition
 }
 
+function getSelectedColumns(configUrl, entityFields) {
+    const { entity, fields } = entityFields
+    const myTable = getTableFromConfig(configUrl, entity)
+    const selectColumns = myTable.columns.filter(col => fields.includes(col.name))
+    return selectColumns
 
-function buildSqlJoinAndSelect(configUrl, tableName) {
+}
 
+function buildSqlJoinAndSelect(configUrl, tableName, fields) {
+console.log({fields});
     const myTable = getTableFromConfig(configUrl, tableName)
     const tableAlias = getTableAlias(configUrl, tableName)
     const columns = myTable.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
     // let columnsSelect = [{ tableName: myTable.MTDTable.collectionName.name, columnsName: [...myTable.columns.map(({ sqlName, name }) => ({ sqlName, name }))] }];
-    let columnsSelect = [...myTable.columns.map(({ sqlName, name }) => ({ sqlName, name }))]
+    let selectedColumns = [...myTable.columns.map(({ sqlName, name }) => ({ sqlName, name, alias: tableAlias }))]
+    console.log({selectedColumns})
+    if (fields.length > 0) {
+        selectedColumns = selectedColumns.filter(col => fields.includes(col.name))
+    }
+    
     let join = `${myTable.MTDTable.collectionName.sqlName} ${myTable.MTDTable.collectionName.name}`;
-    columns.forEach(column => {
-        const tableToJoin = column.type.slice(column.type.lastIndexOf('tbl_'), column.type.lastIndexOf('('));
-        const columnToJoin = column.type.slice(column.type.lastIndexOf('(') + 1, column.type.lastIndexOf(')'));
-        const thisTable = getTableFromConfig(configUrl, tableToJoin);
-        const alias = thisTable.MTDTable.collectionName.name;
-        columnsSelect = [...columnsSelect, { tableName: alias, columnsName: [`${columnToJoin} as FK_${column.name}_${columnToJoin}`, `${thisTable.MTDTable.defaultColumn} as FK_${column.name}_${thisTable.MTDTable.defaultColumn}`] }];
-        join = `${join} LEFT JOIN ${tableToJoin} ${alias} ON ${myTable.MTDTable.collectionName.name}.${column.sqlName}=${alias}.${columnToJoin}`;
-    });
+    // columns.forEach(column => {
+    //     const tableToJoin = column.type.slice(column.type.lastIndexOf('tbl_'), column.type.lastIndexOf('('));
+    //     const columnToJoin = column.type.slice(column.type.lastIndexOf('(') + 1, column.type.lastIndexOf(')'));
+    //     const thisTable = getTableFromConfig(configUrl, tableToJoin);
+    //     const alias = thisTable.MTDTable.collectionName.name;
+    //     columnsSelect = [...columnsSelect, { tableName: alias, columnsName: [`${columnToJoin} as FK_${column.name}_${columnToJoin}`, `${thisTable.MTDTable.defaultColumn} as FK_${column.name}_${thisTable.MTDTable.defaultColumn}`] }];
+    //     join = `${join} LEFT JOIN ${tableToJoin} ${alias} ON ${myTable.MTDTable.collectionName.name}.${column.sqlName}=${alias}.${columnToJoin}`;
+    // });
 
-    let select = columnsSelect.map(cs => `${tableAlias}.${cs.sqlName} as ${cs.name}`);
+    let select = selectedColumns.map(({ alias, name, sqlName }) => `${alias}.${sqlName} as ${name}`);
 
     select = select.join(', ');
 
-    return `SELECT ${select} FROM ${join}`
+    return `SELECT ${select} FROM ${tableAlias}`
 }
 
-const viewConnectionsTables = (configUrl, entity, condition = {}) => {
+const getSqlQueryFromConfig = (configUrl, entity, condition = {}, fields = []) => {
+    console.log({ fields})
     const tableName = entity.collectionName.sqlName
-    let join = buildSqlJoinAndSelect(configUrl, tableName)
-
+    let sqlQuery = buildSqlJoinAndSelect(configUrl, tableName, fields)
     if (Object.keys(condition).length > 0) {
         let conditionString = buildSqlCondition(configUrl, tableName, condition)
-        join = `${join} WHERE ${conditionString}`;
+        sqlQuery = `${sqlQuery} WHERE ${conditionString}`;
     }
-    return `use ${entity.dbName} ${join}`;
+    else{
+        sqlQuery = `${sqlQuery} WHERE 1=1`;
+    }
+    return `use ${entity.dbName} ${sqlQuery}`;
+
 }
 
 
@@ -204,7 +220,7 @@ module.exports = {
     getTableAlias,
     getPrimaryKeyField,
     getTableColumns,
-    viewConnectionsTables,
+    getSqlQueryFromConfig,
     buildSqlCondition,
     composeSQLColumns,
     parseSQLType,

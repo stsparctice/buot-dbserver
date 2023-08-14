@@ -7,7 +7,8 @@
     {
         "projectname": "rapidmed",
         "url": "rp",
-        "dbConfigFile": "./data/rapid.json"
+        "dbConfigFile": "./data/rapid.json",
+        "connected-tables":[{}]
     },
     {
         "projectname": "users",

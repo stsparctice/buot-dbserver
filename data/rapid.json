@@ -676,8 +676,8 @@
                                 "type": "NVARCHAR(50) NULL"
                             },
                             {
-                                "name": "medProp",
-                                "sqlName": "[MedProp]",
+                                "name": "medProb",
+                                "sqlName": "[MedProb]",
                                 "type": "NVARCHAR(255) NULL"
                             },
                             {
