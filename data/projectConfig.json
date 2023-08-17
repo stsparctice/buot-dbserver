@@ -2,8 +2,20 @@
     {
         "projectname": "waiting-list",
         "url": "wl",
-        "dbConfigFile": "./data/waiting-list.json"
+        "dbConfigFile": "./data/waiting-list.json",
+        "connected-entities":[
+            {
+                "entity":"swimmingPools",
+                "field":"id",
+                "subEntities":[
+                    {}
+                ]
+            }
+        ]
     },
+
+
+    
     {
         "projectname": "rapidmed",
         "url": "rp",

@@ -1,0 +1,15 @@
+{
+    "swimmingpools": {
+        "id": "id",
+        "swimmingpooldays": [
+            {
+                "id": "id",
+                "genderId": {
+                    "id": "id",
+                    "name": "name",
+                    "entity": "genders"
+                }
+            }
+        ]
+    }
+}

@@ -8,30 +8,30 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "SwimmingPools",
+                                "name": "swimmingPools",
                                 "sqlName": "tbl_SwimmingPools"
                             },
                             "description": "Table for the details of swimming-pools",
-                            "defaultColumn": ""
+                            "defaultColumn": "name"
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "Name",
+                                "name": "name",
                                 "sqlName": "Name",
                                 "type": "NVARCHAR(50) UNIQUE NOT NULL"
                             },
                             {
-                                "name": "Address",
+                                "name": "address",
                                 "sqlName": "Address",
                                 "type": "NVARCHAR(50) NOT NULL"
                             },
                             {
-                                "name": "Color",
+                                "name": "color",
                                 "sqlName": "Color",
                                 "type": "NVARCHAR(50) NOT NULL"
                             }
@@ -70,19 +70,19 @@
                             {
                                 "name": "Sex2",
                                 "sqlName": "Sex2",
-                                "type": "INT "
+                                "type": "INT"
                             },
                             {
                                 "name": "MaxAge2",
                                 "sqlName": "MaxAge2",
-                                "type": "INT "
+                                "type": "INT"
                             }
                         ]
                     },
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "PoolDaySchedule",
+                                "name": "poolDaySchedule",
                                 "sqlName": "tbl_PoolDaySchedule"
                             },
                             "description": "",
@@ -90,14 +90,14 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "SwimmingPoolId",
+                                "name": "swimmingPoolId",
                                 "sqlName": "SwimmingPoolId",
-                                "type": "INT NOT NULL FOREIGN KEY(SwimmingPoolId) REFERENCES tbl_SwimmingPools(Id)"
+                                "type": "INT NOT NULL FOREIGN KEY(SwimmingPoolId) REFERENCES tbl_SwimmingPools(id)"
                             },
                             {
                                 "name": "Day",
@@ -105,7 +105,7 @@
                                 "type": "INT NOT NULL"
                             },
                             {
-                                "name": "GenderId",
+                                "name": "genderId",
                                 "sqlName": "GenderId",
                                 "type": "INT NOT NULL FOREIGN KEY(GenderId) REFERENCES tbl_Genders(Id)"
                             },
