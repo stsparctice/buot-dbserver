@@ -7,7 +7,7 @@
                 "collections": [
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "SwimmingPools",
                                 "sqlName": "tbl_SwimmingPools"
                             },
@@ -39,7 +39,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "Genders",
                                 "sqlName": "tbl_Genders"
                             },
@@ -81,7 +81,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PoolDaySchedule",
                                 "sqlName": "tbl_PoolDaySchedule"
                             },
@@ -153,7 +153,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "Teachers",
                                 "sqlName": "tbl_Teachers"
                             },
@@ -215,7 +215,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "TeachersPoolGenders",
                                 "sqlName": "tbl_TeachersPoolGenders"
                             },
@@ -272,7 +272,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "TeacherSchedule",
                                 "sqlName": "tbl_TeacherSchedule"
                             },
@@ -339,7 +339,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "Levels",
                                 "sqlName": "tbl_Levels"
                             },
@@ -391,7 +391,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "TeachersLevels",
                                 "sqlName": "tbl_TeachersLevels"
                             },
@@ -448,7 +448,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "Patient",
                                 "sqlName": "tbl_Patient"
                             },
@@ -560,7 +560,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientsGenders",
                                 "sqlName": "tbl_PatientsGenders"
                             },
@@ -617,7 +617,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientUrgency",
                                 "sqlName": "tbl_PatientUrgency"
                             },
@@ -674,7 +674,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientsTreatmentLevels",
                                 "sqlName": "tbl_PatientsTreatmentLevels"
                             },
@@ -731,7 +731,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientsComment",
                                 "sqlName": "tbl_PatientsComment"
                             },
@@ -788,7 +788,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientsPools",
                                 "sqlName": "tbl_PatientsPools"
                             },
@@ -845,7 +845,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientPreferenceTeachers",
                                 "sqlName": "tbl_PatientPreferenceTeachers"
                             },
@@ -908,7 +908,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientPreferenceDays",
                                 "sqlName": "tbl_PatientPreferenceDays"
                             },

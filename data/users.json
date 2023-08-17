@@ -6,7 +6,7 @@
                 "type": "mongoDB",
                 "collections": [
                     {
-                        "collectionName": {
+                        "entityName": {
                             "users": "Users"
                         },
                         "fields": [

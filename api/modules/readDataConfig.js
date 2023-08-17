@@ -10,7 +10,7 @@ async function getExampleByEntity(name){
     // לשאול אם אפשר במקום ה0 אם לא לעשות FIND
     let AllEntity = a.db[0].collections
     let ad=AllEntity.find(e=>
-        e.MTDTable.collectionName.name==name
+        e.MTDTable.entityName.name==name
     )
     let values = {}
     ad.columns.forEach(e => {

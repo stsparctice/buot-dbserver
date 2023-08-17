@@ -1,12 +1,7 @@
 const { getEntityFromConfig } = require('./config/config')
 const { getDBConfig } = require('./config/project.config')
 
-function getEntityConfigData({ project, entityName }) {
-    const configUrl = getDBConfig(project)
-    const config = getEntityFromConfig( configUrl)
-    let entity = findCollection(config, entityName)
-    return entity
-}
+
 
 
 function createArrColumns(arr) {
@@ -33,25 +28,6 @@ function createArrValues(arr) {
     return arrColumns
 }
 
-function findCollection(config, collectionName) {
-    let type
-    for (let i = 0; i < config.length; i++) {
 
-        for (let j = 0; j < config[i].db.length; j++) {
 
-            type = config[i].db[j].type
-            let find = config[i].db[j].collections.find(col =>
-                (col.MTDTable.collectionName.name == collectionName)
-            )
-
-            if (find != undefined) {
-                find = find.MTDTable
-                find.dbName = config[i].dbName
-                find.type = type
-                return find
-            }
-        }
-    }
-}
-
-module.exports = { createArrColumns, createArrValues, findCollection, getEntityConfigData }
+module.exports = { createArrColumns, createArrValues }

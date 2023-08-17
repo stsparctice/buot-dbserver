@@ -5,7 +5,7 @@ const { getPool } = require('../../services/db/sql/sql-connection');
 async function compareConfigWithSql(database = SQL_DBNAME, tableName = 'Teachers') {
 
     let tableFromSql = await getPool().request().query(`use ${database} select COLUMN_NAME,DATA_TYPE from [INFORMATION_SCHEMA].[COLUMNS]  where TABLE_NAME ='tbl_${tableName}'`)
-    let tablefromConfig = config[0].db[0].collections.find(m => m.MTDTable.collectionName.name.toLowerCase() == tableName.toLowerCase())
+    let tablefromConfig = config[0].db[0].collections.find(m => m.MTDTable.entityName.name.toLowerCase() == tableName.toLowerCase())
    
     tableFromSql = tableFromSql.recordset
     tablefromConfig = tablefromConfig.columns

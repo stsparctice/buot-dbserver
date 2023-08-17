@@ -7,7 +7,7 @@
                 "collections": [
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "patients",
                                 "sqlName": "Patients"
                             },
@@ -658,7 +658,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "medProbs",
                                 "sqlName": "MedProbs"
                             },
@@ -849,9 +849,9 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
-                                "name": "priceList",
-                                "sqlName": "PriceList"
+                            "entityName": {
+                                "name": "priceLists",
+                                "sqlName": "PriceLists"
                             },
                             "description": {
                                 "description": ""

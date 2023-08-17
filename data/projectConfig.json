@@ -8,7 +8,22 @@
         "projectname": "rapidmed",
         "url": "rp",
         "dbConfigFile": "./data/rapid.json",
-        "connected-tables":[{}]
+        "connected-entities": [
+            {
+                "entity": "patients",
+                "field": "patID",
+                "subEntities": [
+                    {
+                        "entity": "medProbs",
+                        "field": "patID"
+                    },
+                    {
+                        "entity": "priceList",
+                        "field": "patID"
+                    }
+                ]
+            }
+        ]
     },
     {
         "projectname": "users",

@@ -27,7 +27,7 @@ function buildJoinAndSelect2(extra){
     function getJoinColumn(myTable, joinTable) {
         console.log({ myTable, joinTable })
         const allForeignKeys = joinTable.columns.filter(col => col.type.includes('FOREIGN KEY'))
-        const foreignkey = allForeignKeys.find(col => col.type.includes(myTable.MTDTable.collectionName.sqlName))
+        const foreignkey = allForeignKeys.find(col => col.type.includes(myTable.MTDTable.entityName.sqlName))
         console.log(foreignkey)
         return foreignkey
     }
@@ -35,10 +35,9 @@ function buildJoinAndSelect2(extra){
     const myTable = getTableFromConfig(configUrl, tableName)
     const tableAlias = getTableAlias(configUrl, tableName)
     // const columns = myTable.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
-    // let columnsSelect = [{ tableName: myTable.MTDTable.collectionName.name, columnsName: [...myTable.columns.map(({ sqlName, name }) => ({ sqlName, name }))] }];
+    // let columnsSelect = [{ tableName: myTable.MTDTable.entityName.name, columnsName: [...myTable.columns.map(({ sqlName, name }) => ({ sqlName, name }))] }];
     let selectColumns = []
     if (entitiesFields) {
-        console.log({ entitiesFields, tableName })
         const mainSelectedEntity = entitiesFields.find(e => e.entity.toLowerCase() === tableName.toLowerCase())
         if (mainSelectedEntity) {
             let cols = getSelectedColumns(myTable, mainSelectedEntity)
@@ -48,7 +47,7 @@ function buildJoinAndSelect2(extra){
     else {
         selectColumns = [...myTable.columns.map(({ sqlName, name }) => ({ sqlName, name }))]
     }
-    let join = `${myTable.MTDTable.collectionName.sqlName} ${myTable.MTDTable.collectionName.name}`;
+    let join = `${myTable.MTDTable.entityName.sqlName} ${myTable.MTDTable.entityName.name}`;
     entitiesFields.filter(ef => ef.entity.toLowerCase() !== tableName).forEach(
         ({ entity, fields }) => {
             const joinTable = getTableFromConfig(configUrl, entity)
@@ -64,9 +63,9 @@ function buildJoinAndSelect2(extra){
     //     const tableToJoin = column.type.slice(column.type.lastIndexOf('tbl_'), column.type.lastIndexOf('('));
     //     const columnToJoin = column.type.slice(column.type.lastIndexOf('(') + 1, column.type.lastIndexOf(')'));
     //     const thisTable = getTableFromConfig(configUrl, tableToJoin);
-    //     const alias = thisTable.MTDTable.collectionName.name;
+    //     const alias = thisTable.MTDTable.entityName.name;
     //     columnsSelect = [...selectColumns, { tableName: alias, columnsName: [`${columnToJoin} as FK_${column.name}_${columnToJoin}`, `${thisTable.MTDTable.defaultColumn} as FK_${column.name}_${thisTable.MTDTable.defaultColumn}`] }];
-    //     join = `${join} LEFT JOIN ${tableToJoin} ${alias} ON ${myTable.MTDTable.collectionName.name}.${column.sqlName}=${alias}.${columnToJoin}`;
+    //     join = `${join} LEFT JOIN ${tableToJoin} ${alias} ON ${myTable.MTDTable.entityName.name}.${column.sqlName}=${alias}.${columnToJoin}`;
     // });
 
     let select = selectColumns.map(({alias, sqlName, name}) => `${alias}.${sqlName} as ${name}`);

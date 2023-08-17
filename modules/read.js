@@ -1,9 +1,9 @@
 const { DBTypes } = require('../utils/types')
 const { read, searchSQL, count } = require("../services/db/sql/sql-operation")
 const { getDBConfig } = require('../modules/config/project.config')
-const { getSqlQueryFromConfig, buildSqlCondition, getPrimaryKeyField, getTableAlias, getTableFromConfig } = require("./config/config")
+const { getEntityConfigData } = require("./config/config")
+const { getPrimaryKeyField, getTableAlias, getSqlQueryFromConfig, buildSqlCondition, getPKConnectionBetweenEntities , getLeftJoinBetweenEntities} = require('./config/config.sql')
 
-const { getEntityConfigData } = require('./functions')
 
 // {
 //     "entity":"teachers",
@@ -16,10 +16,9 @@ async function startReadMany({ project, entityName, condition }) {
     try {
         const projectConfigUrl = getDBConfig(project)
         const entity = getEntityConfigData({ project, entityName })
-        console.log({ entity })
-        let n = { 0: 100, otderBy: `${entity.collectionName.name}.Id` }
-        if (condition.n) {
-            n = { ...condition.n, otderBy: `${entity.collectionName.name}.Id` }
+        let n = { 0: 100 }
+        if (condition&& condition.n) {
+            n = { ...condition.n }
             condition = [condition].map(({ n, ...rest }) => rest)[0]
         }
 
@@ -42,20 +41,23 @@ async function startReadMany({ project, entityName, condition }) {
 async function startReadOne({ project, entityName, condition, entitiesFields }) {
     try {
         const projectConfigUrl = getDBConfig(project)
-        const entity = getEntityConfigData({ project, entityName })
-        const primaryKey = getPrimaryKeyField(projectConfigUrl, entityName)
-        console.log({ primaryKey })
-        const alias = getTableAlias(projectConfigUrl, entityName)
-        let n = { 0: 1, otderBy: `${alias}.${primaryKey}` }
-        if (entity.type === DBTypes.SQL) {
-            if (condition.key) {
-                condition[primaryKey] = condition.key
-                delete condition.key
-            }
-            console.log({ condition })
-            const items = await readSql(projectConfigUrl, project, entity, condition, n, entitiesFields)
-            return items
+        const { entity, type } = getEntityConfigData({ project, entityName })
+            if (type === DBTypes.SQL) {
+                const primaryKey = getPrimaryKeyField(entity)
+                console.log({ primaryKey })
+                let n = { start:0, end: 1 }
+                if (type === DBTypes.SQL) {
+                    if (condition.key) {
+                        condition[primaryKey] = condition.key
+                        delete condition.key
+                    }
+                    console.log({ condition })
+                    const items = await readSql(projectConfigUrl, project, entity, condition, n, entitiesFields)
+                    return items
+                }
+            
         }
+
     }
     catch (error) {
         console.log({ error })
@@ -64,33 +66,46 @@ async function startReadOne({ project, entityName, condition, entitiesFields }) 
 }
 
 
-async function getValuesFromSQL(configUrl, entity, n, condition, fields = []) {
-    const query = getSqlQueryFromConfig(configUrl, entity, condition, fields);
+async function getValuesFromSQL(entity, n, condition, fields = [], joinToMainTable = undefined) {
+    const query = getSqlQueryFromConfig(entity, condition, fields, joinToMainTable);
+
+    console.log({ query })
     const values = await read(query, n);
     return values
 }
 
 
-async function readSql(configUrl, project,entity, condition = {}, n, entitiesFields = []) {
+async function readSql(configUrl, project, entity, condition = {}, n, entitiesFields = []) {
     try {
         if (entitiesFields.length > 0) {
-            console.log({entitiesFields})
             let items = []
             for (let entityFields of entitiesFields) {
                 let values = []
-                console.log({entityFields})
-                if (entityFields.entity !== entity.collectionName.name) {
-                    let entityName=  entityFields.entity
-                    const subEntity = getEntityConfigData({project,entityName})
+                console.log({ entityFields })
+                console.log(getTableAlias(entity))
+                if (entityFields.entity !== getTableAlias(entity)) {
+                    let entityName = entityFields.entity
+                    const subEntity = getEntityConfigData({ project, entityName })
                     console.log({ subEntity })
-                    values = await getValuesFromSQL(configUrl, subEntity, n, {}, entityFields.fields)
-
+                    const primaryKey = getPrimaryKeyField(subEntity.entity)
+                    const connectEntitiesCondition = getPKConnectionBetweenEntities(entity, condition)
+                    const subCondition = {connectEntitiesCondition}
+                    n.end = n.start+50
+                    n.orderBy=`${getTableAlias(subEntity.entity)}.${primaryKey}`
+                    const joinToMainTable = getLeftJoinBetweenEntities(entity, subEntity.entity)
+                    values = await getValuesFromSQL(subEntity.entity, n, subCondition, entityFields.fields, joinToMainTable)
                 }
-                if (entityFields.entity === entity.collectionName.name) {
-                    values = await getValuesFromSQL(configUrl, entity, n, condition, entityFields.fields)
+                if (entityFields.entity === getTableAlias(entity)) {
+                    // let subCondition = entityFields.entity.condition
+                    // if (!subCondition) {
 
+                    // }
+                    const primaryKey = getPrimaryKeyField(entity)
+                    n.orderBy=`${getTableAlias(entity)}.${primaryKey}`
+                    console.log('mainentity')
+                    values = await getValuesFromSQL(entity, n, condition, entityFields.fields)
                 }
-                items = [...items, ArrangeObjects(values)]
+                // items = [...items, ArrangeObjects(values)]
             }
             return items
         }
@@ -105,7 +120,7 @@ async function readSql(configUrl, project,entity, condition = {}, n, entitiesFie
     }
 }
 
-async function ArrangeObjects(values) {
+function ArrangeObjects(values) {
     const items = []
     for (let val of values) {
         const entries = Object.entries(val)
@@ -154,7 +169,7 @@ async function getCount({ project, entityName, condition }) {
         const entity = getEntityConfigData({ project, entityName })
         const query = buildSimpleSqlCondition(condition)
         if (entity.type === DBTypes.SQL) {
-            const items = await count(entity.collectionName.sqlName, query)
+            const items = await count(entity.entityName.sqlName, query)
             return items
         }
     }
