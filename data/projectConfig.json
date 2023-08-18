@@ -19,7 +19,7 @@
                     },
                     {
                         "entity": "priceList",
-                        "field": "patID"
+                        "field": "number"
                     }
                 ]
             }
