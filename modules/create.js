@@ -62,7 +62,6 @@ async function createTranzaction({ project, entityName, value }) {
     try {
         // database, entity, columns, values, tran
         const entity = getEntityConfigData({ project, entityName })
-
         let tran = []
         let finalyValues = {}
         for (const key in value) {
@@ -71,7 +70,6 @@ async function createTranzaction({ project, entityName, value }) {
                 obj[key] = value[key]
                 tran = { ...tran, ...obj }
             }
-
             else {
                 let obj = {}
                 obj[key] = value[key]

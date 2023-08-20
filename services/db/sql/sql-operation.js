@@ -64,8 +64,10 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
           try {
                await transaction.begin();
                console.log("_____________________");
+               console.log("db:",database,"entity:",entity,"columns:",columns,"value:",values,"pk:",primarykey);
                let ans = await tr.prepare(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY ${primarykey}`);
-               let id=await tr.execute();
+               let id = await tr.execute();
+               console.log({id});
                await tr.unprepare();
                id = Object.values(id.recordset[0])[0]
                for (const key in tran) {
