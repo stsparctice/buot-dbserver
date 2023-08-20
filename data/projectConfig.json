@@ -2,6 +2,44 @@
     {
         "projectname": "waiting-list",
         "url": "wl",
-        "dbConfigFile": "./data/newConfig.json"
+        "dbConfigFile": "./data/waiting-list.json",
+        "connected-entities":[
+            {
+                "entity":"swimmingPools",
+                "field":"id",
+                "subEntities":[
+                    {}
+                ]
+            }
+        ]
+    },
+
+
+    
+    {
+        "projectname": "rapidmed",
+        "url": "rp",
+        "dbConfigFile": "./data/rapid.json",
+        "connected-entities": [
+            {
+                "entity": "patients",
+                "field": "patID",
+                "subEntities": [
+                    {
+                        "entity": "medProbs",
+                        "field": "patID"
+                    },
+                    {
+                        "entity": "priceList",
+                        "field": "patID"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "projectname": "users",
+        "url": "users",
+        "dbConfigFile": "./data/users.json"
     }
 ]

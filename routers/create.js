@@ -1,6 +1,5 @@
 const express = require('express');
 const router = require('express').Router()
-const data = require('../data/data.json')
 const { startCreate, createTranzaction } = require('../modules/create');
 
 router.post('/createOne', express.json(), async (req, res) => {
