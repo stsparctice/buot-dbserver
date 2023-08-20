@@ -172,7 +172,7 @@
                             {
                                 "name": "priceList",
                                 "sqlName": "[PriceList]",
-                                "type": "INT NULL"
+                                "type": "INT NULL FOREIGN KEY([PriceList]) REFERENCES PriceLists(Number)"
                             },
                             {
                                 "name": "workPhoneNote",
@@ -853,12 +853,9 @@
                                 "name": "priceLists",
                                 "sqlName": "PriceLists"
                             },
-                            "description": {
-                                "description": ""
-                            },
-                            "databaseConnection": {
-                                "databaseConnection": ""
-                            }
+                                "description": "",
+                            "defaultColumn": "Name"
+
                         },
                         "columns": [
                             {
