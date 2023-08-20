@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-const data = require('./data/data.json');
+// const data = require('./data/data.json');
 const functions = require('./data/functions.json');
 
 const create_db = require('./routers/create');
