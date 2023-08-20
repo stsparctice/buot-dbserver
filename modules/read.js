@@ -67,6 +67,7 @@ async function startReadOne({ project, entityName, condition, entitiesFields }) 
 
 
 async function getValuesFromSQL(entity, n, condition, fields = [], joinToMainTable = undefined) {
+   console.log({entity, condition, fields, joinToMainTable})
     const query = getSqlQueryFromConfig(entity, condition, fields, joinToMainTable);
 
     console.log({ query })
@@ -77,6 +78,7 @@ async function getValuesFromSQL(entity, n, condition, fields = [], joinToMainTab
 
 async function readSql(configUrl, project, entity, condition = {}, n, entitiesFields = []) {
     try {
+        console.log({entitiesFields})
         if (entitiesFields.length > 0) {
             let items = []
             for (let entityFields of entitiesFields) {
@@ -110,7 +112,9 @@ async function readSql(configUrl, project, entity, condition = {}, n, entitiesFi
             return items
         }
         else {
-            values = await getValuesFromSQL(configUrl, entity, n, condition)
+            const primaryKey = getPrimaryKeyField(entity)
+            n.orderBy=`${getTableAlias(entity)}.${primaryKey}`
+            values = await getValuesFromSQL(entity ,n, condition)
             const items = ArrangeObjects(values)
             return items
         }

@@ -509,7 +509,7 @@
                             {
                                 "name": "LastEvaluationDate",
                                 "sqlName": "LastEvaluationDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": "DATETIME NOT NULL" ,"?":""
                             },
                             {
                                 "name": "NoEvaluation",
