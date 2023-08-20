@@ -11,8 +11,12 @@ router.get('/readsapi/:name', async (req, res) => {
 console.log("ccccccccccc",config.document)
     try {
 
-        const filepath = path.join(__dirname, '../app.js')    // const response =await readFile(req.params.filename)
+        const filepath = path.join(__dirname, '../app.js') 
+        console.log("filePathhhhhhhhhhhhhhhhhh",filepath);
+           // const response =await readFile(req.params.filename)
         const ans = await createAllObj(filepath,req.params.name);
+        // const ans = await createAllObj(filepath,req.params.name);
+
         // let name='Teachers'
         // const a = getExampleByEntity(name)
         // const ans = await createFunctionsbyRouterPage()
@@ -33,11 +37,13 @@ console.log("ccccccccccc",config.document)
         res.status(500).send(error.message)
     }
 })
-router.get('/getExample/:nameEntity',async(req,res)=>{
+router.get('/getExample/:action/:nameEntity',async(req,res)=>{
 
     console.log(req.params.nameEntity)
+    console.log("jjjjjjjjjjjjjjjjjjjjjj",req.params.action)
+
     try{
-        const ans = await getExampleByEntity(req.params.nameEntity)
+        const ans = await getExampleByEntity(req.params.action,req.params.nameEntity)
         res.status(201).send(ans)
 
     }

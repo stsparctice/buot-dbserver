@@ -1,34 +1,35 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
+const express = require('express');
+const app = express();
+const cors = require('cors');
 
-const data = require('./data/data.json')
-const functions = require('./data/functions.json')
+const data = require('./data/data.json');
+const functions = require('./data/functions.json');
 
-const create_db = require('./routers/create')
-const delete_db = require('./routers/delete')
-const read_db = require('./routers/read')
-const update_db = require('./routers/update')
-const { getProject } = require('./utils/middlewares/url')
+const create_db = require('./routers/create');
+const delete_db = require('./routers/delete');
+const read_db = require('./routers/read');
+const update_db = require('./routers/update');
+const api = require('./api/routerApi');
+const { getProject } = require('./utils/middlewares/url');
 
-app.use(cors())
+app.use(cors());
 
-app.use(getProject())
+app.use(getProject());
 
-app.use('/:project/create', create_db)
-app.use('/:project/delete', delete_db)
-app.use('/:project/read', read_db)
-app.use('/:project/update', update_db)
+app.use('/:project/create', create_db);
+app.use('/:project/delete', delete_db);
+app.use('/:project/read', read_db);
+app.use('/:project/update', update_db);
+app.use('/:project/api', api);
 
 
-
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
 app.get('/getFunctions', (req, res) => {
-    res.render('functions', { functions })
+    res.render('functions', { functions });
 })
 app.get('/getData', (req, res) => {
-    res.render('data', { data })
+    res.render('data', { data });
 })
 
 module.exports = { app }; 

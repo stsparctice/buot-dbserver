@@ -8,9 +8,11 @@ async function createpath(fileName) {
     const ans = fs.readFileSync(fileName)
     const arr = ans.toString().split(';')
     let pathArr = [];
+    console.log("llllllllll",arr[0],"lllll");
     let useArr = arr.filter(m =>
         (m + '').includes("app.use('/") && (m + '').includes("db")
     )
+    console.log("useArr",useArr);
     useArr.forEach(e => {
         let r = e.indexOf(',')
         let rr = e.slice(11, r - 1)
@@ -42,9 +44,15 @@ async function createpathName(fileName) {
     useArr2.forEach(e => {
         let h = useArr2[0].indexOf('/')
         let hh = e.indexOf(')')
+        console.log("hh",hh);
+        console.log("h",h);
+
         let wer = e.slice(h + 1, hh - 1)
+        console.log("wer",wer);
+
         pathNameArr.push(wer)
     })
+
     return pathNameArr;
 }
 async function createFunctionsbyRouterPage(fileName) {
@@ -63,12 +71,15 @@ async function createFunctionsbyRouterPage(fileName) {
 
 async function createAllObj(fileName,name) {
     let pathArr = await createpath(fileName);
-    let routerArr = await createrouter(fileName);
-    let pathNameArr = await createpathName(fileName);
     console.log("pathArr", pathArr);
+
+    let routerArr = await createrouter(fileName);
+    console.log("routerArr", routerArr);
+
+    let pathNameArr = await createpathName(fileName);
+    console.log("pathNameArr", pathNameArr);
   
     let allArr = [];
-    // let ar = []
     let a = []
     let All = []
     let AllByRouter = []
@@ -88,7 +99,7 @@ async function createAllObj(fileName,name) {
         e.router.includes(`${name}`)?
        AllByRouter.push(e):''
  })
-    // console.log("bbbbbbbbbb", AllByRouter);
+    console.log("bbbbbbbbbb",AllByRouter);
     return AllByRouter
 }
 module.exports = { createpath, createrouter, createpathName, createAllObj, createFunctionsbyRouterPage }
