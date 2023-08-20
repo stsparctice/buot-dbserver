@@ -7,31 +7,31 @@
                 "collections": [
                     {
                         "MTDTable": {
-                            "collectionName": {
-                                "name": "SwimmingPools",
+                            "entityName": {
+                                "name": "swimmingPools",
                                 "sqlName": "tbl_SwimmingPools"
                             },
                             "description": "Table for the details of swimming-pools",
-                            "defaultColumn": ""
+                            "defaultColumn": "name"
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "Name",
+                                "name": "name",
                                 "sqlName": "Name",
                                 "type": "NVARCHAR(50) UNIQUE NOT NULL"
                             },
                             {
-                                "name": "Address",
+                                "name": "address",
                                 "sqlName": "Address",
                                 "type": "NVARCHAR(50) NOT NULL"
                             },
                             {
-                                "name": "Color",
+                                "name": "color",
                                 "sqlName": "Color",
                                 "type": "NVARCHAR(50) NOT NULL"
                             }
@@ -39,7 +39,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "Genders",
                                 "sqlName": "tbl_Genders"
                             },
@@ -70,19 +70,19 @@
                             {
                                 "name": "Sex2",
                                 "sqlName": "Sex2",
-                                "type": "INT "
+                                "type": "INT"
                             },
                             {
                                 "name": "MaxAge2",
                                 "sqlName": "MaxAge2",
-                                "type": "INT "
+                                "type": "INT"
                             }
                         ]
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
-                                "name": "PoolDaySchedule",
+                            "entityName": {
+                                "name": "poolDaySchedule",
                                 "sqlName": "tbl_PoolDaySchedule"
                             },
                             "description": "",
@@ -90,14 +90,14 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "SwimmingPoolId",
+                                "name": "swimmingPoolId",
                                 "sqlName": "SwimmingPoolId",
-                                "type": "INT NOT NULL FOREIGN KEY(SwimmingPoolId) REFERENCES tbl_SwimmingPools(Id)"
+                                "type": "INT NOT NULL FOREIGN KEY(SwimmingPoolId) REFERENCES tbl_SwimmingPools(id)"
                             },
                             {
                                 "name": "Day",
@@ -105,7 +105,7 @@
                                 "type": "INT NOT NULL"
                             },
                             {
-                                "name": "GenderId",
+                                "name": "genderId",
                                 "sqlName": "GenderId",
                                 "type": "INT NOT NULL FOREIGN KEY(GenderId) REFERENCES tbl_Genders(Id)"
                             },
@@ -153,7 +153,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "Teachers",
                                 "sqlName": "tbl_Teachers"
                             },
@@ -215,7 +215,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "TeachersPoolGenders",
                                 "sqlName": "tbl_TeachersPoolGenders"
                             },
@@ -272,7 +272,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "TeacherSchedule",
                                 "sqlName": "tbl_TeacherSchedule"
                             },
@@ -339,7 +339,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "Levels",
                                 "sqlName": "tbl_Levels"
                             },
@@ -391,7 +391,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "TeachersLevels",
                                 "sqlName": "tbl_TeachersLevels"
                             },
@@ -448,7 +448,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "Patient",
                                 "sqlName": "tbl_Patient"
                             },
@@ -560,7 +560,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientsGenders",
                                 "sqlName": "tbl_PatientsGenders"
                             },
@@ -617,7 +617,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientUrgency",
                                 "sqlName": "tbl_PatientUrgency"
                             },
@@ -674,7 +674,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientsTreatmentLevels",
                                 "sqlName": "tbl_PatientsTreatmentLevels"
                             },
@@ -731,7 +731,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientsComment",
                                 "sqlName": "tbl_PatientsComment"
                             },
@@ -788,7 +788,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientsPools",
                                 "sqlName": "tbl_PatientsPools"
                             },
@@ -845,7 +845,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientPreferenceTeachers",
                                 "sqlName": "tbl_PatientPreferenceTeachers"
                             },
@@ -908,7 +908,7 @@
                     },
                     {
                         "MTDTable": {
-                            "collectionName": {
+                            "entityName": {
                                 "name": "PatientPreferenceDays",
                                 "sqlName": "tbl_PatientPreferenceDays"
                             },
@@ -976,80 +976,7 @@
                 ]
             }
         ]
-    },
-    {
-        "dbName": "RapidMed",
-        "db": [
-            {
-                "type": "sql",
-                "collections": [
-                    {
-                        "MTDTable": {
-                            "collectionName": {
-                                "name": "Patients",
-                                "sqlName": "tbl_Patients"
-                            },
-                            "description": {
-                                "description": ""
-                            },
-                            "databaseConnection": {
-                                "databaseConnection": ""
-                            }
-                        },
-                        "columns": [
-                            {
-                                "name": "name",
-                                "type": "NVARCHAR(20)"
-                            },
-                            {
-                                "name": "phone",
-                                "type": "NVARCHAR(20)"
-                            },
-                            {
-                                "name": "email",
-                                "type": "NVARCHAR(20)"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "dbName": "Users",
-        "db": [
-            {
-                "type": "mongoDB",
-                "collections": [
-                    {
-                        "collectionName": {
-                            "users": "users"
-                        },
-                        "fields": [
-                            {
-                                "name": {
-                                    "name": "name"
-                                }
-                            },
-                            {
-                                "phone": {
-                                    "name": "phone"
-                                }
-                            },
-                            {
-                                "email": {
-                                    "name": "email"
-                                }
-                            },
-                            {
-                                "profile": {
-                                    "name": "profile"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
     }
+   
+   
 ]

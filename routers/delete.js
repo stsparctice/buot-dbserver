@@ -1,6 +1,5 @@
 const express = require('express');
 const router = require('express').Router()
-const data = require('../data/data.json')
 const { startupdate } = require('../modules/update');
 
 router.post('/deleteMany', express.json(), async (req, res) => {

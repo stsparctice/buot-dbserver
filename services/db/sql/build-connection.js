@@ -1,6 +1,5 @@
 const { connectSQL } = require("./sql-connection");
 
-const db = ['Bubble','RapidMed']
 
 const buildConnection = async () => {
     for (let index = 0; index < db.length; index++) {
@@ -8,4 +7,4 @@ const buildConnection = async () => {
     }
 }
 
-module.exports = { buildConnection ,db}
+module.exports = { buildConnection }

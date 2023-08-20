@@ -1,0 +1,39 @@
+[
+    {
+        "dbName": "Users",
+        "db": [
+            {
+                "type": "mongoDB",
+                "collections": [
+                    {
+                        "entityName": {
+                            "users": "Users"
+                        },
+                        "fields": [
+                            {
+                                "name": {
+                                    "name": "name"
+                                }
+                            },
+                            {
+                                "phone": {
+                                    "name": "phone"
+                                }
+                            },
+                            {
+                                "email": {
+                                    "name": "email"
+                                }
+                            },
+                            {
+                                "profile": {
+                                    "name": "profile"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

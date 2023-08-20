@@ -11,7 +11,7 @@
             <legend><%= db.db %> <span>data</span></legend>
                 <% db.collections.forEach(collection => { %>
                     <fieldset>
-                        <legend><%= Object.keys(collection.collectionName)[0] %></legend>
+                        <legend><%= Object.keys(collection.entityName)[0] %></legend>
                         <p>the variables are as follows:</p>
                         <ul>
                             <% collection.fields.forEach(field=>{ %>

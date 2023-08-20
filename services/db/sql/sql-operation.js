@@ -67,7 +67,6 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
                console.log("db:",database,"entity:",entity,"columns:",columns,"value:",values,"pk:",primarykey);
                let ans = await tr.prepare(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY ${primarykey}`);
                let id = await tr.execute();
-               console.log({id});
                await tr.unprepare();
                id = Object.values(id.recordset[0])[0]
                for (const key in tran) {
@@ -108,7 +107,9 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
 
 const read = async function (query = "", n) {
      try {
-          const result = await getPool().request().query(`${query.trim()} ORDER BY ${Object.values(n)[1]} OFFSET (${Object.keys(n)[0]}) ROWS FETCH NEXT (${Object.values(n)[0]}) ROWS ONLY`);
+          console.log({n})
+          console.log({ query:`${query.trim()} ORDER BY ${n.orderBy} OFFSET (${n.start}) ROWS FETCH NEXT (${n.end}) ROWS ONLY` })
+          const result = await getPool().request().query(`${query.trim()} ORDER BY ${n.orderBy} OFFSET (${n.start}) ROWS FETCH NEXT (${n.end}) ROWS ONLY`);
           if (result.recordset)
                return result.recordset;
           return false
@@ -121,7 +122,7 @@ const read = async function (query = "", n) {
 
 const update = async function (database, entity, set, condition) {
      try {
-          const alias = await getTableFromConfig(entity).MTDTable.collectionName.name
+          const alias = await getTableFromConfig(entity).MTDTable.entityName.name
           const entries = Object.entries(set)
           const updateValues = entries.map(value => `${alias}.${value[0]}=${parseSQLTypeForColumn({ name: value[0], value: value[1] }, entity)}`).join(',')
           const result = await getPool().request().query(`use ${database} UPDATE ${alias} SET ${updateValues} FROM ${entity} AS ${alias} WHERE ${condition}`);
@@ -141,7 +142,7 @@ const innerJoin = async function (firstTableName, secondTableName, columns, on, 
      return result.recordset;
 };
 
-const searchSQL = async function (entity, search) {
+const searchSQL = async function (config, entity, search) {
      let select = ''
      if (search.fields.length > 0) {
           _ = search.fields.forEach(field => {

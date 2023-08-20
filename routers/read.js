@@ -1,6 +1,5 @@
 const express = require('express');
 const router = require('express').Router()
-const data = require('../data/data.json');
 const { startReadMany, startReadOne, getCount } = require('../modules/read');
 
 //שליחה בפרמס שם טבלה ותנאי בקווארי
@@ -22,6 +21,7 @@ router.get('/readMany/:entity', async (req, res) => {
 //שליחה בבודי שם טבלה ותנאי באוביקט
 router.post('/readMany/:entity', express.json(), async (req, res) => {
     try {
+      
         let ans = await startReadMany({ project: res.project, entityName: req.params.entity, condition: req.body.condition })
         if (ans)
             res.status(201).send(ans)
@@ -53,7 +53,8 @@ router.get('/readOne/:entity', async (req, res) => {
 //שליחה בבודי שם טבלה ותנאי באוביקט
 router.post('/readOne/:entity', express.json(), async (req, res) => {
     try {
-        let ans = await startReadOne({ project: res.project, entityName: req.params.entity, condition: req.body.condition })
+        console.log({body:req.body})
+        let ans = await startReadOne({ project: res.project, entityName: req.params.entity, condition: req.body.condition,  entitiesFields: req.body.entitiesFields })
         if (ans)
             res.status(201).send(ans)
         else
@@ -68,8 +69,9 @@ router.post('/readOne/:entity', express.json(), async (req, res) => {
 router.get('/readOne/:entity/:id', async (req, res) => {
 
     try {
-        let condition = { Id: req.params.id }
-        let result = await startReadOne({ project: res.project, entityName: req.params.entity, condition: condition })
+        let condition = { key: req.params.id }
+        console.log({condition})
+        let result = await startReadOne({ project: res.project, entityName: req.params.entity, condition })
         if (result) {
             res.status(201).send({ "result": result })
         }
