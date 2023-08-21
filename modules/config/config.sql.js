@@ -12,6 +12,7 @@ const { getEntityFromConfig } = require('./config')
 // }
 
 function getTableAlias(table) {
+
     try {
         return table.MTDTable.entityName.name
     }
@@ -21,6 +22,7 @@ function getTableAlias(table) {
 }
 
 function getPrimaryKeyField(table) {
+    
     let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))
     if (col) {
         return col.sqlName
@@ -98,39 +100,64 @@ function getLeftJoinBetweenEntities(mainEntity, subEntity) {
     const tableAlias = getTableAlias(mainEntity)
     const joincolumn = subEntity.columns.filter(({ type }) => type.includes('FOREIGN KEY') && type.includes(referenceString))
     const subAlias = getTableAlias(subEntity)
-    return `LEFT JOIN ${mainEntity.MTDTable.entityName.sqlName} ${tableAlias} ON ${mainEntity.MTDTable.entityName.name}.${mainPrimaryKey}=${subAlias}.${joincolumn[0].sqlName}`
+    return { tableToJoin: mainEntity.MTDTable.entityName.sqlName, alias: tableAlias, columnToJoin: mainPrimaryKey, entity2: subAlias, column2: joincolumn[0].sqlName }
 }
 
 
-function buildSqlJoinAndSelect(entity, fields) {
+function buildSqlJoinAndSelect(configUrl, entity, fields) {
     let tableAlias = getTableAlias(entity)
     // const columns = entity.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
-    let selectedColumns = [...entity.columns.map(({ sqlName, name }) => ({ sqlName, name, alias: tableAlias }))]
+    let selectedColumns = [...entity.columns.map(({ sqlName, name, type }) => ({ sqlName, name, alias: tableAlias, type }))]
     if (fields.length > 0) {
-        selectedColumns = selectedColumns.filter(col => fields.includes(col.name))
+        selectedColumns = selectedColumns.filter(({ name }) => fields.includes(name))
     }
 
     tableAlias = `${entity.MTDTable.entityName.sqlName} ${tableAlias}`;
-    // columns.forEach(column => {
-    //     const tableToJoin = column.type.slice(column.type.lastIndexOf('tbl_'), column.type.lastIndexOf('('));
-    //     const columnToJoin = column.type.slice(column.type.lastIndexOf('(') + 1, column.type.lastIndexOf(')'));
-    //     const thisTable = getTableFromConfig(configUrl, tableToJoin);
-    //     const alias = thisTable.MTDTable.entityName.name;
-    //     columnsSelect = [...columnsSelect, { tableName: alias, columnsName: [`${columnToJoin} as FK_${column.name}_${columnToJoin}`, `${thisTable.MTDTable.defaultColumn} as FK_${column.name}_${thisTable.MTDTable.defaultColumn}`] }];
-    //     join = `${join} LEFT JOIN ${tableToJoin} ${alias} ON ${myTable.MTDTable.entityName.name}.${column.sqlName}=${alias}.${columnToJoin}`;
-    // });
+    let joinTables = []
+    console.log({ selectedColumns })
+    const foreignKeyColumns = entity.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
 
-    let select = selectedColumns.map(({ alias, name, sqlName }) => `${alias}.${sqlName} as ${name}`);
+    if (foreignKeyColumns.length > 0) {
+        foreignKeyColumns.forEach(column => {
 
+            let startindex = column.type.toUpperCase().indexOf('REFERENCES')
+            startindex += 11
+            const tableToJoin = column.type.slice(startindex, column.type.indexOf('(', startindex));
+            const columnToJoin = column.type.slice(column.type.indexOf('(', startindex) + 1, column.type.indexOf(')', startindex));
+            const joinEntity = getEntityFromConfig(configUrl, tableToJoin);
+            console.log(joinEntity)
+            const columnName = joinEntity.entity.columns.find(c => c.sqlName === columnToJoin)
+            const defaultColumnName = joinEntity.entity.columns.find(c => c.sqlName === joinEntity.entity.MTDTable.defaultColumn)
+            const alias = getTableAlias(joinEntity.entity)
+            if (selectedColumns.some(({ sqlName }) => sqlName === column.sqlName) === false) {
+                selectedColumns.push({ sqlName: column.sqlName, name: column.name, type: column.type, alias })
+            }
+            selectedColumns.push({ alias, sqlName: columnToJoin, name: `FK_${column.name}_${columnName.name}` })
+            selectedColumns.push({ alias, sqlName: joinEntity.entity.MTDTable.defaultColumn, name: `FK_${column.name}_${defaultColumnName.name}` })
+            selectedColumns.push({ alias: '', sqlName: `'${joinEntity.entity.MTDTable.entityName.name}'`, name: `FK_${column.name}_entity` })
+            if (joinTables.some(jt => jt.tableToJoin === tableToJoin))
+                tableToJoin = ''
+            joinTables.push({ tableToJoin, alias, columnToJoin, entity2: entity.MTDTable.entityName.name, column2: column.sqlName })
+        });
+    }
+
+    let select = selectedColumns.map(({ alias, name, sqlName }) => alias != '' ? `${alias}.${sqlName} as ${name}` : `${sqlName} as ${name}`);
     select = select.join(', ');
     console.log({ select })
-    return `SELECT ${select} FROM ${tableAlias}`
+    return { select, tableAlias, joinTables }
 }
 
-const getSqlQueryFromConfig = (entity, condition = {}, fields = [], joinToMainTable = undefined) => {
-    let sqlQuery = buildSqlJoinAndSelect(entity, fields)
+const getSqlQueryFromConfig = (configUrl, entity, condition = {}, fields = [], joinToMainTable = undefined) => {
+    let { select, tableAlias, joinTables } = buildSqlJoinAndSelect(configUrl, entity, fields)
+
     if (joinToMainTable) {
-        sqlQuery = `${sqlQuery} ${joinToMainTable}`
+        const sameJoinTable = joinTables.find(({ tableToJoin, alias }) => tableToJoin == joinToMainTable.tableToJoin && alias === joinToMainTable.alias)
+        if (sameJoinTable) {
+            if (sameJoinTable.entity2 !== joinToMainTable.entity2 || sameJoinTable.column2 !== joinToMainTable.column2 || sameJoinTable.columnToJoin !== joinToMainTable.columnToJoin) {
+                joinToMainTable.tableToJoin = ''
+                joinTables.push(joinToMainTable)
+            }
+        }
     }
     let conditionList = []
     if (condition.connectEntitiesCondition) {
@@ -145,7 +172,8 @@ const getSqlQueryFromConfig = (entity, condition = {}, fields = [], joinToMainTa
         conditionList.push('1=1')
 
     }
-    sqlQuery = `${sqlQuery} WHERE ${conditionList.join(' AND ')}`
+    const join = joinTables.map(({ tableToJoin, alias, columnToJoin, entity2, column2 }) => `LEFT JOIN ${tableToJoin} ${alias} ON ${entity2}.${column2}=${alias}.${columnToJoin}`)
+    sqlQuery = `SELECT ${select} FROM ${tableAlias} ${join.join(' ')} WHERE ${conditionList.join(' AND ')}`
 
     return `use ${entity.dbName} ${sqlQuery}`;
 

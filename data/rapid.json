@@ -11,12 +11,8 @@
                                 "name": "patients",
                                 "sqlName": "Patients"
                             },
-                            "description": {
-                                "description": ""
-                            },
-                            "databaseConnection": {
-                                "databaseConnection": ""
-                            }
+                            "description": "",
+                            "defaultColumn":"Id"
                         },
                         "columns": [
                             {
@@ -853,9 +849,8 @@
                                 "name": "priceLists",
                                 "sqlName": "PriceLists"
                             },
-                                "description": "",
+                            "description": "",
                             "defaultColumn": "Name"
-
                         },
                         "columns": [
                             {
@@ -958,7 +953,7 @@
                                 "sqlName": "MinAge",
                                 "type": "NUMERIC(18, 0) NULL"
                             },
-                             {
+                            {
                                 "name": "maxAge",
                                 "sqlName": "MaxAge",
                                 "type": "NUMERIC(18, 0) NULL"
@@ -1008,8 +1003,8 @@
                                 "sqlName": "RBSyncEnable",
                                 "type": "BIT NULL"
                             }
-                        ]}
-                        
+                        ]
+                    }
                 ]
             }
         ]
