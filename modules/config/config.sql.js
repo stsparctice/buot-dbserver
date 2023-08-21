@@ -129,14 +129,17 @@ function buildSqlJoinAndSelect(configUrl, entity, fields) {
             const columnName = joinEntity.entity.columns.find(c => c.sqlName === columnToJoin)
             const defaultColumnName = joinEntity.entity.columns.find(c => c.sqlName === joinEntity.entity.MTDTable.defaultColumn)
             const alias = getTableAlias(joinEntity.entity)
+            if (joinTables.some(jt => jt.tableToJoin === tableToJoin)) {
+                let count = joinTables.filter(jt => jt.tableToJoin === tableToJoin).length
+                alias = `${alias}${count}`
+            }
             if (selectedColumns.some(({ sqlName }) => sqlName === column.sqlName) === false) {
                 selectedColumns.push({ sqlName: column.sqlName, name: column.name, type: column.type, alias })
             }
             selectedColumns.push({ alias, sqlName: columnToJoin, name: `FK_${column.name}_${columnName.name}` })
             selectedColumns.push({ alias, sqlName: joinEntity.entity.MTDTable.defaultColumn, name: `FK_${column.name}_${defaultColumnName.name}` })
             selectedColumns.push({ alias: '', sqlName: `'${joinEntity.entity.MTDTable.entityName.name}'`, name: `FK_${column.name}_entity` })
-            if (joinTables.some(jt => jt.tableToJoin === tableToJoin))
-                tableToJoin = ''
+           
             joinTables.push({ tableToJoin, alias, columnToJoin, entity2: entity.MTDTable.entityName.name, column2: column.sqlName })
         });
     }
