@@ -12,7 +12,7 @@ const { getEntityFromConfig } = require('./config')
 // }
 
 function getTableAlias(table) {
-
+console.log({table})
     try {
         return table.MTDTable.entityName.name
     }
@@ -31,10 +31,13 @@ function getPrimaryKeyField(table) {
 }
 
 function getTableColumns(entity, columns = []) {
+    console.log({columns})
     try {
         // const table = getTableFromConfig(configUrl, tablename)
         let cols
+        console.log(entity.columns)
         if (columns.length != 0)
+
             cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
         else
             cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
@@ -61,8 +64,9 @@ function buildSqlCondition(entity, condition) {
     const tablealias = getTableAlias(entity)
     let sqlCondition = ''
     if (condition) {
+        console.log({condition})
         const columns = getTableColumns(entity, Object.keys(condition))
-
+console.log({columns})
         columnNames = columns.map(({ name }) => name)
         if (Object.keys(condition).every(c => columnNames.includes(c))) {
             const entries = Object.entries(condition)
@@ -163,10 +167,12 @@ const getSqlQueryFromConfig = (configUrl, entity, condition = {}, fields = [], j
         }
     }
     let conditionList = []
+
     if (condition.connectEntitiesCondition) {
         conditionList.push(condition.connectEntitiesCondition)
     }
     delete condition.connectEntitiesCondition
+    console.log({condition})
     if (Object.keys(condition).length > 0) {
 
         conditionList.push(buildSqlCondition(entity, condition))

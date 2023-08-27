@@ -15,20 +15,21 @@ const { getPrimaryKeyField, getTableAlias, getSqlQueryFromConfig, buildSqlCondit
 async function startReadMany({ project, entityName, condition }) {
     try {
         const projectConfigUrl = getDBConfig(project)
-        const entity = getEntityConfigData({ project, entityName })
+        const {entity, type} = getEntityConfigData({ project, entityName })
+        console.log({entity})
         let n = { start: 0, end: 100 }
         if (condition && condition.n) {
             n = { ...condition.n }
             condition = [condition].map(({ n, ...rest }) => rest)[0]
         }
 
-        if (entity.type === DBTypes.SQL) {
+        if (type === DBTypes.SQL) {
             if (Object.keys(condition).includes('CONTAINS')) {
                 const answer = await searchSQL(projectConfigUrl, entity, condition.CONTAINS)
                 return answer
             }
             console.log({ projectConfigUrl })
-            const items = await readSql(projectConfigUrl, entity, condition, n)
+            const items = await readSql(projectConfigUrl, project, entity, condition, n)
             return items
         }
     }
@@ -42,6 +43,8 @@ async function startReadOne({ project, entityName, condition, entitiesFields }) 
     try {
         const projectConfigUrl = getDBConfig(project)
         const { entity, type } = getEntityConfigData({ project, entityName })
+        console.log({entityName})
+        console.log({entity})
         if (type === DBTypes.SQL) {
             const primaryKey = getPrimaryKeyField(entity)
             console.log({ primaryKey })
@@ -74,7 +77,7 @@ async function getValuesFromSQL(configUrl, entity, n, condition, fields = [], jo
 }
 
 
-async function readSql(configUrl, project, entity, condition = {}, n, entitiesFields = []) {
+async function readSql(configUrl, project, entity,condition = {}, n, entitiesFields = []) {
     try {
         if (entitiesFields.length > 0) {
             let mainItem = { connections: [] }
@@ -110,6 +113,7 @@ async function readSql(configUrl, project, entity, condition = {}, n, entitiesFi
             return mappedObject
         }
         else {
+            console.log({project, entity})
             const primaryKey = getPrimaryKeyField(entity)
             n.orderBy = `${getTableAlias(entity)}.${primaryKey}`
             values = await getValuesFromSQL(configUrl, entity, n, condition)
