@@ -34,6 +34,35 @@
                                 "name": "color",
                                 "sqlName": "Color",
                                 "type": "NVARCHAR(50) NOT NULL"
+                            }, 
+                            {
+                                "name": "addedDate",
+                                "sqlName": "AddedDate",
+                                "type": "DATETIME NOT NULL"
+                            },{
+                                "name": "UserName",
+                                "sqlName": "UserName",
+                                "type": "NVARCHAR(20) Not Null"
+                            },
+                            {
+                                "name": "Disabled",
+                                "sqlName": "Disabled",
+                                "type": "Bit Not Null"
+                            },
+                            {
+                                "name": "DisabledDate",
+                                "sqlName": "DisabledDate",
+                                "type": "DATETIME"
+                            },
+                            {
+                                "name": "DisableUser",
+                                "sqlName": "DisableUser",
+                                "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "DisableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(20) NULL"
                             }
                         ]
                     },
@@ -137,7 +166,7 @@
                             {
                                 "name": "DisabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME Not Null"
+                                "type": "DATETIME"
                             },
                             {
                                 "name": "DisableUser",

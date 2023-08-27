@@ -15,7 +15,6 @@ function buildColumns(details) {
 
 async function createTables() {
     const list = getAllDBConfig()
-    console.log({ list })
     for (const dbConfig of list) {
         const sqlConfig = getEntitiesFromConfig(dbConfig).sql
         if (sqlConfig.length > 0) {

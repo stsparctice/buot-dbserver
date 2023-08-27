@@ -22,7 +22,7 @@ function getTableAlias(table) {
 }
 
 function getPrimaryKeyField(table) {
-    
+    console.log({table})
     let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))
     if (col) {
         return col.sqlName
@@ -193,11 +193,13 @@ function composeSQLColumns(columns) {
 
 
 function parseSQLType(obj, tabledata) {
+    console.log({obj, tabledata})
     try {
         const keys = Object.keys(obj)
         let str = []
         for (let i = 0; i < keys.length; i++) {
             if (obj[keys[i]] != null) {
+                console.log(keys[i])
                 let type = tabledata.find(td => td.sqlName.trim().toLowerCase() == keys[i].trim().toLowerCase()).type
                 const parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
                 if (!parse) {
@@ -207,6 +209,7 @@ function parseSQLType(obj, tabledata) {
                 }
 
                 const val = parse.parseNodeTypeToSqlType(obj[keys[i]]);
+                console.log({val})
                 str.push(val);
             }
             else {
