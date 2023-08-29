@@ -12,7 +12,7 @@ const update_db = require('./routers/update')
 const { getProject } = require('./utils/middlewares/url')
 
 app.use(cors())
-
+app.use(express.json())
 app.use(getProject())
 
 app.use('/:project/create', create_db)

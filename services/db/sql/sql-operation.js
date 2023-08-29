@@ -1,14 +1,15 @@
 const { getPool } = require('./sql-connection');
-const { getTableFromConfig, parseSQLTypeForColumn, getPrimaryKeyField, getSqlTableColumnsType, parseSQLType } = require('../../../modules/config/config')
+const { getTableFromConfig, parseSQLTypeForColumn, getPrimaryKeyField, getSqlTableColumnsType, parseSQLType, getTableAlias } = require('../../../modules/config/config.sql')
 const { PreparedStatement, ConnectionPool } = require('mssql');
 const sql = require('mssql');
 const { createArrColumns } = require('../../../modules/functions');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
-const create = async function (database, entity, columns, values) {
+const create = async function ( entity, columns, values) {
      try {
           let primarykey = getPrimaryKeyField(entity)
-          const result = await getPool().request().query(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`);
+          
+          const result = await getPool().request().query(`use ${entity.dbName} INSERT INTO ${entity.MTDTable.entityName.sqlName} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`);
           if (result)
                return result;
           return 'no create';

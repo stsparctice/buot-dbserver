@@ -21,7 +21,9 @@ router.get('/readMany/:entity', async (req, res) => {
 //שליחה בבודי שם טבלה ותנאי באוביקט
 router.post('/readMany/:entity', express.json(), async (req, res) => {
     try {
-      
+      console.log(res.project)
+      console.log(req.params.entity)
+      console.log(req.body.condition)
         let ans = await startReadMany({ project: res.project, entityName: req.params.entity, condition: req.body.condition })
         if (ans)
             res.status(201).send(ans)
