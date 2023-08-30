@@ -1,7 +1,8 @@
 const { types } = require('./config.objects');
 const { SQL_DBNAME } = process.env
 const { DBTypes } = require('../../utils/types')
-const { getEntityFromConfig } = require('./config')
+const { getEntityFromConfig } = require('./config');
+const { deleteKeysFromObject } = require('../../utils/code/objects');
 
 
 
@@ -12,7 +13,7 @@ const { getEntityFromConfig } = require('./config')
 // }
 
 function getTableAlias(table) {
-console.log({table})
+    console.log({ table })
     try {
         return table.MTDTable.entityName.name
     }
@@ -22,7 +23,7 @@ console.log({table})
 }
 
 function getPrimaryKeyField(table) {
-    console.log({table})
+    console.log({ table })
     let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))
     if (col) {
         return col.sqlName
@@ -31,7 +32,7 @@ function getPrimaryKeyField(table) {
 }
 
 function getTableColumns(entity, columns = []) {
-    console.log({columns})
+    console.log({ columns })
     try {
         // const table = getTableFromConfig(configUrl, tablename)
         let cols
@@ -60,13 +61,29 @@ function parseNodeToSql({ type, value }) {
     return sqlValue
 }
 
+
+function removeIdentityDataFromObject(entity, object) {
+    console.log({ entity })
+    console.log('removeIdentityDataFromObject')
+    const { columns } = entity
+    const identities = columns.filter(c => c.type.toUpperCase().includes('IDENTITY'))
+    console.log(identities)
+    const removeKeys = identities.map(({ name }) => name)
+    object = deleteKeysFromObject(object, removeKeys)
+    //  const {id, ...rest} = object
+    //  console.log({rest}) 
+    console.log({ object })
+    return object
+
+}
+
 function buildSqlCondition(entity, condition) {
     const tablealias = getTableAlias(entity)
     let sqlCondition = ''
     if (condition) {
-        console.log({condition})
+        console.log({ condition })
         const columns = getTableColumns(entity, Object.keys(condition))
-console.log({columns})
+        console.log({ columns })
         columnNames = columns.map(({ name }) => name)
         if (Object.keys(condition).every(c => columnNames.includes(c))) {
             const entries = Object.entries(condition)
@@ -143,14 +160,13 @@ function buildSqlJoinAndSelect(configUrl, entity, fields) {
             selectedColumns.push({ alias, sqlName: columnToJoin, name: `FK_${column.name}_${columnName.name}` })
             selectedColumns.push({ alias, sqlName: joinEntity.entity.MTDTable.defaultColumn, name: `FK_${column.name}_${defaultColumnName.name}` })
             selectedColumns.push({ alias: '', sqlName: `'${joinEntity.entity.MTDTable.entityName.name}'`, name: `FK_${column.name}_entity` })
-           
+
             joinTables.push({ tableToJoin, alias, columnToJoin, entity2: entity.MTDTable.entityName.name, column2: column.sqlName })
         });
     }
 
     let select = selectedColumns.map(({ alias, name, sqlName }) => alias != '' ? `${alias}.${sqlName} as ${name}` : `${sqlName} as ${name}`);
     select = select.join(', ');
-    console.log({ select })
     return { select, tableAlias, joinTables }
 }
 
@@ -171,8 +187,8 @@ const getSqlQueryFromConfig = (configUrl, entity, condition = {}, fields = [], j
     if (condition.connectEntitiesCondition) {
         conditionList.push(condition.connectEntitiesCondition)
     }
-    delete condition.connectEntitiesCondition
-    console.log({condition})
+    condition = deleteKeysFromObject(condition, ['connectEntitiesCondition'])
+    // delete condition.connectEntitiesCondition
     if (Object.keys(condition).length > 0) {
 
         conditionList.push(buildSqlCondition(entity, condition))
@@ -197,17 +213,14 @@ function composeSQLColumns(columns) {
 }
 
 
-
-function parseSQLType(obj, tabledata) {
-    console.log({obj, tabledata})
+function parseObjectValuesToSQLTypetoObject(obj, tabledata) {
     try {
         const keys = Object.keys(obj)
-        let str = []
+        let sqlObject = {}
         for (let i = 0; i < keys.length; i++) {
+            let { type, sqlName } = tabledata.find(td => td.name.trim().toLowerCase() == keys[i].trim().toLowerCase())
             if (obj[keys[i]] != null) {
-                console.log(keys[i])
-                let type = tabledata.find(td => td.sqlName.trim().toLowerCase() == keys[i].trim().toLowerCase()).type
-                const parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
+                const parse = types[type.split(' ')[0].toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
                 if (!parse) {
                     let error = {}
                     error.description = `Type: ${type} does not exist.`
@@ -215,7 +228,34 @@ function parseSQLType(obj, tabledata) {
                 }
 
                 const val = parse.parseNodeTypeToSqlType(obj[keys[i]]);
-                console.log({val})
+                sqlObject[sqlName] = val;
+            }
+            else {
+                sqlObject[sqlName] = 'NULL';
+            }
+        }
+        console.log(sqlObject)
+        return sqlObject
+    }
+    catch (error) {
+        throw error
+    }
+}
+function parseObjectValuesToSQLTypeInArray(obj, tabledata) {
+    try {
+        const keys = Object.keys(obj)
+        let str = []
+        for (let i = 0; i < keys.length; i++) {
+            if (obj[keys[i]] != null) {
+                let type = tabledata.find(td => td.name.trim().toLowerCase() == keys[i].trim().toLowerCase()).type
+                const parse = types[type.split(' ')[0].toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
+                if (!parse) {
+                    let error = {}
+                    error.description = `Type: ${type} does not exist.`
+                    throw error
+                }
+
+                const val = parse.parseNodeTypeToSqlType(obj[keys[i]]);
                 str.push(val);
             }
             else {
@@ -225,12 +265,10 @@ function parseSQLType(obj, tabledata) {
         return str
     }
     catch (error) {
-        // if (error.status == 513) {
         throw error
-        // }
-        // throw notifictaions.find(n => n.status == 400)
     }
 }
+
 
 function parseSQLTypeForColumn(col, tableName) {
     const tabledata = getSqlTableColumnsType(tableName)
@@ -257,7 +295,10 @@ module.exports = {
     getPKConnectionBetweenEntities,
     getLeftJoinBetweenEntities,
     buildSqlCondition,
+    removeIdentityDataFromObject,
     composeSQLColumns,
-    parseSQLType,
+    parseNodeToSql,
+    parseObjectValuesToSQLTypeInArray,
+    parseObjectValuesToSQLTypetoObject,
     parseSQLTypeForColumn
 }

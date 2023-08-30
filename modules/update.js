@@ -1,17 +1,21 @@
 const { update } = require('../services/db/sql/sql-operation')
-const { DBTypes, buildSqlCondition } = require('./config/config')
-const { findCollection, getEntityConfigData } = require('./functions')
+const { DBTypes } = require('../utils/types')
+const { buildSqlCondition, removeIdentityDataFromObject } = require('./config/config.sql')
+// const { DBTypes, buildSqlCondition } = require('./config/config')
+const { findCollection, getEntityConfigData } = require('./config/config')
 
 
 async function startupdate({ project, entityName, set, condition }) {
     try {
-        const entity = getEntityConfigData({ project, entityName })
-        if (entity.type === DBTypes.SQL) {
-            const items = await updateManySql({ type: entity.dbName, entity: entity.entityName.sqlName, set: set, condition: condition })
+        const { entity, type } = getEntityConfigData({ project, entityName })
+        console.log({ entity })
+        if (type === DBTypes.SQL) {
+            const items = await updateManySql({ type: entity.dbName, entity, set: set, condition: condition })
             return items
         }
     }
     catch (error) {
+        console.log({ error })
         throw error
     }
 
@@ -31,10 +35,11 @@ async function startupdate({ project, entityName, set, condition }) {
 //     }
 // }
 
-async function updateManySql(obj) {
+async function updateManySql({ type, entity, set, condition }) {
     try {
-        let condition = buildSqlCondition(obj.entity, obj.condition)
-        let ans = await update(obj.type, obj.entity, obj.set, condition)
+        condition = buildSqlCondition(entity, condition)
+        set = removeIdentityDataFromObject(entity, set)
+        let ans = await update(type, entity, set, condition)
         if (ans) {
             return ans
         }

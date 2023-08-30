@@ -1,14 +1,14 @@
 const { getPool } = require('./sql-connection');
-const { getTableFromConfig, parseSQLTypeForColumn, getPrimaryKeyField, getSqlTableColumnsType, parseSQLType, getTableAlias } = require('../../../modules/config/config.sql')
+const { getPrimaryKeyField, parseNodeToSql, parseObjectValuesToSQLTypetoObject, getTableAlias } = require('../../../modules/config/config.sql')
 const { PreparedStatement, ConnectionPool } = require('mssql');
 const sql = require('mssql');
 const { createArrColumns } = require('../../../modules/functions');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
-const create = async function ( entity, columns, values) {
+const create = async function (entity, columns, values) {
      try {
           let primarykey = getPrimaryKeyField(entity)
-          
+
           const result = await getPool().request().query(`use ${entity.dbName} INSERT INTO ${entity.MTDTable.entityName.sqlName} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`);
           if (result)
                return result;
@@ -82,7 +82,7 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
                     primarykey = getPrimaryKeyField(entity)
                     columns = createArrColumns(Object.keys(tran[key])).join(',')
                     console.log(columns, "__co");
-                    values = parseSQLType(tran[key], types).join(',')
+                    values = parseObjectValuesToSQLTypeInArray(tran[key], types).join(',')
                     console.log({ entity, columns, values, primarykey });
 
                     await tr.prepare(`use ${database} INSERT INTO tbl_${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY `);
@@ -107,8 +107,8 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
 
 const read = async function (query = "", n) {
      try {
-          console.log({n})
-          console.log({ query:`${query.trim()} ORDER BY ${n.orderBy} OFFSET (${n.start}) ROWS FETCH NEXT (${n.end}) ROWS ONLY` })
+          console.log({ n })
+          console.log({ query: `${query.trim()} ORDER BY ${n.orderBy} OFFSET (${n.start}) ROWS FETCH NEXT (${n.end}) ROWS ONLY` })
           const result = await getPool().request().query(`${query.trim()} ORDER BY ${n.orderBy} OFFSET (${n.start}) ROWS FETCH NEXT (${n.end}) ROWS ONLY`);
           if (result.recordset)
                return result.recordset;
@@ -122,10 +122,12 @@ const read = async function (query = "", n) {
 
 const update = async function (database, entity, set, condition) {
      try {
-          const alias = await getTableFromConfig(entity).MTDTable.entityName.name
-          const entries = Object.entries(set)
-          const updateValues = entries.map(value => `${alias}.${value[0]}=${parseSQLTypeForColumn({ name: value[0], value: value[1] }, entity)}`).join(',')
-          const result = await getPool().request().query(`use ${database} UPDATE ${alias} SET ${updateValues} FROM ${entity} AS ${alias} WHERE ${condition}`);
+          const alias = await getTableAlias(entity)
+          const sqlObject = parseObjectValuesToSQLTypetoObject(set, entity.columns)
+          const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
+          const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
+          console.log({updateValues})
+          const result = await getPool().request().query(`use ${database} UPDATE ${alias} SET ${updateValues} FROM ${entity.MTDTable.entityName.sqlName} AS ${alias} WHERE ${condition}`);
           if (result)
                return result;
           else

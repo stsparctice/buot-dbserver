@@ -1,4 +1,5 @@
 const { DBTypes } = require('../utils/types')
+const { deleteKeysFromObject } = require('../utils/code/objects')
 const { read, searchSQL, count } = require("../services/db/sql/sql-operation")
 const { getDBConfig } = require('../modules/config/project.config')
 const { getEntityConfigData } = require("./config/config")
@@ -15,8 +16,8 @@ const { getPrimaryKeyField, getTableAlias, getSqlQueryFromConfig, buildSqlCondit
 async function startReadMany({ project, entityName, condition }) {
     try {
         const projectConfigUrl = getDBConfig(project)
-        const {entity, type} = getEntityConfigData({ project, entityName })
-        console.log({entity})
+        const { entity, type } = getEntityConfigData({ project, entityName })
+        console.log({ entity })
         let n = { start: 0, end: 100 }
         if (condition && condition.n) {
             n = { ...condition.n }
@@ -43,8 +44,8 @@ async function startReadOne({ project, entityName, condition, entitiesFields }) 
     try {
         const projectConfigUrl = getDBConfig(project)
         const { entity, type } = getEntityConfigData({ project, entityName })
-        console.log({entityName})
-        console.log({entity})
+        console.log({ entityName })
+        console.log({ entity })
         if (type === DBTypes.SQL) {
             const primaryKey = getPrimaryKeyField(entity)
             console.log({ primaryKey })
@@ -52,7 +53,8 @@ async function startReadOne({ project, entityName, condition, entitiesFields }) 
             if (type === DBTypes.SQL) {
                 if (condition.key) {
                     condition[primaryKey] = condition.key
-                    delete condition.key
+                    condition = deleteKeysFromObject(condition, [key])
+                    // delete condition.key
                 }
                 console.log({ condition })
                 const items = await readSql(projectConfigUrl, project, entity, condition, n, entitiesFields)
@@ -81,9 +83,9 @@ async function getValuesFromSQL(configUrl, entity, n, condition, fields = [], jo
 }
 
 
-async function readSql(configUrl, project, entity,condition = {}, n, entitiesFields = []) {
+async function readSql(configUrl, project, entity, condition = {}, n, entitiesFields = []) {
     try {
-        console.log({entitiesFields})
+        console.log({ entitiesFields })
         if (entitiesFields.length > 0) {
             let mainItem = { connections: [] }
             for (let entityFields of entitiesFields) {
@@ -118,7 +120,7 @@ async function readSql(configUrl, project, entity,condition = {}, n, entitiesFie
             return mappedObject
         }
         else {
-            console.log({project, entity})
+            console.log({ project, entity })
             const primaryKey = getPrimaryKeyField(entity)
             n.orderBy = `${getTableAlias(entity)}.${primaryKey}`
             values = await getValuesFromSQL(configUrl, entity, n, condition)
@@ -194,7 +196,8 @@ function mapConnetedObject(item) {
                     console.log(item.values)
                     const en = item.values.find(v => v[va.key] === va.value[va.key])
                     console.log({ en })
-                    delete val[va.key]
+                    val = deleteKeysFromObject(val, [va.key])
+                    // delete val[va.key]
                     if (en[entity]) {
                         en[entity] = [...en[entity], val]
                     }
