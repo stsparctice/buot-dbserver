@@ -9,11 +9,11 @@ const { HOST, PORT } = process.env
 //     console.log('connect to mongo');
     connectSQL().then(_ => {
         console.log('connect to sql');
-        // createTables().then(_ => {
+        createTables().then(_ => {
             app.listen(PORT, HOST, () => {
                 console.log(`http://${HOST}:${PORT}`);
             });
-        // });
+        });
     })
 // })
 const server = http.createServer(app) 

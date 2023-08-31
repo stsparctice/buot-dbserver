@@ -25,10 +25,15 @@ async function createTables() {
 
                     for (const db of item.db) {
                         if (db.type === DBTypes.SQL) {
-                            Promise.all(db.collections.map(async table => {
+                            console.log({ db })
+                            for (let table of db.collections) {
                                 _ = await getPool().request().query(`use ${item.dbName} IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${table.MTDTable.entityName.sqlName}')
                     CREATE TABLE [dbo].[${table.MTDTable.entityName.sqlName}](${buildColumns(table.columns)})`);
-                            }))
+                            }
+                            //         Promise.all(db.collections.map(async table => {
+                            //             _ = await getPool().request().query(`use ${item.dbName} IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${table.MTDTable.entityName.sqlName}')
+                            // CREATE TABLE [dbo].[${table.MTDTable.entityName.sqlName}](${buildColumns(table.columns)})`);
+                            //         }))
                         }
 
 
