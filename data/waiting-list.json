@@ -191,7 +191,7 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },

@@ -186,8 +186,9 @@ const getSqlQueryFromConfig = (configUrl, entity, condition = {}, fields = [], j
 
     if (condition.connectEntitiesCondition) {
         conditionList.push(condition.connectEntitiesCondition)
+         condition = deleteKeysFromObject(condition, ['connectEntitiesCondition'])
     }
-    condition = deleteKeysFromObject(condition, ['connectEntitiesCondition'])
+   
     // delete condition.connectEntitiesCondition
     if (Object.keys(condition).length > 0) {
 
