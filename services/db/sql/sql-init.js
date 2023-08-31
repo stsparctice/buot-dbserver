@@ -3,6 +3,7 @@ const { getPool } = require('./sql-connection')
 const { getEntitiesFromConfig } = require('../../../modules/config/config')
 const { getAllDBConfig } = require('../../../modules/config/project.config')
 const { DBTypes } = require('../../../utils/types')
+const { Promise } = require('mssql/lib/tedious')
 
 function buildColumns(details) {
     let columns = '';
@@ -22,14 +23,26 @@ async function createTables() {
                 try {
                     _ = await getPool().request().query(`use master IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = '${item.dbName}') begin use master CREATE DATABASE [${item.dbName}]; end`);
 
-                    item.db.forEach(db => {
+                    for (const db of item.db) {
                         if (db.type === DBTypes.SQL) {
-                            db.collections.forEach(async table => {
+                            console.log({ db })
+                            for (let table of db.collections) {
                                 _ = await getPool().request().query(`use ${item.dbName} IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${table.MTDTable.entityName.sqlName}')
                     CREATE TABLE [dbo].[${table.MTDTable.entityName.sqlName}](${buildColumns(table.columns)})`);
-                            });
+                            }
+                            //         Promise.all(db.collections.map(async table => {
+                            //             _ = await getPool().request().query(`use ${item.dbName} IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${table.MTDTable.entityName.sqlName}')
+                            // CREATE TABLE [dbo].[${table.MTDTable.entityName.sqlName}](${buildColumns(table.columns)})`);
+                            //         }))
                         }
-                    });
+
+
+                        //         db.collections.forEach(async table => {
+                        //             _ = await getPool().request().query(`use ${item.dbName} IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${table.MTDTable.entityName.sqlName}')
+                        // CREATE TABLE [dbo].[${table.MTDTable.entityName.sqlName}](${buildColumns(table.columns)})`);
+                        //         });
+                    }
+                    // });
                 }
                 catch (error) {
                     throw (error)

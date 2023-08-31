@@ -53,6 +53,7 @@ async function startReadOne({ project, entityName, condition, entitiesFields }) 
             if (type === DBTypes.SQL) {
                 if (condition.key) {
                     condition[primaryKey] = condition.key
+                    console.log({key})
                     condition = deleteKeysFromObject(condition, [key])
                     // delete condition.key
                 }
@@ -193,9 +194,7 @@ function mapConnetedObject(item) {
             mappedValEntries.forEach(va => {
                 console.log({ va })
                 if (item.entity === va.entity) {
-                    console.log(item.values)
                     const en = item.values.find(v => v[va.key] === va.value[va.key])
-                    console.log({ en })
                     val = deleteKeysFromObject(val, [va.key])
                     // delete val[va.key]
                     if (en[entity]) {
