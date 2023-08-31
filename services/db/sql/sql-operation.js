@@ -1,6 +1,5 @@
 const { getPool } = require('./sql-connection');
-const { getPrimaryKeyField, parseNodeToSql, parseObjectValuesToSQLTypetoObject, getTableAlias } = require('../../../modules/config/config.sql')
-const { PreparedStatement, ConnectionPool } = require('mssql');
+const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray, parseObjectValuesToSQLTypeObject, getTableAlias } = require('../../../modules/config/config.sql')
 const sql = require('mssql');
 const { createArrColumns } = require('../../../modules/functions');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
@@ -82,7 +81,7 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
                     primarykey = getPrimaryKeyField(entity)
                     columns = createArrColumns(Object.keys(tran[key])).join(',')
                     console.log(columns, "__co");
-                    values = parseObjectValuesToSQLTypeInArray(tran[key], types).join(',')
+                    values = parseObjectValuesToSQLTypeArray(tran[key], types).join(',')
                     console.log({ entity, columns, values, primarykey });
 
                     await tr.prepare(`use ${database} INSERT INTO tbl_${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY `);
@@ -123,13 +122,15 @@ const read = async function (query = "", n) {
 const update = async function (database, entity, set, condition) {
      try {
           const alias = await getTableAlias(entity)
-          const sqlObject = parseObjectValuesToSQLTypetoObject(set, entity.columns)
+          const sqlObject = parseObjectValuesToSQLTypeObject(set, entity.columns)
           const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
           const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
-          console.log({updateValues})
           const result = await getPool().request().query(`use ${database} UPDATE ${alias} SET ${updateValues} FROM ${entity.MTDTable.entityName.sqlName} AS ${alias} WHERE ${condition}`);
-          if (result)
-               return result;
+          if (result.rowsAffected.length>0 && result.rowsAffected[0]>0)
+          {
+             return {rowsAffected: result.rowsAffected[0]}
+          }
+               
           else
                return false;
      }

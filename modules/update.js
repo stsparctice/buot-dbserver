@@ -41,6 +41,7 @@ async function updateManySql({ type, entity, set, condition }) {
         set = removeIdentityDataFromObject(entity, set)
         let ans = await update(type, entity, set, condition)
         if (ans) {
+            console.log({ans})
             return ans
         }
         return 'no effect'

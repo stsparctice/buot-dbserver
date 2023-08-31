@@ -4,11 +4,17 @@ const { startupdate } = require('../modules/update');
 
 router.post('/updateOne', express.json(), async (req, res) => {
     try {
-        let result = await startupdate({ project: res.project, entityName: req.body.entity, set: req.body.set, condition: req.body.condition })
-        if (result)
-            res.status(201).send({ "result": result })
+        let ans = await startupdate({ project: res.project, entityName: req.body.entity, set: req.body.set, condition: req.body.condition })
+        if (ans) {
+            if (ans.rowsAffected === 1) {
+                res.status(204).send()
+            }
+            else {
+                throw new Error('more rows were updated')
+            }
+        }
         else {
-            res.status(500).send(result)
+            res.status(500).send(ans)
         }
     }
     catch (error) {

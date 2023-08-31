@@ -213,7 +213,7 @@ function composeSQLColumns(columns) {
 }
 
 
-function parseObjectValuesToSQLTypetoObject(obj, tabledata) {
+function parseObjectValuesToSQLTypeObject(obj, tabledata) {
     try {
         const keys = Object.keys(obj)
         let sqlObject = {}
@@ -241,7 +241,7 @@ function parseObjectValuesToSQLTypetoObject(obj, tabledata) {
         throw error
     }
 }
-function parseObjectValuesToSQLTypeInArray(obj, tabledata) {
+function parseObjectValuesToSQLTypeArray(obj, tabledata) {
     try {
         const keys = Object.keys(obj)
         let str = []
@@ -298,7 +298,7 @@ module.exports = {
     removeIdentityDataFromObject,
     composeSQLColumns,
     parseNodeToSql,
-    parseObjectValuesToSQLTypeInArray,
-    parseObjectValuesToSQLTypetoObject,
+    parseObjectValuesToSQLTypeArray,
+    parseObjectValuesToSQLTypeObject,
     parseSQLTypeForColumn
 }
