@@ -330,7 +330,7 @@
                             {
                                 "name": "priceList",
                                 "sqlName": "[PriceList]",
-                                "type": "INT NULL"
+                                "type": "INT NULL "
                             },
                             {
                                 "name": "workPhoneNote",

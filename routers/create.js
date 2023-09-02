@@ -6,7 +6,7 @@ router.post('/createOne', express.json(), async (req, res) => {
     try {
         const result = await startCreate({ project: res.project, entityName: req.body.entity, values: req.body.values })
         if (result) {
-            res.status(201).send(result)
+            res.status(201).send(result.recordset)
         }
         else {
             res.status(500).send(result)
