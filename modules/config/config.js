@@ -5,7 +5,6 @@ const { getDBConfig } = require('./project.config')
 
 
 function readConfigFile(configUrl) {
-    console.log({ configUrl })
     const response = fs.readFileSync(configUrl)
     return JSON.parse(response)
 }

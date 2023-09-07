@@ -12,29 +12,24 @@ async function startCreate({ project, entityName, values }) {
         }
     }
     catch (error) {
-        console.log({ error })
         throw error
     }
 
 }
 
 async function createOneSQL(obj) {
-    console.log(obj.entity.MTDTable)
     try {
         const types = getTableColumns(obj.entity)
-        console.log({ types })
         let arr = createArrColumns(Object.keys(obj.values))
         let values = parseObjectValuesToSQLTypeArray(obj.values, types)
         const ans = await create( obj.entity, arr.join(','), values.join(','))
         if (ans) {
-            console.log("!!!!!!!!!!!");
             return ans
         }
         else
             return 'no effect'
     }
     catch (error) {
-        console.log({ error })
         throw error
     }
 }
@@ -63,7 +58,6 @@ async function createSQL({type, entity, values}) {
         return ans
     }
     catch (error) {
-        console.log({ error })
         throw error
     }
 }
@@ -88,7 +82,6 @@ async function createTranzaction({ project, entityName, value }) {
                 finalyValues = { ...finalyValues, ...obj }
             }
         }
-        console.log(tran, 'tran');
         const types = getTableColumns(entity)
         let columns = createArrColumns(Object.keys(finalyValues)).join(',')
         let values = parseObjectValuesToSQLTypeArray(finalyValues, types).join(',')

@@ -13,7 +13,6 @@ const { deleteKeysFromObject } = require('../../utils/code/objects');
 // }
 
 function getTableAlias(table) {
-    console.log({ table })
     try {
         return table.MTDTable.entityName.name
     }
@@ -23,7 +22,6 @@ function getTableAlias(table) {
 }
 
 function getPrimaryKeyField(table) {
-    console.log({ table })
     let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))
     if (col) {
         return col.sqlName
@@ -32,11 +30,9 @@ function getPrimaryKeyField(table) {
 }
 
 function getTableColumns(entity, columns = []) {
-    console.log({ columns })
     try {
         // const table = getTableFromConfig(configUrl, tablename)
         let cols
-        console.log(entity.columns)
         if (columns.length != 0)
 
             cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
@@ -63,16 +59,11 @@ function parseNodeToSql({ type, value }) {
 
 
 function removeIdentityDataFromObject(entity, object) {
-    console.log({ entity })
-    console.log('removeIdentityDataFromObject')
     const { columns } = entity
     const identities = columns.filter(c => c.type.toUpperCase().includes('IDENTITY'))
-    console.log(identities)
     const removeKeys = identities.map(({ name }) => name)
     object = deleteKeysFromObject(object, removeKeys)
     //  const {id, ...rest} = object
-    //  console.log({rest}) 
-    console.log({ object })
     return object
 
 }
@@ -81,9 +72,7 @@ function buildSqlCondition(entity, condition) {
     const tablealias = getTableAlias(entity)
     let sqlCondition = ''
     if (condition) {
-        console.log({ condition })
         const columns = getTableColumns(entity, Object.keys(condition))
-        console.log({ columns })
         columnNames = columns.map(({ name }) => name)
         if (Object.keys(condition).every(c => columnNames.includes(c))) {
             const entries = Object.entries(condition)
@@ -135,7 +124,6 @@ function buildSqlJoinAndSelect(configUrl, entity, fields) {
 
     tableAlias = `${entity.MTDTable.entityName.sqlName} ${tableAlias}`;
     let joinTables = []
-    console.log({ selectedColumns })
     const foreignKeyColumns = entity.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
 
     if (foreignKeyColumns.length > 0) {
@@ -146,7 +134,6 @@ function buildSqlJoinAndSelect(configUrl, entity, fields) {
             const tableToJoin = column.type.slice(startindex, column.type.indexOf('(', startindex));
             const columnToJoin = column.type.slice(column.type.indexOf('(', startindex) + 1, column.type.indexOf(')', startindex));
             const joinEntity = getEntityFromConfig(configUrl, tableToJoin);
-            console.log(joinEntity)
             const columnName = joinEntity.entity.columns.find(c => c.sqlName === columnToJoin)
             const defaultColumnName = joinEntity.entity.columns.find(c => c.sqlName === joinEntity.entity.MTDTable.defaultColumn)
             const alias = getTableAlias(joinEntity.entity)
@@ -235,7 +222,6 @@ function parseObjectValuesToSQLTypeObject(obj, tabledata) {
                 sqlObject[sqlName] = 'NULL';
             }
         }
-        console.log(sqlObject)
         return sqlObject
     }
     catch (error) {

@@ -8,14 +8,12 @@ const { findCollection, getEntityConfigData } = require('./config/config')
 async function startupdate({ project, entityName, set, condition }) {
     try {
         const { entity, type } = getEntityConfigData({ project, entityName })
-        console.log({ entity })
         if (type === DBTypes.SQL) {
             const items = await updateManySql({ type: entity.dbName, entity, set: set, condition: condition })
             return items
         }
     }
     catch (error) {
-        console.log({ error })
         throw error
     }
 
@@ -23,7 +21,6 @@ async function startupdate({ project, entityName, set, condition }) {
 
 // async function updateOneSQL(obj) {
 //     try {
-//         console.log({ obj });
 //         // let find = findCollection(obj.entity)
 //         let ans = await update(obj.type, obj.entity, obj.set, obj.condition)
 //         if (ans.rowsAffected[0] > 0)
@@ -41,7 +38,6 @@ async function updateManySql({ type, entity, set, condition }) {
         set = removeIdentityDataFromObject(entity, set)
         let ans = await update(type, entity, set, condition)
         if (ans) {
-            console.log({ans})
             return ans
         }
         return 'no effect'

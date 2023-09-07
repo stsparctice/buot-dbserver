@@ -69,7 +69,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "Genders",
+                                "name": "genders",
                                 "sqlName": "tbl_Genders"
                             },
                             "description": "",
@@ -77,32 +77,32 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "Name",
+                                "name": "name",
                                 "sqlName": "Name",
                                 "type": "NVARCHAR(50) UNIQUE NOT NULL"
                             },
                             {
-                                "name": "Sex1",
+                                "name": "sex1",
                                 "sqlName": "Sex1",
                                 "type": "INT"
                             },
                             {
-                                "name": "MaxAge1",
+                                "name": "maxAge1",
                                 "sqlName": "MaxAge1",
                                 "type": "INT"
                             },
                             {
-                                "name": "Sex2",
+                                "name": "sex2",
                                 "sqlName": "Sex2",
                                 "type": "INT"
                             },
                             {
-                                "name": "MaxAge2",
+                                "name": "maxAge2",
                                 "sqlName": "MaxAge2",
                                 "type": "INT"
                             }
@@ -183,7 +183,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "Teachers",
+                                "name": "teachers",
                                 "sqlName": "tbl_Teachers"
                             },
                             "description": "Tale for the details of teachers",
@@ -196,22 +196,22 @@
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "TeacherName",
+                                "name": "teacherName",
                                 "sqlName": "TeacherName",
                                 "type": "NVARCHAR(20) UNIQUE NOT NULL"
                             },
                             {
-                                "name": "Phone",
+                                "name": "phone",
                                 "sqlName": "Phone",
                                 "type": "NVARCHAR(10)"
                             },
                             {
-                                "name": "Email",
+                                "name": "email",
                                 "sqlName": "Email",
                                 "type": "NVARCHAR(30)"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME NOT NULL"
                             },

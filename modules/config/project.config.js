@@ -17,18 +17,14 @@ module.exports = {getDBConfig, getAllDBConfig}
 function buildJoinAndSelect2(extra){
     function getSelectedColumns(myTable, entityFields) {
         const { entity, fields } = entityFields
-        console.log({ entity, fields })
         const selectColumns = myTable.columns.filter(col => fields.includes(col.name))
-        console.log({ selectColumns })
         return selectColumns
     
     }
     
     function getJoinColumn(myTable, joinTable) {
-        console.log({ myTable, joinTable })
         const allForeignKeys = joinTable.columns.filter(col => col.type.includes('FOREIGN KEY'))
         const foreignkey = allForeignKeys.find(col => col.type.includes(myTable.MTDTable.entityName.sqlName))
-        console.log(foreignkey)
         return foreignkey
     }
 

@@ -7,8 +7,6 @@ const {createpath,createrouter,createpathName,createAllObj,createFunctionsbyRout
 const path = require('path')
 
 router.get('/readsapi/:name', async (req, res) => {
-    console.log("params",req.params.name);
-console.log("ccccccccccc",config.document)
     try {
 
         const filepath = path.join(__dirname, '../app.js')    // const response =await readFile(req.params.filename)
@@ -17,11 +15,9 @@ console.log("ccccccccccc",config.document)
         // const a = getExampleByEntity(name)
         // const ans = await createFunctionsbyRouterPage()
         // const response = await readFile(filepath)
-        // console.log(response,"response");
         // if (response) {
         //     response.forEach(r => {
         //         r.apiRequests.forEach(a => {
-        //             console.log(a.arguments)
         //         })
         //     })
             res.status(201).send(ans)
@@ -35,7 +31,6 @@ console.log("ccccccccccc",config.document)
 })
 router.get('/getExample/:nameEntity',async(req,res)=>{
 
-    console.log(req.params.nameEntity)
     try{
         const ans = await getExampleByEntity(req.params.nameEntity)
         res.status(201).send(ans)
