@@ -28,6 +28,7 @@ function getEntityFromConfig(configUrl, entityName) {
     if (sql.length > 0) {
         const mapCollection = sql.map(({ dbName, db }) =>  db.map(({collections})=>collections.map(c => ({ dbName, ...c }))))
         const entityList = mapCollection.reduce((list, col)=>list=[...list, ...col.reduce((l, c)=>l=[...l, ...c], [])], [])
+        console.log("!!!!!!!!!!!",entityName);
         const tables = entityList.filter(c => c.MTDTable.entityName.name === entityName)
         let existEntity = tables.some(t => t.MTDTable.entityName.name === entityName)
         if (existEntity) {

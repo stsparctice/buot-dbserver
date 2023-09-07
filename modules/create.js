@@ -1,7 +1,10 @@
 const { create, createTrac } = require('../services/db/sql/sql-operation')
-const { createArrColumns, createArrValues, findCollection, getEntityConfigData } = require('../modules/functions')
-const {  parseSQLType, getTableFromConfig, getSqlTableColumnsType } = require('./config/config')
+const { createArrColumns, createArrValues, findCollection  } = require('../modules/functions')
+const {  parseSQLType, getTableFromConfig, getSqlTableColumnsType ,getEntityConfigData, getEntityFromConfig} = require('./config/config')
 const {DBTypes} = require('../utils/types')
+const { composeSQLColumns,getTableColumns } = require('./config/config.sql')
+
+
 async function startCreate({ project, entityName, values }) {
     try {
         const entity = getEntityConfigData({ project, entityName })
@@ -25,7 +28,6 @@ async function createOneSQL(obj) {
         let values = parseSQLType(obj.values, types)
         const ans = await create(obj.type, obj.entity.entityName.sqlName, arr.join(','), values.join(','))
         if (ans){
-            console.log("!!!!!!!!!!!");
             return ans
         }
         else
@@ -76,7 +78,7 @@ async function createTranzaction({ project, entityName, value }) {
                 finalyValues = { ...finalyValues, ...obj }
             }
         }
-        console.log(tran, 'tran');
+        console.log('tran',tran );
         const types = getSqlTableColumnsType(entity.entityName.sqlName)
         let columns = createArrColumns(Object.keys(finalyValues)).join(',')
         let values = parseSQLType(finalyValues, types).join(',')
@@ -84,7 +86,6 @@ async function createTranzaction({ project, entityName, value }) {
             const items = await createTrac({ database: entity.dbName, entity: entity.entityName.sqlName, columns: columns, values: values, tran: tran })
             return items
         }
-
     }
     catch (error) {
 

@@ -32,10 +32,17 @@ function getTableColumns(entity, columns = []) {
     try {
         // const table = getTableFromConfig(configUrl, tablename)
         let cols
-        if (columns.length != 0)
+        if (columns.length != 0){
+            console.log("ifCols");
             cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
-        else
+        }
+        else{
+            console.log("elseCols");
+            console.log(entity.columns);
             cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
+            console.log("cols: ",cols);
+
+        }
         return cols
     }
     catch (error) {
