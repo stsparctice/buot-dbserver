@@ -1,6 +1,7 @@
 {
     "swimmingpools": {
         "id": "id",
+
         "swimmingpooldays": [
             {
                 "id": "id",
@@ -13,3 +14,7 @@
         ]
     }
 }
+
+
+
+

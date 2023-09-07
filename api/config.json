@@ -29,7 +29,7 @@
                             "jsType": "object",
                             "example": {
                                 "TeacherName": "Sari"
-                            },
+                          },
                             "required": true,
                             "description": "You are aloud to send any of the headers in this table",
                             "sort": "req.body.values",

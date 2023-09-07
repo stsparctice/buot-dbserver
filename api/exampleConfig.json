@@ -1,0 +1,52 @@
+[
+    {
+        "nameEntity": "Teachers",
+        "data": {
+            "example1": {
+                "Id": 3,
+                "TeacherName": "rachel",
+                "Phone": "088653312",
+                "Email": "www@gmail.come",
+                "AddedDate": "07/08/23",
+                "UserName": "lea",
+                "Disabled": "true",
+                "DisabledDate": "12/08/23",
+                "DisableUser": "uti",
+                "DisableReason": "fff"
+            },
+            "example2": {
+                "Id": 8,
+                "TeacherName": "rachel",
+                "Phone": "088653312",
+                "Email": "www@gmail.come",
+                "AddedDate": "07/08/23",
+                "UserName": "lea",
+                "Disabled": "true",
+                "DisabledDate": "12/08/23",
+                "DisableUser": "uti",
+                "DisableReason": "fff"
+            }
+        }
+    },
+    {
+        "nameEntity": "Genders",
+        "data": {
+            "example1": {
+                "id": 5,
+                "name": "cc",
+                "Sex1": "ll",
+                "MaxAge1": "kk",
+                "Sex2": "jjj",
+                "MaxAge2": "nn"
+            },
+            "example2": {
+                "id": 5,
+                "name": "cc",
+                "Sex1": "ll",
+                "MaxAge1": "kk",
+                "Sex2": "jjj",
+                "MaxAge2": "nn"
+            }
+        }
+    }
+]

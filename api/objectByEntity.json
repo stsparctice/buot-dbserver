@@ -1,0 +1,704 @@
+{
+    "swimmingpools": {
+        "id": "id",
+        "name": "name",
+        "address": "address",
+        "color": "color",
+        "poolDaySchedule": [
+            {
+                "id": "id",
+        "swimmingPoolId": {
+            "id": "id",
+            "name": "name",
+            "entity": "swimmingpools"
+        },
+        "day": "day",
+        "genderId": {
+            "id": "id",
+            "name": "name",
+            "entity": "genders"
+        },
+        "startHour": "startHour",
+        "endHour": "endHour",
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "dsabledDate": "disabledDate",
+        "DisableUser": "DisableUser",
+        "DisableReason": "DisableReason",
+        "TeacherSchedule": [
+            {
+                "id": "id",
+                "teacherPoolGenderId": {
+                    "id": "id",
+                    "": "",
+                    "entity": "teachersPoolGenders"
+                },
+                "startHour": "startHour",
+                "endHour": "endHour",
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disableUser",
+                "disableReason": "disableReason"
+            }
+        ],
+        "patientPreferenceDays":[{
+            "id": "id",
+            "patientId": {
+                "id": "id",
+                "lastName": "lastName",
+                "entity":"patient"
+            },
+            "startHour":"startHour",
+            "endHour":"endHour",
+            "addedDate": "addedDate",
+            "userName": "userName",
+            "disabled": "disabled",
+            "disabledDate": "disabledDate",
+            "disableUser": "disabledUser",
+            "disableReason": "disableReason"
+        }]
+            }
+        ],
+        "patientsPools": [
+            {
+                "id": "id",
+                "patientId": {
+                    "id": "id",
+                    "lastName": "lastName",
+                    "entity": "patient"
+                },
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ]
+    },
+    "genders": {
+        "id": "id",
+        "name": "name",
+        "sex1": "sex1",
+        "maxAge1": "maxAge1",
+        "sex2": "sex2",
+        "maxAge2": "maxAge2",
+        "poolDaySchedule": [
+            {
+                "id": "id",
+                "swimmingPoolId": {
+                    "id": "id",
+                    "name": "name",
+                    "entity": "swimmingpools"
+                },
+                "day": "day",
+                "startHour": "startHour",
+                "endHour": "endHour",
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "dsabledDate": "disabledDate",
+                "DisableUser": "DisableUser",
+                "DisableReason": "DisableReason",
+                "TeacherSchedule": [
+                    {
+                        "id": "id",
+                        "teacherPoolGenderId": {
+                            "id": "id",
+                            "": "",
+                            "entity": "teachersPoolGenders"
+                        },
+                        "startHour": "startHour",
+                        "endHour": "endHour",
+                        "addedDate": "addedDate",
+                        "userName": "userName",
+                        "disabled": "disabled",
+                        "disabledDate": "disabledDate",
+                        "disableUser": "disableUser",
+                        "disableReason": "disableReason"
+                    }
+                ],
+                "patientPreferenceDays":[{
+                    "id": "id",
+                    "patientId": {
+                        "id": "id",
+                        "lastName": "lastName",
+                        "entity":"patient"
+                    },
+                    "startHour":"startHour",
+                    "endHour":"endHour",
+                    "addedDate": "addedDate",
+                    "userName": "userName",
+                    "disabled": "disabled",
+                    "disabledDate": "disabledDate",
+                    "disableUser": "disabledUser",
+                    "disableReason": "disableReason"
+                }]
+            }
+        ],
+        "TeachersPoolGenders": [
+            {
+                "id": "id",
+                "TeacherId": {
+                    "id": "id",
+                    "teacherName": "teacherName",
+                    "entity": "teachers"
+                },
+                "addedDate": "addedDate",
+                "username": "username",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disableUser",
+                "disableReason": "disableReason",
+                "TeacherSchedule": [
+                    {
+                        "id": "id",
+                        "pooldayScheduleId": {
+                            "id": "id",
+                            "": "",
+                            "entity": "poolDaySchedule"
+                        },
+                        "startHour": "startHour",
+                        "endHour": "endHour",
+                        "addedDate": "addedDate",
+                        "userName": "userName",
+                        "disabled": "disabled",
+                        "disabledDate": "disabledDate",
+                        "disableUser": "disableUser",
+                        "disableReason": "disableReason"
+                    }
+                ]
+            }
+        ],
+        "patientsGenders": [
+            {
+                "id": "id",
+                "patientId": {
+                    "id": "id",
+                    "lastName": "lastName",
+                    "entity": "patient"
+                },
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ]
+    },
+    "poolDaySchedule": {
+        "id": "id",
+        "swimmingPoolId": {
+            "id": "id",
+            "name": "name",
+            "entity": "swimmingpools"
+        },
+        "day": "day",
+        "genderId": {
+            "id": "id",
+            "name": "name",
+            "entity": "genders"
+        },
+        "startHour": "startHour",
+        "endHour": "endHour",
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "dsabledDate": "disabledDate",
+        "DisableUser": "DisableUser",
+        "DisableReason": "DisableReason",
+        "TeacherSchedule": [
+            {
+                "id": "id",
+                "teacherPoolGenderId": {
+                    "id": "id",
+                    "": "",
+                    "entity": "teachersPoolGenders"
+                },
+                "startHour": "startHour",
+                "endHour": "endHour",
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disableUser",
+                "disableReason": "disableReason"
+            }
+        ],
+        "patientPreferenceDays":[{
+            "id": "id",
+            "patientId": {
+                "id": "id",
+                "lastName": "lastName",
+                "entity":"patient"
+            },
+            "startHour":"startHour",
+            "endHour":"endHour",
+            "addedDate": "addedDate",
+            "userName": "userName",
+            "disabled": "disabled",
+            "disabledDate": "disabledDate",
+            "disableUser": "disabledUser",
+            "disableReason": "disableReason"
+        }]
+    },
+    "teachers": {
+        "id": "id",
+        "teacherName": "teacherName",
+        "phone": "phone",
+        "email": "email",
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disableUser",
+        "DisableReason": "DisableReason",
+        "teachersPoolGenders": [
+            {
+                "id": "id",
+                "genderId": {
+                    "id": "id",
+                    "name": "name",
+                    "entity": "genders"
+                },
+                "addedDate": "addedDate",
+                "username": "username",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disableUser",
+                "disableReason": "disableReason",
+                "TeacherSchedule": [
+                    {
+                        "id": "id",
+                        "pooldayScheduleId": {
+                            "id": "id",
+                            "": "",
+                            "entity": "poolDaySchedule"
+                        },
+                        "startHour": "startHour",
+                        "endHour": "endHour",
+                        "addedDate": "addedDate",
+                        "userName": "userName",
+                        "disabled": "disabled",
+                        "disabledDate": "disabledDate",
+                        "disableUser": "disableUser",
+                        "disableReason": "disableReason"
+                    }
+                ]
+            }
+        ],
+        "teachersLevels": [
+            {
+                "id": "id",
+                "levelId": {
+                    "id": "id",
+                    "": "",
+                    "entity": "levels"
+                },
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disableUser",
+                "disableReason": "disableReason"
+            }
+        ],
+        "patientPreferenceTeachers": [
+            {
+                "id": "id",
+                "patientId": {
+                    "id": "id",
+                    "lastName": "lastName",
+                    "entity": "patient"
+                },
+                "preference": "preference",
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ]
+    },
+    "teachersPoolGenders": {
+        "id": "id",
+        "TeacherId": {
+            "id": "id",
+            "teacherName": "teacherName",
+            "entity": "teachers"
+        },
+        "genderId": {
+            "id": "id",
+            "name": "name",
+            "entity": "genders"
+        },
+        "addedDate": "addedDate",
+        "username": "username",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disableUser",
+        "disableReason": "disableReason",
+        "teacherSchedule": [
+            {
+                "id": "id",
+                "pooldayScheduleId": {
+                    "id": "id",
+                    "": "",
+                    "entity": "poolDaySchedule"
+                },
+                "startHour": "startHour",
+                "endHour": "endHour",
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disableUser",
+                "disableReason": "disableReason"
+            }
+        ]
+    },
+    "teacherSchedule": {
+        "id": "id",
+        "teacherPoolGenderId": {
+            "id": "id",
+            "": "",
+            "entity": "teachersPoolGenders"
+        },
+        "pooldayScheduleId": {
+            "id": "id",
+            "": "",
+            "entity": "poolDaySchedule"
+        },
+        "startHour": "startHour",
+        "endHour": "endHour",
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disableUser",
+        "disableReason": "disableReason"
+    },
+    "levels": {
+        "id": "id",
+        "userName": "userName",
+        "name": "name",
+        "addedDate": "addedDate",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disableUser",
+        "disableReason": "disableReason",
+        "teachersLevels": [
+            {  "id": "id",
+            "teacherId": {
+                "id": "id",
+                "teacherName": "teacherName",
+                "entity": "teachers"
+            },
+            "addedDate": "addedDate",
+            "userName": "userName",
+            "disabled": "disabled",
+            "disabledDate": "disabledDate",
+            "disableUser": "disableUser",
+            "disableReason": "disableReason"}
+        ],
+        "patientsTreatmentLevels": [
+            {
+                "id": "id",
+                "patientId": {
+                    "id": "id",
+                    "lastName": "lastName",
+                    "entity": "patient"
+                },
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ]
+    },
+    "teachersLevels": {
+        "id": "id",
+        "teacherId": {
+            "id": "id",
+            "teacherName": "teacherName",
+            "entity": "teachers"
+        },
+        "levelId": {
+            "id": "id",
+            "": "",
+            "entity": "levels"
+        },
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disableUser",
+        "disableReason": "disableReason"
+    },
+    "patient": {
+        "id": "id",
+        "identityCard": "identityCard",
+        "firstName": "firstName",
+        "lastName": "lastName",
+        "phone1": "phone1",
+        "phone2": "phone2",
+        "birthDate": "birthDate",
+        "sex": "sex",
+        "priceList": "priceList",
+        "evaluated": "evaluated",
+        "lastEvaluationDate": "lastEvaluationDate",
+        "noEvaluation": "noEvaluation",
+        "noEvaluationUser": "noEvaluationUser",
+        "sendMedDocumentsDate": "sendMedDocumentsDate",
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disableUser",
+        "disableReason": "disableReason",
+        "patientsGenders": [
+            {
+                "id": "id",
+                "genderId": {
+                    "id": "id",
+                    "name": "name",
+                    "entity": "genders"
+                },
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ],
+        "patientUrgency": [
+            {
+                "id": "id",
+                "urgencyNumber": "urgencyNumber",
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disabledUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ],
+        "patientsTreatmentLevels": [
+            {
+                "id": "id",
+                "treatmentLevelId": {
+                    "id": "id",
+                    "name": "name",
+                    "entity": "levels"
+                },
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ],
+        "patientsComment": [
+            {
+                "id": "id",
+                "comment": "comment",
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disabledUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ],
+        "patientsPools": [
+            {
+                "id": "id",
+                "poolId": {
+                    "id": "id",
+                    "name": "name",
+                    "entity": "swimmingpools"
+                },
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ],
+        "patientPreferenceTeachers": [
+            {
+                "id": "id",
+                "teacherId": {
+                    "id": "id",
+                    "teacherName": "teacherName",
+                    "entity": "teachers"
+                },
+                "preference": "preference",
+                "addedDate": "addedDate",
+                "userName": "userName",
+                "disabled": "disabled",
+                "disabledDate": "disabledDate",
+                "disableUser": "disabledUser",
+                "disableReason": "disableReason"
+            }
+        ],
+        "patientPreferenceDays":[{
+            "id": "id",
+            "poolDayScheduleId":{
+                "id":"id",
+                "":"",
+                "entity":"poolDaySchedule"
+    
+            },
+            "startHour":"startHour",
+            "endHour":"endHour",
+            "addedDate": "addedDate",
+            "userName": "userName",
+            "disabled": "disabled",
+            "disabledDate": "disabledDate",
+            "disableUser": "disabledUser",
+            "disableReason": "disableReason"
+        }]
+
+
+    },
+    "patientsGenders": {
+        "id": "id",
+        "patientId": {
+            "id": "id",
+            "lastName": "lastName",
+            "entity": "patient"
+        },
+        "genderId": {
+            "id": "id",
+            "name": "name",
+            "entity": "genders"
+        },
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disabledUser",
+        "disableReason": "disableReason"
+    },
+    "patientUrgency": {
+        "id": "id",
+        "urgencyNumber": "urgencyNumber",
+        "patientId": {
+            "id": "id",
+            "lastName": "lastName",
+            "entity": "patient"
+        },
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disabledUser": "disabledUser",
+        "disableReason": "disableReason"
+    },
+    "patientsTreatmentLevels": {
+        "id": "id",
+        "patientId": {
+            "id": "id",
+            "lastName": "lastName",
+            "entity": "patient"
+        },
+        "treatmentLevelId": {
+            "id": "id",
+            "name": "name",
+            "entity": "levels"
+        },
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disabledUser",
+        "disableReason": "disableReason"
+    },
+    "patientsComment": {
+        "id": "id",
+        "patientId": {
+            "id": "id",
+            "lastName": "lastName",
+            "entity": "patient"
+        },
+        "comment": "comment",
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disabledUser": "disabledUser",
+        "disableReason": "disableReason"
+    },
+    "patientsPools": {
+        "id": "id",
+        "patientId": {
+            "id": "id",
+            "lastName": "lastName",
+            "entity": "patient"
+        },
+        "poolId": {
+            "id": "id",
+            "name": "name",
+            "entity": "swimmingpools"
+        },
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disabledUser",
+        "disableReason": "disableReason"
+    },
+    "patientPreferenceTeachers": {
+        "id": "id",
+        "patientId": {
+            "id": "id",
+            "lastName": "lastName",
+            "entity": "patient"
+        },
+        "teacherId": {
+            "id": "id",
+            "teacherName": "teacherName",
+            "entity": "teachers"
+        },
+        "preference": "preference",
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disabledUser",
+        "disableReason": "disableReason"
+    },
+    "patientPreferenceDays": {
+        "id": "id",
+        "patientId": {
+            "id": "id",
+            "lastName": "lastName",
+            "entity":"patient"
+        },
+        "poolDayScheduleId":{
+            "id":"id",
+            "":"",
+            "entity":"poolDaySchedule"
+
+        },
+        "startHour":"startHour",
+        "endHour":"endHour",
+        "addedDate": "addedDate",
+        "userName": "userName",
+        "disabled": "disabled",
+        "disabledDate": "disabledDate",
+        "disableUser": "disabledUser",
+        "disableReason": "disableReason"
+    }
+}

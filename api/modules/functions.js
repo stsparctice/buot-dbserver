@@ -8,9 +8,11 @@ async function createpath(fileName) {
     const ans = fs.readFileSync(fileName)
     const arr = ans.toString().split(';')
     let pathArr = [];
+    console.log("llllllllll",arr[0],"lllll");
     let useArr = arr.filter(m =>
         (m + '').includes("app.use('/") && (m + '').includes("db")
     )
+    console.log("useArr",useArr);
     useArr.forEach(e => {
         let r = e.indexOf(',')
         let rr = e.slice(11, r - 1)
@@ -42,9 +44,15 @@ async function createpathName(fileName) {
     useArr2.forEach(e => {
         let h = useArr2[0].indexOf('/')
         let hh = e.indexOf(')')
+        console.log("hh",hh);
+        console.log("h",h);
+
         let wer = e.slice(h + 1, hh - 1)
+        console.log("wer",wer);
+
         pathNameArr.push(wer)
     })
+
     return pathNameArr;
 }
 async function createFunctionsbyRouterPage(fileName) {
@@ -64,7 +72,6 @@ async function createAllObj(fileName,name) {
     let pathNameArr = await createpathName(fileName);
   
     let allArr = [];
-    // let ar = []
     let a = []
     let All = []
     let AllByRouter = []
