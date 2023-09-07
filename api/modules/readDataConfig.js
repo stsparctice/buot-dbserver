@@ -1,5 +1,5 @@
 // const newConfig = require('d:/ruti lev/buot-dbserver/data/newConfig.json')
-const newConfig = require('../../data/newConfig.json')
+const newConfig = require('../../data/waiting-list.json')
 const exampleConfig = require('../exampleConfig.json')
 
 async function getExampleByEntity(action,name) {

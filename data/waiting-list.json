@@ -40,7 +40,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "Genders",
+                                "name": "genders",
                                 "sqlName": "tbl_Genders"
                             },
                             "description": "",
@@ -154,7 +154,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "Teachers",
+                                "name": "teachers",
                                 "sqlName": "tbl_Teachers"
                             },
                             "description": "Tale for the details of teachers",
@@ -216,7 +216,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "TeachersPoolGenders",
+                                "name": "teachersPoolGenders",
                                 "sqlName": "tbl_TeachersPoolGenders"
                             },
                             "description": " ",
@@ -229,7 +229,7 @@
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "TeacherId",
+                                "name": "teacherId",
                                 "sqlName": "TeacherId",
                                 "type": "INT NOT NULL FOREIGN KEY(TeacherId) REFERENCES tbl_Teachers(Id)"
                             },
@@ -273,7 +273,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "TeacherSchedule",
+                                "name": "teacherSchedule",
                                 "sqlName": "tbl_TeacherSchedule"
                             },
                             "description": "Table for the Schedule of every Teacher",
@@ -340,7 +340,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "Levels",
+                                "name": "levels",
                                 "sqlName": "tbl_Levels"
                             },
                             "description": "Table for the details of levels",
@@ -392,7 +392,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "TeachersLevels",
+                                "name": "teachersLevels",
                                 "sqlName": "tbl_TeachersLevels"
                             },
                             "description": " ",
@@ -449,7 +449,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "Patient",
+                                "name": "patient",
                                 "sqlName": "tbl_Patient"
                             },
                             "description": "Table for the details of patients",
@@ -561,7 +561,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "PatientsGenders",
+                                "name": "patientsGenders",
                                 "sqlName": "tbl_PatientsGenders"
                             },
                             "description": " ",
@@ -618,7 +618,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "PatientUrgency",
+                                "name": "patientUrgency",
                                 "sqlName": "tbl_PatientUrgency"
                             },
                             "description": "",
@@ -675,7 +675,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "PatientsTreatmentLevels",
+                                "name": "patientsTreatmentLevels",
                                 "sqlName": "tbl_PatientsTreatmentLevels"
                             },
                             "description": " ",
@@ -732,7 +732,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "PatientsComment",
+                                "name": "patientsComment",
                                 "sqlName": "tbl_PatientsComment"
                             },
                             "description": "Table for the Patient's Comment ",
@@ -789,7 +789,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "PatientsPools",
+                                "name": "patientsPools",
                                 "sqlName": "tbl_PatientsPools"
                             },
                             "description": "Table for the details of patients-pools",
@@ -846,7 +846,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "PatientPreferenceTeachers",
+                                "name": "patientPreferenceTeachers",
                                 "sqlName": "tbl_PatientPreferenceTeachers"
                             },
                             "description": " ",
@@ -909,7 +909,7 @@
                     {
                         "MTDTable": {
                             "entityName": {
-                                "name": "PatientPreferenceDays",
+                                "name": "patientPreferenceDays",
                                 "sqlName": "tbl_PatientPreferenceDays"
                             },
                             "description": "",

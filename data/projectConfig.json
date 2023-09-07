@@ -3,24 +3,121 @@
         "projectname": "waiting-list",
         "url": "wl",
         "dbConfigFile": "./data/waiting-list.json",
-        "connected-entities":[
+        "connected_entities": [
             {
-                "entity":"swimmingPools",
-                "field":"id",
-                "subEntities":[
-                    {}
+                "entity": "swimmingPools",
+                "field": "id",
+                "subEntities": [
+                    "poolDaySchedule",
+                    "patientsPools"
                 ]
+            },
+            {
+                "entity": "genders",
+                "field": "id",
+                "subEntities": [
+                    "poolDaySchedule",
+                    "teachersPoolGenders",
+                    "patientsGenders"
+                ]
+            },
+            {
+                "entity": "poolDaySchedule",
+                "field": "id",
+                "subEntities": [
+                    "teacherSchedule",
+                    "patientPreferenceDays"
+                ]
+            },
+            {
+                "entity": "teachers",
+                "field": "id",
+                "subEntities": [
+                    "teachersPoolGenders",
+                    "teachersLevels",
+                    "patientPreferenceTeachers"
+                ]
+            },
+            {
+                "entity": "teachersPoolGenders",
+                "field": "id",
+                "subEntities": [
+                    "teacherSchedule"
+                ]
+            },
+            {
+                "entity": "teacherSchedule",
+                "field": "id",
+                "subEntities": []
+            },
+            {
+                "entity": "levels",
+                "field": "id",
+                "subEntities": [
+                    "teachersLevels",
+                    "patientsTreatmentLevels"
+                ]
+            },
+            {
+                "entity": "teachersLevels",
+                "field": "id",
+                "subEntities": []
+            },
+            {
+                "entity": "patient",
+                "field": "id",
+                "subEntities": [
+                    "patientsGenders",
+                    "patientUrgency",
+                    "patientsTreatmentLevels",
+                    "patientsComment",
+                    "patientsPools",
+                    "patientPreferenceTeachers",
+                    "patientPreferenceDays"
+                ]
+            },
+            {
+                "entity": "patientsGenders",
+                "field": "id",
+                "subEntities": []
+            },
+            {
+                "entity": "patientUrgency",
+                "field": "id",
+                "subEntities": []
+            },
+            {
+                "entity": "patientsTreatmentLevels",
+                "field": "id",
+                "subEntities": []
+            },
+            {
+                "entity": "patientsComment",
+                "field": "id",
+                "subEntities": []
+            },
+            {
+                "entity": "patientsPools",
+                "field": "id",
+                "subEntities": []
+            },
+            {
+                "entity": "patientPreferenceTeachers",
+                "field": "id",
+                "subEntities": []
+            },
+            {
+                "entity": "patientPreferenceDays",
+                "field": "id",
+                "subEntities": []
             }
         ]
     },
-
-
-    
     {
         "projectname": "rapidmed",
         "url": "rp",
         "dbConfigFile": "./data/rapid.json",
-        "connected-entities": [
+        "connected_entities": [
             {
                 "entity": "patients",
                 "field": "patID",
@@ -43,3 +140,7 @@
         "dbConfigFile": "./data/users.json"
     }
 ]
+
+
+
+

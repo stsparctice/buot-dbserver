@@ -3,6 +3,7 @@ const router = express.Router()
 const config = require('./config.json')
 const { getExampleByEntity } = require('./modules/readDataConfig')
 const { createpath, createrouter, createpathName, createAllObj, createFunctionsbyRouterPage } = require('./modules/functions')
+const {getOllObjectByEntitys}  = require ('./modules/getOllObjects')
 // const { readFile } = require('../modules/readfile')
 const path = require('path')
 
@@ -36,8 +37,8 @@ router.get('/getExample/:action/:nameEntity', async (req, res) => {
 
 router.get('/getOllObjectByEntitys/:entity',async (req,res)=>{
     try {
-        // const ans = await getOllObjectByEntitys(req.params.entity)
-        ans = 3
+        const ans = await getOllObjectByEntitys(req.params.entity)
+        
         res.status(201).send(ans)
 
     }

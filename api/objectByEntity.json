@@ -257,7 +257,7 @@
         "disabledDate": "disabledDate",
         "disableUser": "disableUser",
         "DisableReason": "DisableReason",
-        "TeachersPoolGenders": [
+        "teachersPoolGenders": [
             {
                 "id": "id",
                 "genderId": {
@@ -343,7 +343,7 @@
         "disabledDate": "disabledDate",
         "disableUser": "disableUser",
         "disableReason": "disableReason",
-        "TeacherSchedule": [
+        "teacherSchedule": [
             {
                 "id": "id",
                 "pooldayScheduleId": {
@@ -362,7 +362,7 @@
             }
         ]
     },
-    "TeacherSchedule": {
+    "teacherSchedule": {
         "id": "id",
         "teacherPoolGenderId": {
             "id": "id",
@@ -569,6 +569,8 @@
             "disableUser": "disabledUser",
             "disableReason": "disableReason"
         }]
+
+
     },
     "patientsGenders": {
         "id": "id",
