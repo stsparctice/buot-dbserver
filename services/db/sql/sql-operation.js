@@ -122,9 +122,11 @@ const read = async function (query = "", n) {
 const update = async function (database, entity, set, condition) {
      try {
           const alias = await getTableAlias(entity)
+          console.log({set});
           const sqlObject = parseObjectValuesToSQLTypeObject(set, entity.columns)
           const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
           const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
+          console.log({updateValues})
           const result = await getPool().request().query(`use ${database} UPDATE ${alias} SET ${updateValues} FROM ${entity.MTDTable.entityName.sqlName} AS ${alias} WHERE ${condition}`);
           if (result.rowsAffected.length>0 && result.rowsAffected[0]>0)
           {

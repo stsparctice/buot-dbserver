@@ -4,7 +4,7 @@ const { startupdate } = require('../modules/update');
 
 router.post('/deleteMany', express.json(), async (req, res) => {
     try {
-        const result = await startupdate({ project: res.project, entityName: req.body.entity, set: { ...req.body.set, Disabled: 1 }, condition: req.body.condition })
+        const result = await startupdate({ project: res.project, entityName: req.body.entity, set: { ...req.body.data, Disabled: 1 }, condition: req.body.condition })
         if (result)
             res.status(result.status).send(result)
         else {
@@ -18,7 +18,7 @@ router.post('/deleteMany', express.json(), async (req, res) => {
 
 router.post('/deleteOne', express.json(), async (req, res) => {
     try {
-        const result = await startupdate({ project: res.project, entityName: req.body.entity, set: { ...req.body.set, Disabled: 1 }, condition: req.body.condition })
+        const result = await startupdate({ project: res.project, entityName: req.body.entity, set: { ...req.body.data, Disabled: 1 }, condition: req.body.condition })
         if (result) {
             res.status(200).send(result)
         }
