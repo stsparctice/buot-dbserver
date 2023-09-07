@@ -1,52 +1,31 @@
 
 const config = require('../../data/waiting-list.json')
 const projectConfig = require('../../data/projectConfig.json')
-let end = {}
-// let d = {}
-let arr = []
-let x = 0
-let g = projectConfig.find(e =>
+let pro = projectConfig.find(e =>
     e.url == 'wl'
 )
-function getAllObjectByEntitys(entity) {
-    let fff = getObject(entity)
-    console.log({ fff })
-    let obj = {}
-    obj[entity] = fff
-    return obj
-}
-function getObject(entity) {
-    arr.push(entity)
-
-    d = {}
-    let a = config[0].db[0].collections
-    let ans = a.find(e =>
+function getAllObjectByEntitys(project, entity, obj) {
+    let collections = config[0].db[0].collections
+    let entityData = collections.find(e =>
         e.MTDTable.entityName.name == entity
     )
-    let b = ans.columns
-    b.forEach(e =>
-        d[e.name] = e.name
+    let columns = entityData.columns
+    columns.forEach(col =>
+        obj[col.name] = col.name
     )
-    let r = g.connected_entities.find(e =>
-        e.entity == entity)
-    console.log({ entity, d })
-    console.log(r.subEntities)
+    let connectedEntities = project.connected_entities.find(ce =>
+        ce.entity == entity)
+    console.log({ entity })
+    const { subEntities } = connectedEntities
 
-    for (let i = 0; i < r.subEntities.length; i++) {
-        // if (arr.length < 5) {
-            const newObject = getObject(r.subEntities[i])
-            d[r.subEntities[i]] = newObject
+    for (let i = 0; i < subEntities.length; i++) {
+        obj[subEntities[i]] = []
+        const newObject = getAllObjectByEntitys(project, subEntities[i], {})
+        obj[subEntities[i]].push(newObject)
 
-        }
-        // else{
-        //     return d
-        //  }
-        // console.log({ newObject })
-
-    // }
-    console.log("arr", arr);
-    return d
+    }
+    return obj
 }
-let tryfromNode = getAllObjectByEntitys('swimmingPools')
+let tryfromNode = getAllObjectByEntitys(pro,'patient', {})
 console.log({ tryfromNode })
 module.exports = { getAllObjectByEntitys }
