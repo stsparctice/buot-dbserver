@@ -25,10 +25,7 @@ async function getExampleByEntity(name){
         entity:name,
         values:values
     }
-    console.log("fffffffffffffffffffffffffffffffffffffffffffffffffffff",a.db);
     return example
-
-    // console.log("klklklklklklklk",newConfig.dbName=='Bubble');
 }
 
 module.exports = {getExampleByEntity}

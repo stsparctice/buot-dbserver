@@ -8,15 +8,173 @@
                     {
                         "MTDTable": {
                             "entityName": {
+                                "name": "priceLists",
+                                "sqlName": "PriceLists"
+                            },
+                            "description": "",
+                            "defaultColumn": "Name"
+                        },
+                        "columns": [
+                            {
+                                "name": "recordID",
+                                "sqlName": "RecordID",
+                                "type": "NUMERIC(18, 0) IDENTITY(1,1) NOT NULL PRIMARY KEY"
+                            },
+                            {
+                                "name": "number",
+                                "sqlName": "Number",
+                                "type": "INT NULL"
+                            },
+                            {
+                                "name": "name",
+                                "sqlName": "Name",
+                                "type": "NVARCHAR(50) NULL"
+                            },
+                            {
+                                "name": "sectionID",
+                                "sqlName": "SectionID",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "active",
+                                "sqlName": "Active",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "requireMemberCard",
+                                "sqlName": "RequireMemberCard",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "agreement",
+                                "sqlName": "Agreement",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "agreementPercent",
+                                "sqlName": "AgreementPercent",
+                                "type": "NVARCHAR(10) NULL"
+                            },
+                            {
+                                "name": "patID",
+                                "sqlName": "PatID",
+                                "type": "NUMERIC(18, 0)"
+                            },
+                            {
+                                "name": "grades",
+                                "sqlName": "Grades",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "cardLength",
+                                "sqlName": "CardLength",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "blockDiscountRequest",
+                                "sqlName": "BlockDiscountRequest",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "patID2",
+                                "sqlName": "PatID2",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "defaultDoctor",
+                                "sqlName": "DefaultDoctor",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "discount2nd",
+                                "sqlName": "Discount2nd",
+                                "type": "FLOAT NULL"
+                            },
+                            {
+                                "name": "discount3rd",
+                                "sqlName": "Discount3rd",
+                                "type": "FLOAT NULL"
+                            },
+                            {
+                                "name": "comission",
+                                "sqlName": "Comission",
+                                "type": "FLOAT NULL"
+                            },
+                            {
+                                "name": "creditsPL",
+                                "sqlName": "CreditsPL",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "labPL",
+                                "sqlName": "LabPL",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "minAge",
+                                "sqlName": "MinAge",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "maxAge",
+                                "sqlName": "MaxAge",
+                                "type": "NUMERIC(18, 0) NULL"
+                            },
+                            {
+                                "name": "maxDailySum",
+                                "sqlName": "MaxDailySum",
+                                "type": "NUMERIC(18, 2) NULL"
+                            },
+                            {
+                                "name": "basePL",
+                                "sqlName": "BasePL",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "noDiscount",
+                                "sqlName": "NoDiscount",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "anonymous",
+                                "sqlName": "Anonymous",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "isDefault",
+                                "sqlName": "IsDefault",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "blockSelection",
+                                "sqlName": "BlockSelection",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "clubOnly",
+                                "sqlName": "ClubOnly",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "oncePerYear",
+                                "sqlName": "OncePerYear",
+                                "type": "BIT NULL"
+                            },
+                            {
+                                "name": "rBSyncEnable",
+                                "sqlName": "RBSyncEnable",
+                                "type": "BIT NULL"
+                            }
+                        ]
+                    },
+                    {
+                        "MTDTable": {
+                            "entityName": {
                                 "name": "patients",
                                 "sqlName": "Patients"
                             },
-                            "description": {
-                                "description": ""
-                            },
-                            "databaseConnection": {
-                                "databaseConnection": ""
-                            }
+                            "description": "",
+                            "defaultColumn":"Id"
                         },
                         "columns": [
                             {
@@ -172,7 +330,7 @@
                             {
                                 "name": "priceList",
                                 "sqlName": "[PriceList]",
-                                "type": "INT NULL FOREIGN KEY([PriceList]) REFERENCES PriceLists(Number)"
+                                "type": "INT NULL "
                             },
                             {
                                 "name": "workPhoneNote",
@@ -846,170 +1004,8 @@
                                 "type": "NUMERIC(18, 0) IDENTITY(1,1) NOT NULL PRIMARY KEY"
                             }
                         ]
-                    },
-                    {
-                        "MTDTable": {
-                            "entityName": {
-                                "name": "priceLists",
-                                "sqlName": "PriceLists"
-                            },
-                                "description": "",
-                            "defaultColumn": "Name"
-
-                        },
-                        "columns": [
-                            {
-                                "name": "recordID",
-                                "sqlName": "RecordID",
-                                "type": "NUMERIC(18, 0) IDENTITY(1,1) NOT NULL PRIMARY KEY"
-                            },
-                            {
-                                "name": "number",
-                                "sqlName": "Number",
-                                "type": "INT NULL"
-                            },
-                            {
-                                "name": "name",
-                                "sqlName": "Name",
-                                "type": "NVARCHAR(50) NULL"
-                            },
-                            {
-                                "name": "sectionID",
-                                "sqlName": "SectionID",
-                                "type": "NUMERIC(18, 0) NULL"
-                            },
-                            {
-                                "name": "active",
-                                "sqlName": "Active",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "requireMemberCard",
-                                "sqlName": "RequireMemberCard",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "agreement",
-                                "sqlName": "Agreement",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "agreementPercent",
-                                "sqlName": "AgreementPercent",
-                                "type": "NVARCHAR(10) NULL"
-                            },
-                            {
-                                "name": "patID",
-                                "sqlName": "PatID",
-                                "type": "NUMERIC(18, 0) NULL FOREIGN KEY(PatId) REFERENCES Patients([PatID])"
-                            },
-                            {
-                                "name": "grades",
-                                "sqlName": "Grades",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "cardLength",
-                                "sqlName": "CardLength",
-                                "type": "NUMERIC(18, 0) NULL"
-                            },
-                            {
-                                "name": "blockDiscountRequest",
-                                "sqlName": "BlockDiscountRequest",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "patID2",
-                                "sqlName": "PatID2",
-                                "type": "NUMERIC(18, 0) NULL"
-                            },
-                            {
-                                "name": "defaultDoctor",
-                                "sqlName": "DefaultDoctor",
-                                "type": "NUMERIC(18, 0) NULL"
-                            },
-                            {
-                                "name": "discount2nd",
-                                "sqlName": "Discount2nd",
-                                "type": "FLOAT NULL"
-                            },
-                            {
-                                "name": "discount3rd",
-                                "sqlName": "Discount3rd",
-                                "type": "FLOAT NULL"
-                            },
-                            {
-                                "name": "comission",
-                                "sqlName": "Comission",
-                                "type": "FLOAT NULL"
-                            },
-                            {
-                                "name": "creditsPL",
-                                "sqlName": "CreditsPL",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "labPL",
-                                "sqlName": "LabPL",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "minAge",
-                                "sqlName": "MinAge",
-                                "type": "NUMERIC(18, 0) NULL"
-                            },
-                             {
-                                "name": "maxAge",
-                                "sqlName": "MaxAge",
-                                "type": "NUMERIC(18, 0) NULL"
-                            },
-                            {
-                                "name": "maxDailySum",
-                                "sqlName": "MaxDailySum",
-                                "type": "NUMERIC(18, 2) NULL"
-                            },
-                            {
-                                "name": "basePL",
-                                "sqlName": "BasePL",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "noDiscount",
-                                "sqlName": "NoDiscount",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "anonymous",
-                                "sqlName": "Anonymous",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "isDefault",
-                                "sqlName": "IsDefault",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "blockSelection",
-                                "sqlName": "BlockSelection",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "clubOnly",
-                                "sqlName": "ClubOnly",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "oncePerYear",
-                                "sqlName": "OncePerYear",
-                                "type": "BIT NULL"
-                            },
-                            {
-                                "name": "rBSyncEnable",
-                                "sqlName": "RBSyncEnable",
-                                "type": "BIT NULL"
-                            }
-                        ]}
-                        
+                    }
+                
                 ]
             }
         ]

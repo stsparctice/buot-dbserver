@@ -5,7 +5,6 @@ const { getDBConfig } = require('./project.config')
 
 
 function readConfigFile(configUrl) {
-    console.log({ configUrl })
     const response = fs.readFileSync(configUrl)
     return JSON.parse(response)
 }
@@ -23,16 +22,16 @@ function getEntityConfigData({ project, entityName }) {
     return entity
 }
 
+
 function getEntityFromConfig(configUrl, entityName) {
     const { sql, mongo } = getEntitiesFromConfig(configUrl)
     if (sql.length > 0) {
         const mapCollection = sql.map(({ dbName, db }) =>  db.map(({collections})=>collections.map(c => ({ dbName, ...c }))))
         const entityList = mapCollection.reduce((list, col)=>list=[...list, ...col.reduce((l, c)=>l=[...l, ...c], [])], [])
-        console.log("!!!!!!!!!!!",entityName);
-        const tables = entityList.filter(c => c.MTDTable.entityName.name === entityName)
-        let existEntity = tables.some(t => t.MTDTable.entityName.name === entityName)
-        if (existEntity) {
-            let entityDB = tables.find(t => t.MTDTable.entityName.name === entityName)
+        const tables = entityList.filter(c => c.MTDTable.entityName.name === entityName||c.MTDTable.entityName.sqlName === entityName)
+        // let existEntity = tables.some(t => t.MTDTable.entityName.name === entityName)
+        if (tables.length>0) {
+            let entityDB = tables.find(t => t.MTDTable.entityName.name === entityName||t.MTDTable.entityName.sqlName === entityName)
             return { entity: entityDB, type: DBTypes.SQL }
         }
     }
