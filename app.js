@@ -12,9 +12,9 @@ const update_db = require('./routers/update');
 const api = require('./api/routerApi');
 const { getProject } = require('./utils/middlewares/url');
 
-app.use(cors());
-
-app.use(getProject());
+app.use(cors())
+app.use(express.json())
+app.use(getProject())
 
 app.use('/:project/create', create_db);
 app.use('/:project/delete', delete_db);

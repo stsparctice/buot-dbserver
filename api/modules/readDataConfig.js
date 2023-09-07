@@ -40,12 +40,9 @@ let example={}
         }
     }
     if(action == "read"){
-        console.log("connect",action);
         let a = exampleConfig.find(e =>
             e.nameEntity == name
         )
-        // לשאול את המורה אם זה טוב שבכל צהקונדישנים הדוגמא לתנאי יהיה אידי כי תמיד יש את זה
-        console.log("kkkkkk",a.data.example1.Id);
     }
     console.log("example");
    return example;

@@ -56,28 +56,20 @@ async function createpathName(fileName) {
     return pathNameArr;
 }
 async function createFunctionsbyRouterPage(fileName) {
-    console.log("lll");
     let pathNameArr = await createpathName(fileName);
-    console.log("now", pathNameArr);
     // const a = path.join(__dirname, '../../routers/create.js')  
     const a = path.join(__dirname, `../../${pathNameArr[0]}.js`)
 
     const ans = fs.readFileSync(a)
     let ans2 = ans.toString()
     const arr = ans.toString().split(';')
-    // console.log("ggggggg",ans);
     return ans2
 }
 
 async function createAllObj(fileName,name) {
     let pathArr = await createpath(fileName);
-    console.log("pathArr", pathArr);
-
     let routerArr = await createrouter(fileName);
-    console.log("routerArr", routerArr);
-
     let pathNameArr = await createpathName(fileName);
-    console.log("pathNameArr", pathNameArr);
   
     let allArr = [];
     let a = []
@@ -92,14 +84,12 @@ async function createAllObj(fileName,name) {
         a=[]
         }
     for (let i = 0; i < pathArr.length; i++) {
-        console.log("start",All[i])
         allArr.push({ path: pathArr[i], router: routerArr[i], pathName: pathNameArr[i], apiRequest: All[i].one})
     } 
     allArr.forEach(e=>{
         e.router.includes(`${name}`)?
        AllByRouter.push(e):''
  })
-    console.log("bbbbbbbbbb",AllByRouter);
     return AllByRouter
 }
 module.exports = { createpath, createrouter, createpathName, createAllObj, createFunctionsbyRouterPage }
