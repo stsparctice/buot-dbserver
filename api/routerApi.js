@@ -3,7 +3,7 @@ const router = express.Router()
 const config = require('./config.json')
 const { getExampleByEntity } = require('./modules/readDataConfig')
 const { createpath, createrouter, createpathName, createAllObj, createFunctionsbyRouterPage } = require('./modules/functions')
-const {getOllObjectByEntitys}  = require ('./modules/getOllObjects')
+const {getAllObjectByEntitys}  = require ('./modules/getAllObjects')
 // const { readFile } = require('../modules/readfile')
 const path = require('path')
 
@@ -21,6 +21,7 @@ router.get('/readsapi/:name', async (req, res) => {
 router.get('/getExample/:action/:nameEntity', async (req, res) => {
     try {
         const ans = await getExampleByEntity(req.params.action, req.params.nameEntity)
+        
         res.status(201).send(ans)
 
     }
@@ -29,10 +30,10 @@ router.get('/getExample/:action/:nameEntity', async (req, res) => {
     }
 })
 
-router.get('/getOllObjectByEntitys/:entity',async (req,res)=>{
+router.get('/getOllObjectByEntitys/:entity', (req,res)=>{
     try {
-        const ans = await getOllObjectByEntitys(req.params.entity)
-        
+        const ans =  getAllObjectByEntitys(req.params.entity)
+        console.log({ans})
         res.status(201).send(ans)
 
     }
