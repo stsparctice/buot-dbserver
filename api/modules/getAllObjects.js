@@ -3,6 +3,7 @@ const config = require('../../data/waiting-list.json')
 const projectConfig = require('../../data/projectConfig.json')
 let end = {}
 // let d = {}
+let arr = []
 let x = 0
 let g = projectConfig.find(e =>
     e.url == 'wl'
@@ -10,11 +11,13 @@ let g = projectConfig.find(e =>
 function getAllObjectByEntitys(entity) {
     let fff = getObject(entity)
     console.log({ fff })
-    const obj = {}
+    let obj = {}
     obj[entity] = fff
     return obj
 }
 function getObject(entity) {
+    arr.push(entity)
+
     d = {}
     let a = config[0].db[0].collections
     let ans = a.find(e =>
@@ -28,14 +31,20 @@ function getObject(entity) {
         e.entity == entity)
     console.log({ entity, d })
     console.log(r.subEntities)
-    for (let i = 0; i < r.subEntities.length; i++) {
-        const newObject = getObject(r.subEntities[i])
-        x++
-        console.log("x", x);
-        console.log({ newObject })
-        d[r.subEntities[i]] = newObject
 
-    }
+    for (let i = 0; i < r.subEntities.length; i++) {
+        // if (arr.length < 5) {
+            const newObject = getObject(r.subEntities[i])
+            d[r.subEntities[i]] = newObject
+
+        }
+        // else{
+        //     return d
+        //  }
+        // console.log({ newObject })
+
+    // }
+    console.log("arr", arr);
     return d
 }
 let tryfromNode = getAllObjectByEntitys('swimmingPools')
