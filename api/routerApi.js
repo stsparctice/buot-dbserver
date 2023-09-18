@@ -3,14 +3,13 @@ const router = express.Router()
 const config = require('./config.json')
 const { getExampleByEntity } = require('./modules/readDataConfig')
 const { createpath, createrouter, createpathName, createAllObj, createFunctionsbyRouterPage } = require('./modules/functions')
-const {getAllObjectByEntitys}  = require ('./modules/getAllObjects')
+const {getObject}  = require ('./modules/getAllObjects')
 // const { readFile } = require('../modules/readfile')
 const path = require('path')
 
 router.get('/readsapi/:name', async (req, res) => {
    
     try {
-
         const filepath = path.join(__dirname, '../app.js')    // const response =await readFile(req.params.filename)
         const ans = await createAllObj(filepath,req.params.name);
             res.status(201).send(ans)
@@ -30,9 +29,10 @@ router.get('/getExample/:action/:nameEntity', async (req, res) => {
     }
 })
 
-router.get('/getOllObjectByEntitys/:entity', (req,res)=>{
+router.get('/getAllObjectByEntitys/:entity', (req,res)=>{
     try {
-        const ans =  getAllObjectByEntitys(req.params.entity)
+       
+        const ans =  getObject(res.project, req.params.entity)
         console.log({ans})
         res.status(201).send(ans)
 

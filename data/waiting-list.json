@@ -12,7 +12,7 @@
                                 "sqlName": "tbl_SwimmingPools"
                             },
                             "description": "Table for the details of swimming-pools",
-                            "defaultColumn": "name"
+                            "defaultColumn": "Name"
                         },
                         "columns": [
                             {
@@ -105,6 +105,40 @@
                                 "name": "maxAge2",
                                 "sqlName": "MaxAge2",
                                 "type": "INT"
+                            }, 
+                            {
+                                "name": "color",
+                                "sqlName": "Color",
+                                "type": "NVARCHAR(50) NOT NULL"
+                            },
+                            {
+                                "name": "addedDate",
+                                "sqlName": "AddedDate",
+                                "type": "DATETIME NOT NULL"
+                            },{
+                                "name": "userName",
+                                "sqlName": "userName",
+                                "type": "NVARCHAR(20) Not Null"
+                            },
+                            {
+                                "name": "disabled",
+                                "sqlName": "Disabled",
+                                "type": "Bit Not Null"
+                            },
+                            {
+                                "name": "disabledDate",
+                                "sqlName": "DisabledDate",
+                                "type": "DATETIME"
+                            },
+                            {
+                                "name": "disableUser",
+                                "sqlName": "DisableUser",
+                                "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "disableReason",
+                                "sqlName": "DisableReason",
+                                "type": "NVARCHAR(20) NULL"
                             }
                         ]
                     },
@@ -126,10 +160,10 @@
                             {
                                 "name": "swimmingPoolId",
                                 "sqlName": "SwimmingPoolId",
-                                "type": "INT NOT NULL FOREIGN KEY(SwimmingPoolId) REFERENCES tbl_SwimmingPools(id)"
+                                "type": "INT NOT NULL FOREIGN KEY(SwimmingPoolId) REFERENCES tbl_SwimmingPools(Id)"
                             },
                             {
-                                "name": "Day",
+                                "name": "day",
                                 "sqlName": "Day",
                                 "type": "INT NOT NULL"
                             },
@@ -144,12 +178,12 @@
                                 "type": "DATETIME Not Null"
                             },
                             {
-                                "name": "EndHour",
+                                "name": "endHour",
                                 "sqlName": "EndHour",
                                 "type": "DATETIME Not Null"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME Not Null"
                             },
@@ -253,7 +287,7 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
@@ -263,12 +297,12 @@
                                 "type": "INT NOT NULL FOREIGN KEY(TeacherId) REFERENCES tbl_Teachers(Id)"
                             },
                             {
-                                "name": "GenderId",
+                                "name": "genderId",
                                 "sqlName": "GenderId",
                                 "type": "INT NOT NULL FOREIGN KEY(GenderId) REFERENCES tbl_Genders(Id)"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME NOT NULL"
                             },
@@ -310,17 +344,17 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "TeacherPoolGenderId",
+                                "name": "teacherPoolGenderId",
                                 "sqlName": "TeacherPoolGenderId",
                                 "type": "INT NOT NULL FOREIGN KEY(TeacherPoolGenderId) REFERENCES tbl_TeachersPoolGenders(Id)"
                             },
                             {
-                                "name": "PooldayScheduleId",
+                                "name": "pooldayScheduleId",
                                 "sqlName": "PooldayScheduleId",
                                 "type": "INT NOT NULL FOREIGN KEY(PooldayScheduleId) REFERENCES tbl_PoolDaySchedule(Id)"
                             },
@@ -330,12 +364,12 @@
                                 "type": "DATETIME NOT NULL"
                             },
                             {
-                                "name": "EndHour",
+                                "name": "endHour",
                                 "sqlName": "EndHour",
                                 "type": "DATETIME NOT NULL"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME NOT NULL"
                             },
@@ -377,7 +411,7 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
@@ -387,12 +421,12 @@
                                 "type": "NVARCHAR(50) NOT NULL"
                             },
                             {
-                                "name": "Name",
+                                "name": "name",
                                 "sqlName": "Name",
                                 "type": "NVARCHAR(50) UNIQUE NOT NULL"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME NOT NULL"
                             },
@@ -429,12 +463,12 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "TeacherId",
+                                "name": "teacherId",
                                 "sqlName": "TeacherId",
                                 "type": "INT NOT NULL FOREIGN KEY(TeacherId) REFERENCES tbl_Teachers(Id)"
                             },
@@ -444,7 +478,7 @@
                                 "type": "INT NOT NULL FOREIGN KEY(LevelId) REFERENCES tbl_Levels(Id)"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME"
                             },
@@ -486,72 +520,72 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "IdentityCard",
-                                "sqlName": "IdentityCard",
+                                "name": "identityNumber",
+                                "sqlName": "IdentityNumber",
                                 "type": "INT IDENTITY NOT NULL"
                             },
                             {
-                                "name": "FirstName",
+                                "name": "firstName",
                                 "sqlName": "FirstName",
                                 "type": "NVARCHAR(20) NOT NULL"
                             },
                             {
-                                "name": "LastName",
+                                "name": "lastName",
                                 "sqlName": "LastName",
                                 "type": "NVARCHAR(20) NOT NULL"
                             },
                             {
-                                "name": "Phone1",
+                                "name": "phone1",
                                 "sqlName": "Phone1",
                                 "type": "NVARCHAR(20) NOT NULL"
                             },
                             {
-                                "name": "Phone2",
+                                "name": "phone2",
                                 "sqlName": "Phone2",
                                 "type": "NVARCHAR(20)"
                             },
                             {
-                                "name": "BirthDate",
+                                "name": "birthDate",
                                 "sqlName": "BirthDate",
                                 "type": "DATETIME NOT NULL"
                             },
                             {
-                                "name": "Sex",
+                                "name": "sex",
                                 "sqlName": "Sex",
                                 "type": "INT NOT NULL"
                             },
                             {
-                                "name": "PriceList",
+                                "name": "priceList",
                                 "sqlName": "PriceList",
                                 "type": "INT"
                             },
                             {
-                                "name": "Evaluated",
+                                "name": "evaluated",
                                 "sqlName": "Evaluated",
                                 "type": "BIT NOT NULL"
                             },
                             {
-                                "name": "LastEvaluationDate",
+                                "name": "lastEvaluationDate",
                                 "sqlName": "LastEvaluationDate",
                                 "type": "DATETIME NOT NULL" ,"?":""
                             },
                             {
-                                "name": "NoEvaluation",
+                                "name": "noEvaluation",
                                 "sqlName": "NoEvaluation",
                                 "type": "BIT"
                             },
                             {
-                                "name": "NoEvaluationUser",
+                                "name": "noEvaluationUser",
                                 "sqlName": "NoEvaluationUser",
                                 "type": "NVARCHAR(30)"
                             },
                             {
-                                "name": "SendMedDocumentsDate",
+                                "name": "sendMedDocumentsDate",
                                 "sqlName": "SendMedDocumentsDate",
                                 "type": "DATETIME NOT NULL"
                             },
@@ -598,7 +632,7 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
@@ -655,22 +689,22 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "UrgencyNumber",
+                                "name": "urgencyNumber",
                                 "sqlName": "UrgencyNumber",
                                 "type": "INT NOT NULL"
                             },
                             {
-                                "name": "PatientId",
+                                "name": "patientId",
                                 "sqlName": "PatientId",
                                 "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME NOT NULL"
                             },
@@ -712,7 +746,7 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
@@ -722,12 +756,12 @@
                                 "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
                             },
                             {
-                                "name": "TreatmentLevelId",
+                                "name": "treatmentLevelId",
                                 "sqlName": "TreatmentLevelId",
                                 "type": "INT NOT NULL FOREIGN KEY(TreatmentLevelId) REFERENCES tbl_Levels(Id)"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME"
                             },
@@ -769,7 +803,7 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
@@ -779,12 +813,12 @@
                                 "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
                             },
                             {
-                                "name": "Comment",
+                                "name": "comment",
                                 "sqlName": "Comment",
                                 "type": "NVARCHAR(100)"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME"
                             },
@@ -826,22 +860,22 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "PatientId",
+                                "name": "patientId",
                                 "sqlName": "PatientId",
                                 "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
                             },
                             {
-                                "name": "PoolId",
+                                "name": "poolId",
                                 "sqlName": "PoolId",
                                 "type": "INT NOT NULL FOREIGN KEY(PoolId) REFERENCES tbl_SwimmingPools(Id)"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME NOT NULL"
                             },
@@ -883,28 +917,28 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "PatientId",
+                                "name": "patientId",
                                 "sqlName": "PatientId",
                                 "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
                             },
                             {
-                                "name": "TeacherId",
+                                "name": "teacherId",
                                 "sqlName": "TeacherId",
                                 "type": "INT NOT NULL FOREIGN KEY(TeacherId) REFERENCES tbl_Teachers(Id)"
                             },
                             {
-                                "name": "Preference",
+                                "name": "preference",
                                 "sqlName": "Preference",
                                 "values": "(1,-1)",
                                 "type": "Int Not Null"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME NOT NULL"
                             },
@@ -946,32 +980,32 @@
                         },
                         "columns": [
                             {
-                                "name": "Id",
+                                "name": "id",
                                 "sqlName": "Id",
                                 "type": "INT IDENTITY PRIMARY KEY NOT NULL"
                             },
                             {
-                                "name": "PatientId",
+                                "name": "patientId",
                                 "sqlName": "PatientId",
                                 "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
                             },
                             {
-                                "name": "PoolDayScheduleId",
+                                "name": "poolDayScheduleId",
                                 "sqlName": "PoolDayScheduleId",
                                 "type": "INT NOT NULL FOREIGN KEY(PoolDayScheduleId) REFERENCES tbl_PoolDaySchedule(Id)"
                             },
                             {
-                                "name": "StartHour",
+                                "name": "startHour",
                                 "sqlName": "StartHour",
                                 "type": "DATETIME NULL"
                             },
                             {
-                                "name": "EndHour",
+                                "name": "endHour",
                                 "sqlName": "EndHour",
                                 "type": "DATETIME NULL"
                             },
                             {
-                                "name": "AddedDate",
+                                "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": "DATETIME NULL"
                             },

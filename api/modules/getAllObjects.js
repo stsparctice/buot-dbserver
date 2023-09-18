@@ -1,13 +1,26 @@
 
 const config = require('../../data/waiting-list.json')
 const projectConfig = require('../../data/projectConfig.json')
-let pro = projectConfig.find(e =>
-    e.url == 'wl'
-)
-function getAllObjectByEntitys(project, entity, obj) {
+function getProjectConfig(project) {
+
+    let config = projectConfig.find(e =>
+        e.url == project
+    )
+    return config
+}
+
+function getObject(project, entity)
+{
+    const config = getProjectConfig(project)
+    let result = {}
+    result[entity] = getAllObjectByEntities(config, entity, {})
+    return result;
+}
+
+function getAllObjectByEntities(project, entity, obj) {
     let collections = config[0].db[0].collections
     let entityData = collections.find(e =>
-        e.MTDTable.entityName.name == entity
+        e.MTDTable.entityName.name.toLocaleLowerCase() == entity.toLocaleLowerCase()
     )
     let columns = entityData.columns
     columns.forEach(col =>
@@ -20,12 +33,11 @@ function getAllObjectByEntitys(project, entity, obj) {
 
     for (let i = 0; i < subEntities.length; i++) {
         obj[subEntities[i]] = []
-        const newObject = getAllObjectByEntitys(project, subEntities[i], {})
+        const newObject = getAllObjectByEntities(project, subEntities[i], {})
         obj[subEntities[i]].push(newObject)
 
     }
     return obj
 }
-let tryfromNode = getAllObjectByEntitys(pro,'patient', {})
-console.log({ tryfromNode })
-module.exports = { getAllObjectByEntitys }
+
+module.exports = { getAllObjectByEntities, getProjectConfig , getObject}
