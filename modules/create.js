@@ -66,7 +66,6 @@ async function createTranzaction({ project, entityName, value }) {
     try {
         // database, entity, columns, values, tran
         const entity = getEntityConfigData({ project, entityName })
-
         let tran = []
         let finalyValues = {}
         for (const key in value) {
@@ -75,7 +74,6 @@ async function createTranzaction({ project, entityName, value }) {
                 obj[key] = value[key]
                 tran = { ...tran, ...obj }
             }
-
             else {
                 let obj = {}
                 obj[key] = value[key]
@@ -89,7 +87,6 @@ async function createTranzaction({ project, entityName, value }) {
             const items = await createTrac({ database: entity.dbName, entity: entity.MTDTable.entityName.sqlName, columns: columns, values: values, tran: tran })
             return items
         }
-
     }
     catch (error) {
 

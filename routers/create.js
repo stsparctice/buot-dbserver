@@ -34,7 +34,9 @@ router.post('/createMany', express.json(), async (req, res) => {
 
 router.post('/createTran', express.json(), async (req, res) => {
     try {
+        console.log(res.project);
         const result = await createTranzaction({ project: res.project, entityName: req.body.entity, value: req.body.values })
+        console.log("result",result);
         if (result) {
             res.status(201).send({ result: result })
         }
