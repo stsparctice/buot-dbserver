@@ -24,23 +24,20 @@ function getTableAlias(table) {
 function getPrimaryKeyField(table) {
     let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))
     if (col) {
-        return col.sqlName
+        return {name: col.name, sqlName: col.sqlName}
     }
     return undefined
 }
 
 function getTableColumns(entity, columns = []) {
     try {
-        // const table = getTableFromConfig(configUrl, tablename)
         let cols
-        if (columns.length != 0){
-
+        if (columns.length != 0) {
             cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
         }
-        else{
+        else {
             cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
-            console.log("cols: ",cols);
-
+            console.log("cols: ", cols);
         }
         return cols
     }
@@ -73,20 +70,25 @@ function removeIdentityDataFromObject(entity, object) {
 }
 
 function buildSqlCondition(entity, condition) {
+    console.log({ condition })
     const tablealias = getTableAlias(entity)
     let sqlCondition = ''
     if (condition) {
         const columns = getTableColumns(entity, Object.keys(condition))
-        columnNames = columns.map(({ name }) => name)
-        if (Object.keys(condition).every(c => columnNames.includes(c))) {
+        const entityKeys = Object.keys(condition).filter(key => columns.find(({ name, sqlName }) => key === name || key === sqlName))
+        if (entityKeys.length > 0) {
             const entries = Object.entries(condition)
+            console.log({ entries })
             const sqlNames = entries.map(col => ({ key: col[0], sqlCol: columns.find(c => c.name === col[0]).sqlName, type: columns.find(c => c.name === col[0]).type, value: col[1] }))
 
             const conditionList = sqlNames.map(c =>
                 `${tablealias}.${c.sqlCol} =  ${parseNodeToSql({ type: c.type, value: c.value })}`
             )
+            console.log({ conditionList })
             sqlCondition = conditionList.join(' AND ')
+            console.log({ sqlCondition })
         }
+
     }
     else {
         sqlCondition = "1 = 1"
@@ -109,7 +111,7 @@ function getPKConnectionBetweenEntities(mainEntity, condition) {
 }
 
 function getLeftJoinBetweenEntities(mainEntity, subEntity) {
-    const mainPrimaryKey = getPrimaryKeyField(mainEntity)
+    const mainPrimaryKey = getPrimaryKeyField(mainEntity).sqlName
     const referenceString = `REFERENCES ${mainEntity.MTDTable.entityName.sqlName}(${mainPrimaryKey})`
     const tableAlias = getTableAlias(mainEntity)
     const joincolumn = subEntity.columns.filter(({ type }) => type.includes('FOREIGN KEY') && type.includes(referenceString))
@@ -177,12 +179,12 @@ const getSqlQueryFromConfig = (configUrl, entity, condition = {}, fields = [], j
 
     if (condition.connectEntitiesCondition) {
         conditionList.push(condition.connectEntitiesCondition)
-         condition = deleteKeysFromObject(condition, ['connectEntitiesCondition'])
+        condition = deleteKeysFromObject(condition, ['connectEntitiesCondition'])
     }
-   
+
     // delete condition.connectEntitiesCondition
     if (Object.keys(condition).length > 0) {
-
+        console.log({ condition })
         conditionList.push(buildSqlCondition(entity, condition))
     }
     else {

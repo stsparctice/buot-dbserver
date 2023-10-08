@@ -6,7 +6,7 @@ const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
 const create = async function (entity, columns, values) {
      try {
-          let primarykey = getPrimaryKeyField(entity)
+          let primarykey = getPrimaryKeyField(entity).sqlName
 
           const result = await getPool().request().query(`use ${entity.dbName} INSERT INTO ${entity.MTDTable.entityName.sqlName} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`);
           if (result)
@@ -52,7 +52,7 @@ const poolConfig = () => ({
 const createTrac = async function ({ database, entity, columns, values, tran }) {
      try {
           console.log("____createTran", { database, entity, columns, values, tran });
-          let primarykey = getPrimaryKeyField(entity)
+          let primarykey = getPrimaryKeyField(entity).sqlName
           let connectionPool = new sql.ConnectionPool(poolConfig());
           await connectionPool.connect();
 
@@ -79,7 +79,7 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
                     })
                     console.log(tran[key], "tran[key]");
                     const types = getSqlTableColumnsType(entity)
-                    primarykey = getPrimaryKeyField(entity)
+                    primarykey = getPrimaryKeyField(entity).sqlName
                     columns = createArrColumns(Object.keys(tran[key])).join(',')
                     console.log(columns, "__co");
                     values = parseObjectValuesToSQLTypeArray(tran[key], types).join(',')

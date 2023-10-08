@@ -39,7 +39,7 @@ async function startReadMany({ project, entityName, condition }) {
     }
 }
 
-async function startReadOne({ project, entityName, condition, entitiesFields }) {
+async function startReadOne({ project, entityName, condition, entitiesFields }, exist) {
     try {
         const projectConfigUrl = getDBConfig(project)
         const { entity, type } = getEntityConfigData({ project, entityName })
@@ -48,11 +48,14 @@ async function startReadOne({ project, entityName, condition, entitiesFields }) 
             let n = { start: 0, end: 1 }
             if (type === DBTypes.SQL) {
                 if (condition.key) {
-                    condition[primaryKey] = condition.key
-                    condition = deleteKeysFromObject(condition, [key])
-                    // delete condition.key
+                    condition[primaryKey.name] = condition.key
+
+                    condition = deleteKeysFromObject(condition, ['key'])
+                    console.log({condition})
                 }
                 const items = await readSql(projectConfigUrl, project, entity, condition, n, entitiesFields)
+                if (exist)
+                    return items.length > 0
                 return items[0]
             }
 
@@ -60,6 +63,7 @@ async function startReadOne({ project, entityName, condition, entitiesFields }) 
 
     }
     catch (error) {
+        console.log({ error })
         throw error
     }
 }
@@ -84,7 +88,7 @@ async function readSql(configUrl, project, entity, condition = {}, n, entitiesFi
                 if (entityFields.entity !== getTableAlias(entity)) {
                     let entityName = entityFields.entity
                     const subEntity = getEntityConfigData({ project, entityName })
-                    const primaryKey = getPrimaryKeyField(subEntity.entity)
+                    const primaryKey = getPrimaryKeyField(subEntity.entity).sqlName
                     const connectEntitiesCondition = getPKConnectionBetweenEntities(entity, condition)
                     const subCondition = { connectEntitiesCondition }
                     n.end = n.start + 50
@@ -97,7 +101,7 @@ async function readSql(configUrl, project, entity, condition = {}, n, entitiesFi
 
                 }
                 if (entityFields.entity === getTableAlias(entity)) {
-                    const primaryKey = getPrimaryKeyField(entity)
+                    const primaryKey = getPrimaryKeyField(entity).sqlName
                     n.orderBy = `${getTableAlias(entity)}.${primaryKey}`
 
                     values = await getValuesFromSQL(configUrl, entity, n, condition, entityFields.fields)
@@ -109,7 +113,7 @@ async function readSql(configUrl, project, entity, condition = {}, n, entitiesFi
             return mappedObject
         }
         else {
-            const primaryKey = getPrimaryKeyField(entity)
+            const primaryKey = getPrimaryKeyField(entity).sqlName
             n.orderBy = `${getTableAlias(entity)}.${primaryKey}`
             values = await getValuesFromSQL(configUrl, entity, n, condition)
             const items = arrangeFKObjects(values)
