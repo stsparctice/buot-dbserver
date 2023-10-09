@@ -237,12 +237,27 @@
                             {
                                 "name": "phone",
                                 "sqlName": "Phone",
-                                "type": "NVARCHAR(10)"
+                                "type": "NVARCHAR(15)"
                             },
                             {
                                 "name": "email",
                                 "sqlName": "Email",
-                                "type": "NVARCHAR(30)"
+                                "type": "NVARCHAR(40)"
+                            },
+                            {
+                                "name": "address",
+                                "sqlName": "Address",
+                                "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "city",
+                                "sqlName": "City",
+                                "type": "NVARCHAR(50)"
+                            },
+                            {
+                                "name": "annotation",
+                                "sqlName": "Annotation",
+                                "type": "NVARCHAR(max)"
                             },
                             {
                                 "name": "addedDate",
