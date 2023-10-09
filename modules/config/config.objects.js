@@ -25,7 +25,6 @@ const convertToSQLString = (value) => {
 const types = {
 
     NVARCHAR: {
-
         typeNodeName: 'string',
         parseNodeTypeToSqlType: (value) => {
             return convertToSQLString(value)
