@@ -24,7 +24,7 @@ function getTableAlias(table) {
 function getPrimaryKeyField(table) {
     let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))
     if (col) {
-        return {name: col.name, sqlName: col.sqlName}
+        return { name: col.name, sqlName: col.sqlName }
     }
     return undefined
 }
@@ -47,7 +47,7 @@ function getTableColumns(entity, columns = []) {
 };
 
 function parseNodeToSql({ type, value }) {
-    const parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
+    const parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1).toUpperCase(), '')]
     if (!parse) {
         let error = {}
         error.description = `Type: ${type} does not exist.`
@@ -214,7 +214,7 @@ function parseObjectValuesToSQLTypeObject(obj, tabledata) {
         for (let i = 0; i < keys.length; i++) {
             let { type, sqlName } = tabledata.find(td => td.name.trim().toLowerCase() == keys[i].trim().toLowerCase())
             if (obj[keys[i]] != null) {
-                const parse = types[type.split(' ')[0].toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
+                const parse = types[type.split(' ')[0].toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1).toUpperCase(), '')]
                 if (!parse) {
                     let error = {}
                     error.description = `Type: ${type} does not exist.`
@@ -241,7 +241,7 @@ function parseObjectValuesToSQLTypeArray(obj, tabledata) {
         for (let i = 0; i < keys.length; i++) {
             if (obj[keys[i]] != null) {
                 let type = tabledata.find(td => td.name.trim().toLowerCase() == keys[i].trim().toLowerCase()).type
-                const parse = types[type.split(' ')[0].toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
+                const parse = types[type.split(' ')[0].toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1).toUpperCase(), '')]
                 if (!parse) {
                     let error = {}
                     error.description = `Type: ${type} does not exist.`
@@ -268,7 +268,7 @@ function parseSQLTypeForColumn(col, tableName) {
     let type = tabledata.find(td => td.sqlName.trim().toLowerCase() == col.name.trim().toLowerCase()).type
     let parse
     try {
-        parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1), '')]
+        parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1).toUpperCase(), '')]
     }
     catch {
         let error = notifictaions.find(n => n.status == 513)
