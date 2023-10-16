@@ -3,7 +3,7 @@ const { getPool } = require('../../services/db/sql/sql-connection');
 const { getTableKeys, getForeignKeysData, sqlKeyTypes, getSqlColumns, getIdentityColumns } = require('../../services/db/sql/sql-operation');
 const { getSqlDBWithTablesfromConfig } = require('./config');
 
-async function compareConfigWithSql(projectUrl = 'rp') {
+async function compareConfigWithSql(projectUrl = 'wl') {
 
     const dataBases = getSqlDBWithTablesfromConfig(projectUrl)
     for (let database of dataBases) {
@@ -69,8 +69,8 @@ async function buildSqlColumnsToCompare(dbName, table) {
             return col
         })
     }
- const part = sqlConfigColumns.slice(30)
-     console.log(sqlConfigColumns)
+//  const part = sqlConfigColumns.slice(30)
+//      console.log(sqlConfigColumns)
 }
 
 

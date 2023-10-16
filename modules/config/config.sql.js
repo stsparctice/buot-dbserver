@@ -22,7 +22,7 @@ function getTableAlias(table) {
 }
 
 function getPrimaryKeyField(table) {
-    let col = table.columns.find(col => (col.type.toLowerCase().indexOf('primary') !== -1))
+    let col = table.columns.find(col => (col.primarykey === true))
     if (col) {
         return { name: col.name, sqlName: col.sqlName }
     }
@@ -33,10 +33,10 @@ function getTableColumns(entity, columns = []) {
     try {
         let cols
         if (columns.length != 0) {
-            cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
+            cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
         }
         else {
-            cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.trim().split(' ')[0] }))
+            cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type }))
             console.log("cols: ", cols);
         }
         return cols
@@ -47,7 +47,7 @@ function getTableColumns(entity, columns = []) {
 };
 
 function parseNodeToSql({ type, value }) {
-    const parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1).toUpperCase(), '')]
+    const parse = types[type]
     if (!parse) {
         let error = {}
         error.description = `Type: ${type} does not exist.`
@@ -61,7 +61,7 @@ function parseNodeToSql({ type, value }) {
 
 function removeIdentityDataFromObject(entity, object) {
     const { columns } = entity
-    const identities = columns.filter(c => c.type.toUpperCase().includes('IDENTITY'))
+    const identities = columns.filter(c => c.type.isIdentity)
     const removeKeys = identities.map(({ name }) => name)
     object = deleteKeysFromObject(object, removeKeys)
     //  const {id, ...rest} = object
@@ -112,9 +112,8 @@ function getPKConnectionBetweenEntities(mainEntity, condition) {
 
 function getLeftJoinBetweenEntities(mainEntity, subEntity) {
     const mainPrimaryKey = getPrimaryKeyField(mainEntity).sqlName
-    const referenceString = `REFERENCES ${mainEntity.MTDTable.entityName.sqlName}(${mainPrimaryKey})`
     const tableAlias = getTableAlias(mainEntity)
-    const joincolumn = subEntity.columns.filter(({ type }) => type.includes('FOREIGN KEY') && type.includes(referenceString))
+    const joincolumn = subEntity.columns.filter((col) => col.foreignkey && col.foreignkey.ref_table === mainEntity.MTDTable.entityName.sqlName && col.foreignkey.ref_column === mainPrimaryKey)
     const subAlias = getTableAlias(subEntity)
     return { tableToJoin: mainEntity.MTDTable.entityName.sqlName, alias: tableAlias, columnToJoin: mainPrimaryKey, entity2: subAlias, column2: joincolumn[0].sqlName }
 }
@@ -130,15 +129,13 @@ function buildSqlJoinAndSelect(configUrl, entity, fields) {
 
     tableAlias = `${entity.MTDTable.entityName.sqlName} ${tableAlias}`;
     let joinTables = []
-    const foreignKeyColumns = entity.columns.filter(({ type }) => type.toLowerCase().includes('foreign key'));
+    const foreignKeyColumns = entity.columns.filter(col => col.foreignkey);
 
     if (foreignKeyColumns.length > 0) {
         foreignKeyColumns.forEach(column => {
 
-            let startindex = column.type.toUpperCase().indexOf('REFERENCES')
-            startindex += 11
-            const tableToJoin = column.type.slice(startindex, column.type.indexOf('(', startindex));
-            const columnToJoin = column.type.slice(column.type.indexOf('(', startindex) + 1, column.type.indexOf(')', startindex));
+            const tableToJoin = column.foreignkey.ref_table ;
+            const columnToJoin = column.foreignkey.ref_column;
             const joinEntity = getEntityFromConfig(configUrl, tableToJoin);
             const columnName = joinEntity.entity.columns.find(c => c.sqlName === columnToJoin)
             const defaultColumnName = joinEntity.entity.columns.find(c => c.sqlName === joinEntity.entity.MTDTable.defaultColumn)
@@ -214,7 +211,7 @@ function parseObjectValuesToSQLTypeObject(obj, tabledata) {
         for (let i = 0; i < keys.length; i++) {
             let { type, sqlName } = tabledata.find(td => td.name.trim().toLowerCase() == keys[i].trim().toLowerCase())
             if (obj[keys[i]] != null) {
-                const parse = types[type.split(' ')[0].toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1).toUpperCase(), '')]
+                const parse = types[type.type]
                 if (!parse) {
                     let error = {}
                     error.description = `Type: ${type} does not exist.`
@@ -241,7 +238,7 @@ function parseObjectValuesToSQLTypeArray(obj, tabledata) {
         for (let i = 0; i < keys.length; i++) {
             if (obj[keys[i]] != null) {
                 let type = tabledata.find(td => td.name.trim().toLowerCase() == keys[i].trim().toLowerCase()).type
-                const parse = types[type.split(' ')[0].toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1).toUpperCase(), '')]
+                const parse = types[type.type]
                 if (!parse) {
                     let error = {}
                     error.description = `Type: ${type} does not exist.`
@@ -268,7 +265,7 @@ function parseSQLTypeForColumn(col, tableName) {
     let type = tabledata.find(td => td.sqlName.trim().toLowerCase() == col.name.trim().toLowerCase()).type
     let parse
     try {
-        parse = types[type.toUpperCase().replace(type.slice(type.indexOf('('), type.indexOf(')') + 1).toUpperCase(), '')]
+        parse = types[type.type]
     }
     catch {
         let error = notifictaions.find(n => n.status == 513)
