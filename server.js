@@ -4,6 +4,7 @@ const { app } = require('./app')
 const { connect } = require('./services/db/mongo/mongo_connection')
 const { connectSQL } = require('./services/db/sql/sql-connection')
 const { createTables } = require('./services/db/sql/sql-init')
+const { compareConfigWithSql } = require('./modules/config/compareConfig')
 const { HOST, PORT } = process.env
 // connect().then(_ => {
 //     console.log('connect to mongo');
@@ -12,6 +13,7 @@ const { HOST, PORT } = process.env
         createTables().then(_ => {
             app.listen(PORT, HOST, () => {
                 console.log(`http://${HOST}:${PORT}`);
+                compareConfigWithSql()
             });
         });
     })

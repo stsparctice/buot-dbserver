@@ -18,152 +18,263 @@
                             {
                                 "name": "recordID",
                                 "sqlName": "RecordID",
-                                "type": "NUMERIC(18, 0) IDENTITY(1,1) NOT NULL PRIMARY KEY"
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "number",
                                 "sqlName": "Number",
-                                "type": "INT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "name",
                                 "sqlName": "Name",
-                                "type": "NVARCHAR(50) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "sectionID",
                                 "sqlName": "SectionID",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "active",
                                 "sqlName": "Active",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "requireMemberCard",
                                 "sqlName": "RequireMemberCard",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "agreement",
                                 "sqlName": "Agreement",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "agreementPercent",
                                 "sqlName": "AgreementPercent",
-                                "type": "NVARCHAR(10) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 10,
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "memberPercent",
+                                "sqlName": "MemberPercent",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 10,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "patID",
                                 "sqlName": "PatID",
-                                "type": "NUMERIC(18, 0)"
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "grades",
                                 "sqlName": "Grades",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "cardLength",
                                 "sqlName": "CardLength",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "blockDiscountRequest",
                                 "sqlName": "BlockDiscountRequest",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "allowHairSales",
+                                "sqlName": "AllowHairSales",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "patID2",
                                 "sqlName": "PatID2",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "defaultDoctor",
                                 "sqlName": "DefaultDoctor",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "discount2nd",
                                 "sqlName": "Discount2nd",
-                                "type": "FLOAT NULL"
+                                "type": {
+                                    "type": "FLOAT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "discount3rd",
                                 "sqlName": "Discount3rd",
-                                "type": "FLOAT NULL"
+                                "type": {
+                                    "type": "FLOAT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "comission",
                                 "sqlName": "Comission",
-                                "type": "FLOAT NULL"
+                                "type": {
+                                    "type": "FLOAT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "creditsPL",
                                 "sqlName": "CreditsPL",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "labPL",
                                 "sqlName": "LabPL",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "minAge",
                                 "sqlName": "MinAge",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "maxAge",
                                 "sqlName": "MaxAge",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "maxDailySum",
                                 "sqlName": "MaxDailySum",
-                                "type": "NUMERIC(18, 2) NULL"
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "basePL",
                                 "sqlName": "BasePL",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "noDiscount",
                                 "sqlName": "NoDiscount",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "anonymous",
                                 "sqlName": "Anonymous",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "isDefault",
                                 "sqlName": "IsDefault",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "blockSelection",
                                 "sqlName": "BlockSelection",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "clubOnly",
                                 "sqlName": "ClubOnly",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "oncePerYear",
                                 "sqlName": "OncePerYear",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "rBSyncEnable",
+                                "name": "RBSyncEnable",
                                 "sqlName": "RBSyncEnable",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -174,643 +285,1116 @@
                                 "sqlName": "Patients"
                             },
                             "description": "",
-                            "defaultColumn":"Id"
+                            "defaultColumn": "Id"
                         },
                         "columns": [
                             {
                                 "name": "name",
                                 "sqlName": "Name",
-                                "type": "NVARCHAR(60) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 60,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "address",
                                 "sqlName": "Address",
-                                "type": "NVARCHAR(60) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 60,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "id",
-                                "sqlName": "Id",
-                                "type": "NVARCHAR(40) NULL"
+                                "name": "ID",
+                                "sqlName": "ID",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 40,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "phone",
                                 "sqlName": "Phone",
-                                "type": "NVARCHAR(40) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 40,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "workPhone",
                                 "sqlName": "[Work Phone]",
-                                "type": "NVARCHAR(40) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 40,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "familyName",
                                 "sqlName": "[Family Name]",
-                                "type": "NVARCHAR(60) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 60,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "zipCode",
+                                "name": "ZIPCode",
                                 "sqlName": "[ZIP Code]",
-                                "type": "NVARCHAR(15) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 15,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "city",
-                                "sqlName": "[City]",
-                                "type": "NVARCHAR(60) NULL"
+                                "sqlName": "City",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 60,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "cellPhone",
                                 "sqlName": "[Cell Phone]",
-                                "type": "NVARCHAR(60) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 40,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "fax",
-                                "sqlName": "[Fax]",
-                                "type": "NVARCHAR(40) NULL"
+                                "sqlName": "Fax",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 40,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "recall",
-                                "sqlName": "[Recall]",
-                                "type": "NVARCHAR(11) NULL"
+                                "sqlName": "Recall",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 11,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "recallHyg",
-                                "sqlName": "[RecallHyg]",
-                                "type": "NVARCHAR(11) NULL"
+                                "sqlName": "RecallHyg",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 11,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "reference",
-                                "sqlName": "[Reference]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "Reference",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "comments",
-                                "sqlName": "[Comments]",
-                                "type": "NTEXT NULL"
+                                "sqlName": "Comments",
+                                "type": {
+                                    "type": "NTEXT",
+                                    "max": 1073741823,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "birthdate",
-                                "sqlName": "[Birthdate]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "Birthdate",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "payerName",
-                                "sqlName": "[PayerName]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "PayerName",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "insuranceCompany",
-                                "sqlName": "[InsuranceCompany]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "InsuranceCompany",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "insuranceNum",
-                                "sqlName": "[InsuranceNum]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "InsuranceNum",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "lastupdate",
-                                "sqlName": "[LastUpdate]",
-                                "type": "SMALLDATETIME NULL"
+                                "name": "lastUpdate",
+                                "sqlName": "LastUpdate",
+                                "type": {
+                                    "type": "SMALLDATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "status",
-                                "sqlName": "[Status]",
-                                "type": "INT NULL"
+                                "sqlName": "Status",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "creationDate",
-                                "sqlName": "[CreationDate]",
-                                "type": "SMALLDATETIME NULL"
+                                "sqlName": "CreationDate",
+                                "type": {
+                                    "type": "SMALLDATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "insuranceCustNo",
-                                "sqlName": "[InsuranceCustNo]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "InsuranceCustNo",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "email",
-                                "sqlName": "[EMAIL]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "EMAIL",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "altador",
-                                "sqlName": "[ALTADDR]",
-                                "type": "NVARCHAR(80) NULL"
+                                "sqlName": "ALTADDR",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 80,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "altphone",
-                                "sqlName": "[ALTPHONE]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "ALTPHONE",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "recordNo",
-                                "sqlName": "[RecordNo]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "RecordNo",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "familyID",
-                                "sqlName": "[FamilyID]",
-                                "type": "NUMERIC(10,0) NULL"
+                                "sqlName": "FamilyID",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "familyPos",
-                                "sqlName": "[FamilyPos]",
-                                "type": "INT NULL"
+                                "sqlName": "FamilyPos",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "sex",
-                                "sqlName": "[Sex]",
-                                "type": "INT NULL"
+                                "sqlName": "Sex",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "workplace",
-                                "sqlName": "[Workplace]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "Workplace",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "priceList",
-                                "sqlName": "[PriceList]",
-                                "type": "INT NULL "
+                                "sqlName": "PriceList",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "workPhoneNote",
-                                "sqlName": "[WorkPhoneNote]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "WorkPhoneNote",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "altPhoneNote",
-                                "sqlName": "[AltPhoneNote]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "AltPhoneNote",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "policyValidDate",
-                                "sqlName": "[PolicyValidDate]",
-                                "type": "NVARCHAR(8) NULL"
+                                "sqlName": "PolicyValidDate",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 8,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "treatingDoctor",
-                                "sqlName": "[TreatingDoctor]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "TreatingDoctor",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "prefix",
-                                "sqlName": "[Prefix]",
-                                "type": "NVARCHAR(15) NULL"
+                                "sqlName": "Prefix",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 15,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "homePhoneNote",
-                                "sqlName": "[HomePhoneNote]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "HomePhoneNote",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "cellPhoneNote",
-                                "sqlName": "[CellPhoneNote]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "CellPhoneNote",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "cellPhone2Note",
-                                "sqlName": "[CellPhone2Note]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "CellPhone2Note",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "cellPhone2",
-                                "sqlName": "[CellPhone2]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "CellPhone2",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "familyDoctor",
-                                "sqlName": "[FamilyDoctor]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "FamilyDoctor",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "profession",
-                                "sqlName": "[Profession]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "Profession",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "weight",
-                                "sqlName": "[Weight]",
-                                "type": "NVARCHAR(10) NULL"
+                                "sqlName": "Weight",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 10,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "altCity",
-                                "sqlName": "[AltCity]",
-                                "type": "NVARCHAR(60) NULL"
+                                "sqlName": "AltCity",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 60,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "altzip",
-                                "sqlName": "[AltZip]",
-                                "type": "NVARCHAR(10) NULL"
+                                "name": "altZip",
+                                "sqlName": "AltZip",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 10,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "insurer",
-                                "sqlName": "[Insurer]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "Insurer",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "policyType",
-                                "sqlName": "[PolicyType]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "PolicyType",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "referrerPhone",
-                                "sqlName": "[ReferrerPhone]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "ReferrerPhone",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "familyDoctorPhone",
-                                "sqlName": "[FamilyDoctorPhone]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "FamilyDoctorPhone",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "insWorkNo",
-                                "sqlName": "[InsWorkNo]",
-                                "type": "NVARCHAR(25) NULL"
+                                "sqlName": "InsWorkNo",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "balance",
-                                "sqlName": "[Balance]",
-                                "type": "INT NULL"
+                                "sqlName": "Balance",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "preRapidBalance",
-                                "sqlName": "[PreRapidBalance]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "PreRapidBalance",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "prevFamilyName",
-                                "sqlName": "[PrevFamilyName]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "PrevFamilyName",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "patID",
-                                "sqlName": "[PatID]",
-                                "type": "NUMERIC(10, 0) IDENTITY(1,1) NOT NULL PRIMARY KEY"
+                                "sqlName": "PatID",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "payerPatID",
-                                "sqlName": "[PayerPatID]",
-                                "type": "NUMERIC(10, 0) NULL"
+                                "sqlName": "PayerPatID",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "personalStatus",
-                                "sqlName": "[PersonalStatus]",
-                                "type": "INT NULL"
+                                "name": "PersonalStatus",
+                                "sqlName": "PersonalStatus",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "height",
-                                "sqlName": "[Height]",
-                                "type": "NVARCHAR(10) NULL"
+                                "name": "Height",
+                                "sqlName": "Height",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 10,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "emergencyPhone",
-                                "sqlName": "[EmergencyPhone]",
-                                "type": "NVARCHAR(12) NULL"
+                                "name": "EmergencyPhone",
+                                "sqlName": "EmergencyPhone",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 12,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "emergencyPhoneNote",
-                                "sqlName": "[EmergencyPhoneNote]",
-                                "type": "NVARCHAR(25) NULL"
+                                "name": "EmergencyPhoneNote",
+                                "sqlName": "EmergencyPhoneNote",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "children",
-                                "sqlName": "[Children]",
-                                "type": "INT NULL"
+                                "name": "Children",
+                                "sqlName": "Children",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "interested",
-                                "sqlName": "[Interested]",
-                                "type": "NVARCHAR(100) NULL"
+                                "name": "Interested",
+                                "sqlName": "Interested",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 100,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "enteredBy",
-                                "sqlName": "[EnteredBy]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "EnteredBy",
+                                "sqlName": "EnteredBy",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "importID",
-                                "sqlName": "[ImportID]",
-                                "type": "NVARCHAR(25) NULL"
+                                "name": "ImportID",
+                                "sqlName": "ImportID",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "lastVisited",
-                                "sqlName": "[LastVisited]",
-                                "type": "SMALLDATETIME NULL"
+                                "name": "LastVisited",
+                                "sqlName": "LastVisited",
+                                "type": {
+                                    "type": "SMALLDATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "homeBranch",
-                                "sqlName": "[HomeBranch]",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "name": "HomeBranch",
+                                "sqlName": "HomeBranch",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "homeSection",
-                                "sqlName": "[HomeSection]",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "name": "HomeSection",
+                                "sqlName": "HomeSection",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "magneticNo",
-                                "sqlName": "[MagneticNo]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "MagneticNo",
+                                "sqlName": "MagneticNo",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "interestFields",
-                                "sqlName": "[InterestFields]",
-                                "type": "NVARCHAR(255) NULL"
+                                "name": "InterestFields",
+                                "sqlName": "InterestFields",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 255,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "media",
-                                "sqlName": "[Media]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "Media",
+                                "sqlName": "Media",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "countryArea",
-                                "sqlName": "[CountryArea]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "CountryArea",
+                                "sqlName": "CountryArea",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "transmissionDate",
-                                "sqlName": "[TransmissionDate]",
-                                "type": "DATETIME NULL"
+                                "name": "TransmissionDate",
+                                "sqlName": "TransmissionDate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "kupatHolim",
-                                "sqlName": "[KupatHolim]",
-                                "type": "NVARCHAR(25) NULL"
+                                "name": "KupatHolim",
+                                "sqlName": "KupatHolim",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "parentsRoots",
-                                "sqlName": "[ParentsRoots]",
-                                "type": "NVARCHAR(25) NULL"
+                                "name": "ParentsRoots",
+                                "sqlName": "ParentsRoots",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "insAuthNo",
-                                "sqlName": "[InsAuthNo]",
-                                "type": "NVARCHAR(25) NULL"
+                                "name": "InsAuthNo",
+                                "sqlName": "InsAuthNo",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "productVersionBin",
-                                "sqlName": "[ProductVersionBin]",
-                                "type": "BINARY(4) NULL"
+                                "name": "ProductVersionBin",
+                                "sqlName": "ProductVersionBin",
+                                "type": {
+                                    "type": "BINARY",
+                                    "max": 4,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "productVersionStr",
-                                "sqlName": "[ProductVersionStr]",
-                                "type": "NVARCHAR(16) NULL"
+                                "name": "ProductVersionStr",
+                                "sqlName": "ProductVersionStr",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 16,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "productName",
-                                "sqlName": "[ProductName]",
-                                "type": "NVARCHAR(25) NULL"
+                                "name": "ProductName",
+                                "sqlName": "ProductName",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "kupaNo",
-                                "sqlName": "[KupaNo]",
-                                "type": "NVARCHAR(25) NULL"
+                                "name": "KupaNo",
+                                "sqlName": "KupaNo",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "blockPatient",
-                                "sqlName": "[BlockPatient]",
-                                "type": "BIT NULL"
+                                "name": "BlockPatient",
+                                "sqlName": "BlockPatient",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "blockPatientReason",
-                                "sqlName": "[BlockPatientReason]",
-                                "type": "NVARCHAR(100) NULL"
+                                "name": "BlockPatientReason",
+                                "sqlName": "BlockPatientReason",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 100,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "fatherName",
-                                "sqlName": "[FatherName]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "FatherName",
+                                "sqlName": "FatherName",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "insuranceCompany2",
-                                "sqlName": "[InsuranceCompany2]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "InsuranceCompany2",
+                                "sqlName": "InsuranceCompany2",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "insurancePolicy2ValidDate",
-                                "sqlName": "[InsurancePolicy2ValidDate]",
-                                "type": "NVARCHAR(8) NULL"
+                                "name": "InsurancePolicy2ValidDate",
+                                "sqlName": "InsurancePolicy2ValidDate",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 8,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "coordinator",
-                                "sqlName": "[Coordinator]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "Coordinator",
+                                "sqlName": "Coordinator",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "clubStatus",
-                                "sqlName": "[ClubStatus]",
-                                "type": "NVARCHAR(15) NULL"
+                                "name": "ClubStatus",
+                                "sqlName": "ClubStatus",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 15,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "clubNumber",
-                                "sqlName": "[ClubNumber]",
-                                "type": "NVARCHAR(24) NULL"
+                                "name": "ClubNumber",
+                                "sqlName": "ClubNumber",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 24,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "clubIncome",
-                                "sqlName": "[ClubIncome]",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "name": "ClubIncome",
+                                "sqlName": "ClubIncome",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "clubAddedBy",
-                                "sqlName": "[ClubAddedBy]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "ClubAddedBy",
+                                "sqlName": "ClubAddedBy",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "clubJoinDate",
-                                "sqlName": "[ClubJoinDate]",
-                                "type": "DATETIME NULL"
+                                "name": "ClubJoinDate",
+                                "sqlName": "ClubJoinDate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "clubJoinSection",
-                                "sqlName": "[ClubJoinSection]",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "name": "ClubJoinSection",
+                                "sqlName": "ClubJoinSection",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "motherName",
-                                "sqlName": "[MotherName]",
-                                "type": "NVARCHAR(25) NULL"
+                                "name": "MotherName",
+                                "sqlName": "MotherName",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "blockPatientTrt",
-                                "sqlName": "[BlockPatientTrt]",
-                                "type": "BIT NULL"
+                                "name": "BlockPatientTrt",
+                                "sqlName": "BlockPatientTrt",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "blockPatientReasonTrt",
-                                "sqlName": "[BlockPatientReasonTrt]",
-                                "type": "NVARCHAR(100) NULL"
+                                "name": "BlockPatientReasonTrt",
+                                "sqlName": "BlockPatientReasonTrt",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 100,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "popUpAppNote",
-                                "sqlName": "[PopUpAppNote]",
-                                "type": "NTEXT NULL"
+                                "sqlName": "PopUpAppNote",
+                                "type": {
+                                    "type": "NTEXT",
+                                    "max": 1073741823,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "lastNameEng",
-                                "sqlName": "[LastNameEng]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "LastNameEng",
+                                "sqlName": "LastNameEng",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "firstNameEng",
-                                "sqlName": "[FirstNameEng]",
-                                "type": "NVARCHAR(25) NULL"
+                                "name": "FirstNameEng",
+                                "sqlName": "FirstNameEng",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 25,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "passport",
-                                "sqlName": "[Passport]",
-                                "type": "NVARCHAR(20) NULL"
+                                "name": "Passport",
+                                "sqlName": "Passport",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "hashavAcc",
-                                "sqlName": "[HashavAcc]",
-                                "type": "NVARCHAR(12) NULL"
+                                "name": "HashavAcc",
+                                "sqlName": "HashavAcc",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 12,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "googleID",
-                                "sqlName": "[GoogleID]",
-                                "type": "NVARCHAR(255) NULL"
+                                "name": "GoogleID",
+                                "sqlName": "GoogleID",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 255,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "lastGoogleSync",
-                                "sqlName": "[LastGoogleSync]",
-                                "type": "DATETIME NULL"
+                                "name": "LastGoogleSync",
+                                "sqlName": "LastGoogleSync",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "clubExpirationDate",
-                                "sqlName": "[ClubExpirationDate]",
-                                "type": "DATETIME NULL"
+                                "name": "ClubExpirationDate",
+                                "sqlName": "ClubExpirationDate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "sCMemberID",
-                                "sqlName": "[SCMemberID]",
-                                "type": "NVARCHAR(20) NULL"
+                                "name": "SCMemberID",
+                                "sqlName": "SCMemberID",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "policyValidStart",
-                                "sqlName": "[PolicyValidStart]",
-                                "type": "DATETIME NULL"
+                                "name": "PolicyValidStart",
+                                "sqlName": "PolicyValidStart",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "policyCancelled",
-                                "sqlName": "[PolicyCancelled]",
-                                "type": "DATETIME NULL"
+                                "name": "PolicyCancelled",
+                                "sqlName": "PolicyCancelled",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "policyDesc",
-                                "sqlName": "[PolicyDesc]",
-                                "type": "NVARCHAR(20) NULL"
+                                "name": "PolicyDesc",
+                                "sqlName": "PolicyDesc",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "reminderPref",
-                                "sqlName": "[ReminderPref]",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "name": "ReminderPref",
+                                "sqlName": "ReminderPref",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "lastCRMUpdate",
-                                "sqlName": "[LastCRMUpdate]",
-                                "type": "DATETIME NULL"
+                                "name": "LastCRMUpdate",
+                                "sqlName": "LastCRMUpdate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "PUID",
-                                "sqlName": "[PUID]",
-                                "type": "NVARCHAR(32) NULL"
+                                "sqlName": "PUID",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 32,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "noStock",
-                                "sqlName": "[NoStock]",
-                                "type": "BIT NULL"
+                                "name": "NoStock",
+                                "sqlName": "NoStock",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "mailingAddress",
-                                "sqlName": "[MailingAddress]",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "name": "MailingAddress",
+                                "sqlName": "MailingAddress",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "referenceOut",
-                                "sqlName": "[ReferenceOut]",
-                                "type": "NVARCHAR(50) NULL"
+                                "name": "ReferenceOut",
+                                "sqlName": "ReferenceOut",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "refPatID",
-                                "sqlName": "[RefPatID]",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "name": "RefPatID",
+                                "sqlName": "RefPatID",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "houseNum1",
-                                "sqlName": "[HouseNum1]",
-                                "type": "NVARCHAR(5) NULL"
+                                "name": "HouseNum1",
+                                "sqlName": "HouseNum1",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 5,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "houseNum2",
-                                "sqlName": "[HouseNum2]",
-                                "type": "NVARCHAR(5) NULL"
+                                "name": "HouseNum2",
+                                "sqlName": "HouseNum2",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 5,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "apt1",
-                                "sqlName": "[Apt1]",
-                                "type": "NVARCHAR(30) NULL"
+                                "name": "Apt1",
+                                "sqlName": "Apt1",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 30,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "apt2",
-                                "sqlName": "[Apt2]",
-                                "type": "NVARCHAR(30) NULL"
+                                "name": "Apt2",
+                                "sqlName": "Apt2",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 30,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "floor1",
-                                "sqlName": "[Floor1]",
-                                "type": "NVARCHAR(30) NULL"
+                                "name": "Floor1",
+                                "sqlName": "Floor1",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 30,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "floor2",
-                                "sqlName": "[Floor2]",
-                                "type": "NVARCHAR(30) NULL"
+                                "name": "Floor2",
+                                "sqlName": "Floor2",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 30,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "medicalOK",
-                                "sqlName": "[MedicalOK]",
-                                "type": "BIT NULL"
+                                "name": "MedicalOK",
+                                "sqlName": "MedicalOK",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "refDate",
-                                "sqlName": "[RefDate]",
-                                "type": "DATETIME NULL"
+                                "name": "RefDate",
+                                "sqlName": "RefDate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "PUID_DateStamp",
-                                "sqlName": "[PUID_DateStamp]",
-                                "type": "DATETIME NULL"
+                                "sqlName": "PUID_DateStamp",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "allowDivur",
-                                "sqlName": "[AllowDivur]",
-                                "type": "BIT NULL"
+                                "name": "AllowDivur",
+                                "sqlName": "AllowDivur",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "medUpdate",
-                                "sqlName": "[MedUpdate]",
-                                "type": "DATETIME NULL"
+                                "name": "MedUpdate",
+                                "sqlName": "MedUpdate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "activeSince",
-                                "sqlName": "[ActiveSince]",
-                                "type": "DATETIME NULL"
+                                "name": "ActiveSince",
+                                "sqlName": "ActiveSince",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "invoiceNote",
-                                "sqlName": "[InvoiceNote]",
-                                "type": "NVARCHAR(100) NULL"
+                                "name": "InvoiceNote",
+                                "sqlName": "InvoiceNote",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 100,
+                                    "isnull": true
+                                }
                             },
                             {
-                                "name": "addTime",
-                                "sqlName": "[AddTime]",
-                                "type": "NUMERIC(18, 0) NULL"
+                                "name": "AddTime",
+                                "sqlName": "AddTime",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "RBID",
-                                "sqlName": "[RBID]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "RBID",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -830,182 +1414,290 @@
                         "columns": [
                             {
                                 "name": "patientName",
-                                "sqlName": "[PatientName]",
-                                "type": "NVARCHAR(50) NULL"
+                                "sqlName": "PatientName",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "medProb",
-                                "sqlName": "[MedProb]",
-                                "type": "NVARCHAR(255) NULL"
+                                "sqlName": "MedProb",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 255,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "check1",
-                                "sqlName": "[check1]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check1",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check2",
-                                "sqlName": "[check2]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check2",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check3",
-                                "sqlName": "[check3]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check3",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check4",
-                                "sqlName": "[check4]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check4",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check5",
-                                "sqlName": "[check5]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check5",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check6",
-                                "sqlName": "[check6]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check6",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check7",
-                                "sqlName": "[check7]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check7",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check8",
-                                "sqlName": "[check8]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check8",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check9",
-                                "sqlName": "[check9]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check9",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check10",
-                                "sqlName": "[check10]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check10",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check11",
-                                "sqlName": "[check11]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check11",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check12",
-                                "sqlName": "[check12]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check12",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check13",
-                                "sqlName": "[check13]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check13",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check14",
-                                "sqlName": "[check14]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check14",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check15",
-                                "sqlName": "[check15]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check15",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check16",
-                                "sqlName": "[check16]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check16",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check17",
-                                "sqlName": "[check17]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check17",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check18",
-                                "sqlName": "[check18]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check18",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check19",
-                                "sqlName": "[check19]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check19",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check20",
-                                "sqlName": "[check20]",
-                                "type": "BIT NOT NULL"
-                            },
-                            {
-                                "name": "check21",
-                                "sqlName": "[check21]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check20",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check22",
-                                "sqlName": "[check22]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check21",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
-                                "name": "check23",
-                                "sqlName": "[check23]",
-                                "type": "BIT NOT NULL"
+                                "name": "check22",
+                                "sqlName": "check22",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check24",
-                                "sqlName": "[check24]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check24",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check25",
-                                "sqlName": "[check25]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "check25",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
+                            },
+                            {
+                                "name": "check23",
+                                "sqlName": "Check23",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check26",
-                                "sqlName": "[check26]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "Check26",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check27",
-                                "sqlName": "[check27]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "Check27",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check28",
-                                "sqlName": "[check28]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "Check28",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check29",
-                                "sqlName": "[check29]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "Check29",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "check30",
-                                "sqlName": "[check30]",
-                                "type": "BIT NOT NULL"
+                                "sqlName": "Check30",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "patID",
-                                "sqlName": "[PatID]",
-                                "type": "NUMERIC(10, 0) NULL FOREIGN KEY(PatId) REFERENCES Patients([PatID])"
+                                "sqlName": "PatID",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "probOptions",
-                                "sqlName": "[ProbOptions]",
-                                "type": "NTEXT NULL"
+                                "sqlName": "ProbOptions",
+                                "type": {
+                                    "type": "NTEXT",
+                                    "max": 1073741823,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "recordID",
-                                "sqlName": "[RecordID]",
-                                "type": "NUMERIC(18, 0) IDENTITY(1,1) NOT NULL PRIMARY KEY"
+                                "sqlName": "RecordID",
+                                "type": {
+                                    "type": "NUMERIC",
+                                    "isnull": false
+                                },
+                                "isIdentity": true
                             }
                         ]
                     }
-                
                 ]
             }
         ]

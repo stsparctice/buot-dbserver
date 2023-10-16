@@ -31,6 +31,13 @@ const types = {
         }
     },
 
+    NTEXT:{
+        typeNodeName: 'string',
+        parseNodeTypeToSqlType: (value) => {
+            return convertToSQLString(value)
+        }
+    },
+
     BIT: {
         typeNodeName: 'boolean',
         parseNodeTypeToSqlType: (boolean) => {
@@ -49,7 +56,7 @@ const types = {
     INT: {
         typeNodeName: 'number',
         parseNodeTypeToSqlType: (number) => {
-           
+           console.log({number})
             if (isNaN(number)|| number=='')
                 return 0
             else
