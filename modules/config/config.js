@@ -16,6 +16,14 @@ function getEntitiesFromConfig(configUrl) {
     return { sql, mongo }
 }
 
+function getSqlDBWithTablesfromConfig(projectUrl){
+    const response = getDBConfig(projectUrl)
+    const config = getEntitiesFromConfig(response)
+    const { sql } = config
+    const databases = sql.map(({dbName, db})=>({dbName, db:db.map(({collections})=>(collections.map(({MTDTable,columns })=>({tablename:MTDTable.entityName.sqlName, columns}))))}))
+    return databases
+}
+
 function getEntityConfigData({ project, entityName }) {
     const configUrl = getDBConfig(project)
     let entity = getEntityFromConfig(configUrl, entityName)
@@ -47,4 +55,5 @@ module.exports = {
     getEntitiesFromConfig,
     getEntityFromConfig,
     getEntityConfigData,
+    getSqlDBWithTablesfromConfig
 }

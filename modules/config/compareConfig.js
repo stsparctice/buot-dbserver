@@ -1,42 +1,96 @@
-const config = require('../../data/newConfig.json')
 const { SQL_DBNAME } = process.env;
 const { getPool } = require('../../services/db/sql/sql-connection');
+const { getTableKeys, getForeignKeysData, sqlKeyTypes, getSqlColumns, getIdentityColumns } = require('../../services/db/sql/sql-operation');
+const { getSqlDBWithTablesfromConfig } = require('./config');
 
-async function compareConfigWithSql(database = SQL_DBNAME, tableName = 'Teachers') {
+async function compareConfigWithSql(projectUrl = 'rp') {
 
-    let tableFromSql = await getPool().request().query(`use ${database} select COLUMN_NAME,DATA_TYPE from [INFORMATION_SCHEMA].[COLUMNS]  where TABLE_NAME ='tbl_${tableName}'`)
-    let tablefromConfig = config[0].db[0].collections.find(m => m.MTDTable.entityName.name.toLowerCase() == tableName.toLowerCase())
-   
-    tableFromSql = tableFromSql.recordset
-    tablefromConfig = tablefromConfig.columns
-
-    let object = []
-
-    _ = tableFromSql.map((itemSql) => {
-        let obj1 = {}
-        let ans1 = tablefromConfig.some((itemConfig) => {
-            return itemSql.COLUMN_NAME.toLowerCase() == itemConfig.name.toLowerCase()
-                && (itemConfig.type.toLowerCase().includes(itemSql.DATA_TYPE.toLowerCase()) || itemConfig.type.toLowerCase() == itemSql.DATA_TYPE.toLowerCase())
-        })
-        if (!ans1) { obj1.extra = itemSql }
-
-        if (obj1.extra) { object.push(obj1) }
-    })
-
-    _ = tablefromConfig.map((itemConfig) => {
-        let obj2 = {}
-        let ans2 = tableFromSql.some((itemSql) => {
-            return itemSql.COLUMN_NAME.toLowerCase() == itemConfig.name.toLowerCase()
-                && (itemConfig.type.toLowerCase().includes(itemSql.DATA_TYPE.toLowerCase()) || itemConfig.type.toLowerCase() == itemSql.DATA_TYPE.toLowerCase())
-        })
-        if (!ans2) { obj2.less = itemConfig }
-
-        if (obj2.less) { object.push(obj2) }
-    })
-
-    return object
+    const dataBases = getSqlDBWithTablesfromConfig(projectUrl)
+    for (let database of dataBases) {
+        const { dbName, db } = database
+        console.log({ dbName, db })
+        for (let tables of db) {
+            checkDataBase(dbName, tables)
+        }
+    }
 }
 
+async function checkDataBase(dbName, tables) {
+    for (let table of tables) {
+        await buildSqlColumnsToCompare(dbName, table)
+    }
+}
+
+async function buildSqlColumnsToCompare(dbName, table) {
+    const { tablename } = table
+   const sqlColumns = await getSqlColumns(dbName, tablename)
+    const sqlUniqueKeys = await getTableKeys(dbName, tablename, sqlKeyTypes.UNIQUE)
+    const sqlPrimaryKeys = await getTableKeys(dbName, tablename, sqlKeyTypes.PRIMARY_KEY)
+    const sqlForeignKeys = await getTableKeys(dbName, tablename, sqlKeyTypes.FOREIGN_KEY)
+    const sqlIdentityColumns = await getIdentityColumns(dbName, tablename)
+    let sqlConfigColumns = sqlColumns.map(col => convertSqlToConfig(col))
+
+    if (sqlPrimaryKeys.length > 0) {
+        sqlConfigColumns = sqlConfigColumns.map(col => {
+            const primarykey = sqlPrimaryKeys.find(pk => pk.name === col.sqlName)
+            if (primarykey) {
+                col.primarykey = true
+            }
+            return col
+        })
+    }
+
+    if (sqlUniqueKeys.length > 0) {
+        sqlConfigColumns = sqlConfigColumns.map(col => {
+            const uniquekey = sqlUniqueKeys.find(uk => uk.name === col.sqlName)
+            if (uniquekey) {
+                col.uniquekey = true
+            }
+            return col
+        })
+    }
+
+    if(sqlIdentityColumns.length>0){
+        sqlConfigColumns = sqlConfigColumns.map(col => {
+            const isIdentity = sqlIdentityColumns.find(id => id.name === col.sqlName)
+            if (isIdentity) {
+                col.isIdentity = true
+            }
+            return col
+        })
+    }
+    if (sqlForeignKeys.length > 0) {
+        const foreignkeys = await getForeignKeysData(dbName, tablename)
+        sqlConfigColumns = sqlConfigColumns.map(col => {
+            const foreignkey = foreignkeys.find(fk => fk.column === col.sqlName)
+            if (foreignkey) {
+                col.foreignkey = foreignkey
+            }
+            return col
+        })
+    }
+ const part = sqlConfigColumns.slice(30)
+     console.log(sqlConfigColumns)
+}
+
+
+function convertSqlToConfig({ name, type, max, isnull }) {
+    const convertColumn = { sqlName: name, type: { type: type.toUpperCase() } }
+    if (max) {
+        if(max===-1){
+            max = 'MAX'
+        }
+        convertColumn.type.max = max
+    }
+    if (isnull === 'NO') {
+        convertColumn.type.isnull = false
+    }
+    else{
+        convertColumn.type.isnull = true
+    }
+    return convertColumn
+
+}
 
 
 module.exports = { compareConfigWithSql }
