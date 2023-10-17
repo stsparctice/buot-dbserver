@@ -4,6 +4,13 @@ const sql = require('mssql');
 const { createArrColumns } = require('../../../modules/functions');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
+const sqlKeyTypes = {
+     PRIMARY_KEY: 'PRIMARY KEY',
+     FOREIGN_KEY: 'FOREIGN KEY',
+     UNIQUE: 'UNIQUE'
+}
+
+
 const create = async function (entity, columns, values) {
      try {
           let primarykey = getPrimaryKeyField(entity).sqlName
@@ -28,27 +35,7 @@ const poolConfig = () => ({
           enableArithAbort: false
      }
 });
-// const teacher = {
-//      entity: 'Teachers',
-//      values: {
-//           TeacherName: 'x', Phone: '1234', Email: 'gfhd',
-//           TeachersPoolGenders: {
-//                values: { GenderId: 1, teacherId: 888 }
-//           },
-//           TeacherSchedule: {
 
-//           }
-
-//      }
-// }
-// database: Bubble
-// entity: teachers
-// columns: [TeacherName,Phone,Email]
-// values: ['x','1234','gfhd']
-// tran: {
-//        TeachersPoolGenders: { GenderId: 1, teacherId: 'teacherId' },
-//        TeacherSchedule: {}
-// }
 const createTrac = async function ({ database, entity, columns, values, tran }) {
      try {
           console.log("____createTran", { database, entity, columns, values, tran });
@@ -64,7 +51,7 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
           try {
                await transaction.begin();
                console.log("_____________________");
-               console.log("db:",database,"entity:",entity,"columns:",columns,"value:",values,"pk:",primarykey);
+               console.log("db:", database, "entity:", entity, "columns:", columns, "value:", values, "pk:", primarykey);
                let ans = await tr.prepare(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY ${primarykey}`);
                let id = await tr.execute();
                await tr.unprepare();
@@ -123,17 +110,16 @@ const read = async function (query = "", n) {
 const update = async function (database, entity, set, condition) {
      try {
           const alias = await getTableAlias(entity)
-          console.log({set});
+          console.log({ set });
           const sqlObject = parseObjectValuesToSQLTypeObject(set, entity.columns)
           const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
           const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
-          console.log({updateValues})
+          console.log({ updateValues })
           const result = await getPool().request().query(`use ${database} UPDATE ${alias} SET ${updateValues} FROM ${entity.MTDTable.entityName.sqlName} AS ${alias} WHERE ${condition}`);
-          if (result.rowsAffected.length>0 && result.rowsAffected[0]>0)
-          {
-             return {rowsAffected: result.rowsAffected[0]}
+          if (result.rowsAffected.length > 0 && result.rowsAffected[0] > 0) {
+               return { rowsAffected: result.rowsAffected[0] }
           }
-               
+
           else
                return false;
      }
@@ -197,6 +183,72 @@ const count = async function (entityName, condition) {
 
 };
 
+const getSqlColumns = async function (database, tablename) {
+     try {
+          const response = await getPool().request().query(`USE master  SELECT COLUMN_NAME name,DATA_TYPE type, CHARACTER_MAXIMUM_LENGTH max, IS_NULLABLE isnull from ${database}.[INFORMATION_SCHEMA].[COLUMNS]  WHERE TABLE_NAME = N'${tablename}'`)
+          return response.recordset
+     }
+     catch (error) {
+          throw error
+     }
+}
+
+const getTableKeys = async function (database, tablename, key) {
+     try {
+          const response = await getPool().request().query(`USE master  SELECT  keys.COLUMN_NAME name , constrains.CONSTRAINT_TYPE  type 
+     FROM ${database}.INFORMATION_SCHEMA.TABLE_CONSTRAINTS  constrains 
+     INNER JOIN ${database}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE  keys
+     ON keys.CONSTRAINT_NAME = constrains.CONSTRAINT_NAME
+     WHERE keys.TABLE_NAME = '${tablename}' AND CONSTRAINT_TYPE = '${key}'`)
+          return response.recordset
+     }
+     catch (error) {
+          throw error
+     }
+}
+
+const getIdentityColumns = async function (database, tablename) {
+     try {
+          const response = await getPool().request().query(`use master select columns.name
+                                                            from ${database}.sys.columns columns
+                                                            join  ${database}.sys.objects objects on columns.object_id = objects.object_id
+                                                            join  ${database}.sys.schemas s on s.schema_id = objects.schema_id
+                                                            where s.name = 'dbo'
+                                                            and objects.is_ms_shipped = 0 and objects.type = 'U'
+                                                            and columns.is_identity = 1
+                                                            and objects.name = '${tablename}' `)
+          return response.recordset
+     }
+     catch (error) {
+          throw error
+     }
+}
+
+const getForeignKeysData = async function (database, tablename) {
+     try {
+          const response = await getPool().request().query(`use master  SELECT  
+                                                    tab2.name AS [ref_table],
+                                                    col2.name AS [ref_column]
+                                                    FROM  ${database}.sys.foreign_key_columns fkc
+                                                    INNER JOIN  ${database}.sys.objects obj
+                                                    ON obj.object_id = fkc.constraint_object_id
+                                                    INNER JOIN  ${database}.sys.tables tab1
+                                                    ON tab1.object_id = fkc.parent_object_id
+                                                    INNER JOIN  ${database}.sys.schemas sch
+                                                    ON tab1.schema_id = sch.schema_id
+                                                    INNER JOIN  ${database}.sys.columns col1
+                                                    ON col1.column_id = parent_column_id AND col1.object_id = tab1.object_id
+                                                    INNER JOIN  ${database}.sys.tables tab2
+                                                    ON tab2.object_id = fkc.referenced_object_id
+                                                    INNER JOIN  ${database}.sys.columns col2
+                                                    ON col2.column_id = referenced_column_id AND col2.object_id = tab2.object_id
+	                                                WHERE tab1.name  = N'${tablename}'`)
+          return response.recordset
+     }
+     catch (error) {
+          throw error
+     }
+}
 
 
 // let condition ={
@@ -206,11 +258,16 @@ const count = async function (entityName, condition) {
 
 
 module.exports = {
+     sqlKeyTypes,
      create,
      read,
      update,
      innerJoin,
      searchSQL,
      createTrac,
-     count
+     count,
+     getSqlColumns,
+     getTableKeys,
+     getIdentityColumns,
+     getForeignKeysData
 };

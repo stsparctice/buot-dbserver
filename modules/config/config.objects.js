@@ -25,7 +25,13 @@ const convertToSQLString = (value) => {
 const types = {
 
     NVARCHAR: {
+        typeNodeName: 'string',
+        parseNodeTypeToSqlType: (value) => {
+            return convertToSQLString(value)
+        }
+    },
 
+    NTEXT:{
         typeNodeName: 'string',
         parseNodeTypeToSqlType: (value) => {
             return convertToSQLString(value)
@@ -50,7 +56,7 @@ const types = {
     INT: {
         typeNodeName: 'number',
         parseNodeTypeToSqlType: (number) => {
-           
+           console.log({number})
             if (isNaN(number)|| number=='')
                 return 0
             else

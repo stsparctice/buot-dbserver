@@ -18,51 +18,91 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "name",
                                 "sqlName": "Name",
-                                "type": "NVARCHAR(50) UNIQUE NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                },
+                                "uniquekey": true
                             },
                             {
                                 "name": "address",
                                 "sqlName": "Address",
-                                "type": "NVARCHAR(50) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "color",
                                 "sqlName": "Color",
-                                "type": "NVARCHAR(50) NOT NULL"
-                            }, 
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                }
+                            },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
-                            },{
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
+                            },
+                            {
                                 "name": "userName",
                                 "sqlName": "userName",
-                                "type": "NVARCHAR(20) Not Null"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "Bit Not Null"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(20) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -79,66 +119,122 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "name",
                                 "sqlName": "Name",
-                                "type": "NVARCHAR(50) UNIQUE NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                },
+                                "uniquekey": true
                             },
                             {
                                 "name": "sex1",
                                 "sqlName": "Sex1",
-                                "type": "INT"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "maxAge1",
                                 "sqlName": "MaxAge1",
-                                "type": "INT"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "sex2",
                                 "sqlName": "Sex2",
-                                "type": "INT"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "maxAge2",
                                 "sqlName": "MaxAge2",
-                                "type": "INT"
-                            }, 
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "teacherGender",
+                                "sqlName": "TeacherGender",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
+                            },
                             {
                                 "name": "color",
                                 "sqlName": "Color",
-                                "type": "NVARCHAR(50) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
-                            },{
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
+                            },
+                            {
                                 "name": "userName",
                                 "sqlName": "userName",
-                                "type": "NVARCHAR(20) Not Null"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "Bit Not Null"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(20) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -155,62 +251,112 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "swimmingPoolId",
                                 "sqlName": "SwimmingPoolId",
-                                "type": "INT NOT NULL FOREIGN KEY(SwimmingPoolId) REFERENCES tbl_SwimmingPools(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_SwimmingPools",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "day",
                                 "sqlName": "Day",
-                                "type": "INT NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "genderId",
                                 "sqlName": "GenderId",
-                                "type": "INT NOT NULL FOREIGN KEY(GenderId) REFERENCES tbl_Genders(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Genders",
+                                    "ref_column": "Id"
+                                }
+                               
                             },
                             {
                                 "name": "startHour",
                                 "sqlName": "startHour",
-                                "type": "DATETIME Not Null"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "endHour",
                                 "sqlName": "EndHour",
-                                "type": "DATETIME Not Null"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME Not Null"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(20) Not Null"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "Bit Not Null"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(20) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -227,52 +373,118 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "teacherName",
                                 "sqlName": "TeacherName",
-                                "type": "NVARCHAR(20) UNIQUE NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                },
+                                "uniquekey": true
                             },
                             {
                                 "name": "phone",
                                 "sqlName": "Phone",
-                                "type": "NVARCHAR(10)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 15,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "email",
                                 "sqlName": "Email",
-                                "type": "NVARCHAR(30)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 40,
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "address",
+                                "sqlName": "Address",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "city",
+                                "sqlName": "City",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "annotation",
+                                "sqlName": "Annotation",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": "max",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(20) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(20) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -289,47 +501,87 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "teacherId",
                                 "sqlName": "TeacherId",
-                                "type": "INT NOT NULL FOREIGN KEY(TeacherId) REFERENCES tbl_Teachers(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Teachers",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "genderId",
                                 "sqlName": "GenderId",
-                                "type": "INT NOT NULL FOREIGN KEY(GenderId) REFERENCES tbl_Genders(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Genders",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NOT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -346,57 +598,103 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "teacherPoolGenderId",
                                 "sqlName": "TeacherPoolGenderId",
-                                "type": "INT NOT NULL FOREIGN KEY(TeacherPoolGenderId) REFERENCES tbl_TeachersPoolGenders(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_TeachersPoolGenders",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "pooldayScheduleId",
                                 "sqlName": "PooldayScheduleId",
-                                "type": "INT NOT NULL FOREIGN KEY(PooldayScheduleId) REFERENCES tbl_PoolDaySchedule(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_PoolDaySchedule",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "startHour",
                                 "sqlName": "startHour",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "endHour",
                                 "sqlName": "EndHour",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(20) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "Bit Not Null"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -413,42 +711,72 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "name",
                                 "sqlName": "Name",
-                                "type": "NVARCHAR(50) UNIQUE NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                },
+                                "uniquekey": true
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NULL"
+                                "type":{
+                                    "type":"BIT", "isnull":true
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50) NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -465,47 +793,87 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "teacherId",
                                 "sqlName": "TeacherId",
-                                "type": "INT NOT NULL FOREIGN KEY(TeacherId) REFERENCES tbl_Teachers(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Teachers",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "levelId",
                                 "sqlName": "LevelId",
-                                "type": "INT NOT NULL FOREIGN KEY(LevelId) REFERENCES tbl_Levels(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Levels",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NOT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -522,102 +890,173 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "identityNumber",
                                 "sqlName": "IdentityNumber",
-                                "type": "INT IDENTITY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "uniquekey": true
                             },
                             {
                                 "name": "firstName",
                                 "sqlName": "FirstName",
-                                "type": "NVARCHAR(20) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "lastName",
                                 "sqlName": "LastName",
-                                "type": "NVARCHAR(20) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "phone1",
                                 "sqlName": "Phone1",
-                                "type": "NVARCHAR(20) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "phone2",
                                 "sqlName": "Phone2",
-                                "type": "NVARCHAR(20)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "birthDate",
                                 "sqlName": "BirthDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "sex",
                                 "sqlName": "Sex",
-                                "type": "INT NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "priceList",
                                 "sqlName": "PriceList",
-                                "type": "INT"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "evaluated",
                                 "sqlName": "Evaluated",
-                                "type": "BIT NOT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "lastEvaluationDate",
                                 "sqlName": "LastEvaluationDate",
-                                "type": "DATETIME NOT NULL" ,"?":""
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "noEvaluation",
                                 "sqlName": "NoEvaluation",
-                                "type": "BIT"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "noEvaluationUser",
                                 "sqlName": "NoEvaluationUser",
-                                "type": "NVARCHAR(30)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 30,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "sendMedDocumentsDate",
                                 "sqlName": "SendMedDocumentsDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NOT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -634,47 +1073,87 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "patientId",
                                 "sqlName": "PatientId",
-                                "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Patient",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "genderId",
                                 "sqlName": "GenderId",
-                                "type": "INT NOT NULL FOREIGN KEY(GenderId) REFERENCES tbl_Genders(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Genders",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NOT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(20)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -691,47 +1170,83 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "urgencyNumber",
                                 "sqlName": "UrgencyNumber",
-                                "type": "INT NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "patientId",
                                 "sqlName": "PatientId",
-                                "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Patient",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabledUser",
                                 "sqlName": "DisabledUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -748,47 +1263,87 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "patientId",
                                 "sqlName": "PatientId",
-                                "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Patient",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "treatmentLevelId",
                                 "sqlName": "TreatmentLevelId",
-                                "type": "INT NOT NULL FOREIGN KEY(TreatmentLevelId) REFERENCES tbl_Levels(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Levels",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NOT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -805,47 +1360,84 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "patientId",
                                 "sqlName": "PatientId",
-                                "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Patient",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "comment",
                                 "sqlName": "Comment",
-                                "type": "NVARCHAR(100)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 100,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NOT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -862,47 +1454,87 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "patientId",
                                 "sqlName": "PatientId",
-                                "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Patient",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "poolId",
                                 "sqlName": "PoolId",
-                                "type": "INT NOT NULL FOREIGN KEY(PoolId) REFERENCES tbl_SwimmingPools(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_SwimmingPools",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NOT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -919,53 +1551,96 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "patientId",
                                 "sqlName": "PatientId",
-                                "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Patient",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "teacherId",
                                 "sqlName": "TeacherId",
-                                "type": "INT NOT NULL FOREIGN KEY(TeacherId) REFERENCES tbl_Teachers(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Teachers",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "preference",
                                 "sqlName": "Preference",
                                 "values": "(1,-1)",
-                                "type": "Int Not Null"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NOT NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(20) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "Bit NOT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableUser",
                                 "sqlName": "DisableUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             }
                         ]
                     },
@@ -982,57 +1657,103 @@
                             {
                                 "name": "id",
                                 "sqlName": "Id",
-                                "type": "INT IDENTITY PRIMARY KEY NOT NULL"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
                             },
                             {
                                 "name": "patientId",
                                 "sqlName": "PatientId",
-                                "type": "INT NOT NULL FOREIGN KEY(PatientId) REFERENCES tbl_Patient(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Patient",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "poolDayScheduleId",
                                 "sqlName": "PoolDayScheduleId",
-                                "type": "INT NOT NULL FOREIGN KEY(PoolDayScheduleId) REFERENCES tbl_PoolDaySchedule(Id)"
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_PoolDaySchedule",
+                                    "ref_column": "Id"
+                                }
                             },
                             {
                                 "name": "startHour",
                                 "sqlName": "StartHour",
-                                "type": "DATETIME NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "endHour",
                                 "sqlName": "EndHour",
-                                "type": "DATETIME NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
-                                "type": "DATETIME NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "userName",
                                 "sqlName": "UserName",
-                                "type": "NVARCHAR(50) NOT NULL"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": false
+                                }
                             },
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type": "BIT NULL"
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabledDate",
                                 "sqlName": "DisabledDate",
-                                "type": "DATETIME NULL"
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disabledUser",
                                 "sqlName": "DisabledUser",
-                                "type": "NVARCHAR(50)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
                             },
                             {
                                 "name": "disableReason",
                                 "sqlName": "DisableReason",
-                                "type": "NVARCHAR(20)"
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 20,
+                                    "isnull": true
+                                }
                             }
                         ]
                     }
@@ -1040,6 +1761,4 @@
             }
         ]
     }
-   
-   
 ]

@@ -170,7 +170,7 @@ function mapConnetedObject(item) {
     const { connections } = item
     for (let connection of connections) {
         const { entity, values } = connection
-        for (const val of values) {
+        for (let val of values) {
             const valEntries = Object.entries(val).filter(e => e[1].entity)
             const mappedValEntries = valEntries.map(e => ({ key: e[0], entity: e[1].entity, value: e[1] }))
             mappedValEntries.forEach(va => {
