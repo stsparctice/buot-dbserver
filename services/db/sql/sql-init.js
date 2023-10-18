@@ -21,6 +21,7 @@ async function createTables() {
                             for (let table of db.collections) {
                                 const response = await getPool().request().query(`use ${item.dbName} IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${table.MTDTable.entityName.sqlName}')
                     CREATE TABLE [dbo].[${table.MTDTable.entityName.sqlName}](${buildColumns(table.columns)})`);
+                    
                             }
                         }
                     }

@@ -70,7 +70,7 @@ function parseNodeToSql({ type, value }) {
 
 function removeIdentityDataFromObject(entity, object) {
     const { columns } = entity
-    const identities = columns.filter(c => c.type.isIdentity)
+    const identities = columns.filter(c => c.isIdentity)
     const removeKeys = identities.map(({ name }) => name)
     object = deleteKeysFromObject(object, removeKeys)
     //  const {id, ...rest} = object

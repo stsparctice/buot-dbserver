@@ -123,6 +123,7 @@ const update = async function (database, {tablename, alias}, updateValues, condi
                return false;
      }
      catch (error) {
+          console.log({error})
           throw error
      }
 
