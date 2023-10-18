@@ -22,7 +22,6 @@
                                     "type": "NUMERIC",
                                     "isnull": false
                                 },
-                                "primarykey": true,
                                 "isIdentity": true
                             },
                             {
@@ -285,7 +284,7 @@
                                 "sqlName": "Patients"
                             },
                             "description": "",
-                            "defaultColumn": "Id"
+                            "defaultColumn": "ID"
                         },
                         "columns": [
                             {
@@ -307,7 +306,7 @@
                                 }
                             },
                             {
-                                "name": "ID",
+                                "name": "id",
                                 "sqlName": "ID",
                                 "type": {
                                     "type": "NVARCHAR",
@@ -1676,6 +1675,10 @@
                                 "type": {
                                     "type": "NUMERIC",
                                     "isnull": true
+                                },
+                                "foreignkey":{
+                                    "ref_table":"Patients",
+                                    "ref_column":"PatID"
                                 }
                             },
                             {
@@ -1694,7 +1697,8 @@
                                     "type": "NUMERIC",
                                     "isnull": false
                                 },
-                                "isIdentity": true
+                                "isIdentity": true,
+                                "primarykey":true
                             }
                         ]
                     }
