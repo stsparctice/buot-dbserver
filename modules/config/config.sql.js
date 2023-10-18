@@ -12,9 +12,18 @@ const { deleteKeysFromObject } = require('../../utils/code/objects');
 
 // }
 
-function getTableAlias(table) {
+function getTableAlias(entity) {
     try {
-        return table.MTDTable.entityName.name
+        return entity.MTDTable.entityName.name
+    }
+    catch (error) {
+        throw error
+    }
+}
+
+function getTableName(entity){
+    try {
+        return entity.MTDTable.entityName.sqlName
     }
     catch (error) {
         throw error
@@ -279,6 +288,7 @@ function parseSQLTypeForColumn(col, tableName) {
 module.exports = {
     // getTableFromConfig,
     getTableAlias,
+    getTableName,
     getPrimaryKeyField,
     getTableColumns,
     getSqlQueryFromConfig,

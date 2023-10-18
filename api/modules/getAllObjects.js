@@ -24,7 +24,7 @@ function getAllObjectByEntities(project, entity, obj) {
     )
     let columns = entityData.columns
     columns.forEach(col =>
-        obj[col.name] = col.name
+        obj[col.name] = col.type.type
     )
     let connectedEntities = project.connected_entities.find(ce =>
         ce.entity == entity)
@@ -35,7 +35,6 @@ function getAllObjectByEntities(project, entity, obj) {
         obj[subEntities[i]] = []
         const newObject = getAllObjectByEntities(project, subEntities[i], {})
         obj[subEntities[i]].push(newObject)
-
     }
     return obj
 }

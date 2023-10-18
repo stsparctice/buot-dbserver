@@ -1,6 +1,6 @@
-const { getPool } = require('./sql-connection');
-const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray, parseObjectValuesToSQLTypeObject, getTableAlias } = require('../../../modules/config/config.sql')
 const sql = require('mssql');
+const { getPool } = require('./sql-connection');
+const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray, parseObjectValuesToSQLTypeObject, getTableAlias, getTableName } = require('../../../modules/config/config.sql')
 const { createArrColumns } = require('../../../modules/functions');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
@@ -107,15 +107,14 @@ const read = async function (query = "", n) {
 
 };
 
-const update = async function (database, entity, set, condition) {
+const update = async function (database, {tablename, alias}, updateValues, condition) {
      try {
-          const alias = await getTableAlias(entity)
-          console.log({ set });
-          const sqlObject = parseObjectValuesToSQLTypeObject(set, entity.columns)
-          const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
-          const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
-          console.log({ updateValues })
-          const result = await getPool().request().query(`use ${database} UPDATE ${alias} SET ${updateValues} FROM ${entity.MTDTable.entityName.sqlName} AS ${alias} WHERE ${condition}`);
+          if(!alias){
+               alias = tablename
+          }
+          const query = `use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}`
+          console.log({query})
+          const result = await getPool().request().query(query);
           if (result.rowsAffected.length > 0 && result.rowsAffected[0] > 0) {
                return { rowsAffected: result.rowsAffected[0] }
           }
@@ -170,9 +169,11 @@ const buildView = async function (entityName, select) {
      }
 }
 
-const count = async function (entityName, condition) {
+const count = async function (entityName,dbname="Bubble", condition = "1=1") {
      try {
-          const result = await getPool().request().query(`SELECT count(*)  FROM ${entityName} where ${condition}`);
+          const query = `use ${dbname} SELECT count(*) count  FROM ${entityName} where ${condition}`
+          console.log({query})
+          const result = await getPool().request().query(query);
           if (result.recordset)
                return result.recordset;
           return false
@@ -227,6 +228,7 @@ const getIdentityColumns = async function (database, tablename) {
 const getForeignKeysData = async function (database, tablename) {
      try {
           const response = await getPool().request().query(`use master  SELECT  
+                                                    col1.name AS [column],
                                                     tab2.name AS [ref_table],
                                                     col2.name AS [ref_column]
                                                     FROM  ${database}.sys.foreign_key_columns fkc
@@ -249,6 +251,8 @@ const getForeignKeysData = async function (database, tablename) {
           throw error
      }
 }
+
+
 
 
 // let condition ={
