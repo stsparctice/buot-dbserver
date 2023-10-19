@@ -12,9 +12,18 @@ const { deleteKeysFromObject } = require('../../utils/code/objects');
 
 // }
 
-function getTableAlias(table) {
+function getTableAlias(entity) {
     try {
-        return table.MTDTable.entityName.name
+        return entity.MTDTable.entityName.name
+    }
+    catch (error) {
+        throw error
+    }
+}
+
+function getTableName(entity){
+    try {
+        return entity.MTDTable.entityName.sqlName
     }
     catch (error) {
         throw error
@@ -64,7 +73,7 @@ function parseNodeToSql({ type, value }) {
 
 function removeIdentityDataFromObject(entity, object) {
     const { columns } = entity
-    const identities = columns.filter(c => c.type.isIdentity)
+    const identities = columns.filter(c => c.isIdentity)
     const removeKeys = identities.map(({ name }) => name)
     object = deleteKeysFromObject(object, removeKeys)
     //  const {id, ...rest} = object
@@ -286,6 +295,7 @@ function parseSQLTypeForColumn(col, tableName) {
 module.exports = {
     // getTableFromConfig,
     getTableAlias,
+    getTableName,
     getPrimaryKeyField,
     getTableColumns,
     getSqlQueryFromConfig,

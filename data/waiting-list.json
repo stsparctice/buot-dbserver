@@ -173,8 +173,20 @@
                                 "sqlName": "TeacherGender",
                                 "type": {
                                     "type": "INT",
-                                    "isnull": true
-                                }
+                                    "isnull": false
+                                },
+                                "updateCommands": [
+                                    {
+                                        "value": 1,
+                                        "condition":
+                                            "Sex1=1 AND MaxAge1 >9"
+                                    },
+                                    {
+                                        "value": 2,
+                                        "condition":
+                                            "(Sex1=1 AND MaxAge1 <=9) or Sex2 = 2"
+                                    }
+                                ]
                             },
                             {
                                 "name": "color",
@@ -289,7 +301,6 @@
                                     "ref_table": "tbl_Genders",
                                     "ref_column": "Id"
                                 }
-                               
                             },
                             {
                                 "name": "startHour",
@@ -423,6 +434,14 @@
                                 "type": {
                                     "type": "NVARCHAR",
                                     "max": 50,
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "gender",
+                                "sqlName": "Gender",
+                                "type": {
+                                    "type": "INT",
                                     "isnull": true
                                 }
                             },
@@ -748,8 +767,9 @@
                             {
                                 "name": "disabled",
                                 "sqlName": "Disabled",
-                                "type":{
-                                    "type":"BIT", "isnull":true
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": true
                                 }
                             },
                             {

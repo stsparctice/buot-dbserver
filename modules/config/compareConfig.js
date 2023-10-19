@@ -1,5 +1,5 @@
 const { SQL_DBNAME } = process.env;
-const { getPool } = require('../../services/db/sql/sql-connection');
+const { buildColumnType, addColumn } = require('../../services/db/sql/sql-crud-db');
 const { getTableKeys, getForeignKeysData, sqlKeyTypes, getSqlColumns, getIdentityColumns } = require('../../services/db/sql/sql-operation');
 const { getSqlDBWithTablesfromConfig } = require('./config');
 
@@ -8,22 +8,31 @@ async function compareConfigWithSql(projectUrl = 'wl') {
     const dataBases = getSqlDBWithTablesfromConfig(projectUrl)
     for (let database of dataBases) {
         const { dbName, db } = database
-        console.log({ dbName, db })
         for (let tables of db) {
-            checkDataBase(dbName, tables)
+            checkDataBase(dbName, tables, db)
         }
     }
 }
 
-async function checkDataBase(dbName, tables) {
+async function checkDataBase(dbName, tables, db) {
     for (let table of tables) {
-        await buildSqlColumnsToCompare(dbName, table)
+        const sqlConfigColumns = await buildSqlColumnsToCompare(dbName, table)
+        const { tablename, columns } = table
+        const newColumns = columns.filter(({ sqlName }) => sqlConfigColumns.find(col => col.sqlName === sqlName) === undefined)
+        if (newColumns.length > 0) {
+            console.log(sqlConfigColumns.map(({ sqlName }) => sqlName), columns.map(({ sqlName }) => sqlName), newColumns)
+            const response = await Promise.all(newColumns.map(async col => {
+                const response = await addColumn(dbName, table, col)
+                return response
+            }))
+            console.log({ response })
+        }
     }
 }
 
 async function buildSqlColumnsToCompare(dbName, table) {
     const { tablename } = table
-   const sqlColumns = await getSqlColumns(dbName, tablename)
+    const sqlColumns = await getSqlColumns(dbName, tablename)
     const sqlUniqueKeys = await getTableKeys(dbName, tablename, sqlKeyTypes.UNIQUE)
     const sqlPrimaryKeys = await getTableKeys(dbName, tablename, sqlKeyTypes.PRIMARY_KEY)
     const sqlForeignKeys = await getTableKeys(dbName, tablename, sqlKeyTypes.FOREIGN_KEY)
@@ -50,7 +59,7 @@ async function buildSqlColumnsToCompare(dbName, table) {
         })
     }
 
-    if(sqlIdentityColumns.length>0){
+    if (sqlIdentityColumns.length > 0) {
         sqlConfigColumns = sqlConfigColumns.map(col => {
             const isIdentity = sqlIdentityColumns.find(id => id.name === col.sqlName)
             if (isIdentity) {
@@ -64,20 +73,21 @@ async function buildSqlColumnsToCompare(dbName, table) {
         sqlConfigColumns = sqlConfigColumns.map(col => {
             const foreignkey = foreignkeys.find(fk => fk.column === col.sqlName)
             if (foreignkey) {
-                col.foreignkey = foreignkey
+                const { column, ...rest } = foreignkey
+                col.foreignkey = rest
             }
             return col
         })
     }
-//  const part = sqlConfigColumns.slice(30)
-//      console.log(sqlConfigColumns)
+
+    return sqlConfigColumns
 }
 
 
 function convertSqlToConfig({ name, type, max, isnull }) {
     const convertColumn = { sqlName: name, type: { type: type.toUpperCase() } }
     if (max) {
-        if(max===-1){
+        if (max === -1) {
             max = 'MAX'
         }
         convertColumn.type.max = max
@@ -85,7 +95,7 @@ function convertSqlToConfig({ name, type, max, isnull }) {
     if (isnull === 'NO') {
         convertColumn.type.isnull = false
     }
-    else{
+    else {
         convertColumn.type.isnull = true
     }
     return convertColumn
