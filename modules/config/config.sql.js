@@ -23,21 +23,24 @@ function getTableAlias(table) {
 
 function getPrimaryKeyField(table) {
     let col = table.columns.find(col => (col.primarykey === true))
+    console.log({col});
     if (col) {
         return { name: col.name, sqlName: col.sqlName }
     }
+    console.log('undefined')
     return undefined
 }
 
 function getTableColumns(entity, columns = []) {
     try {
         let cols
+        console.log(columns);
         if (columns.length != 0) {
             cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
         }
         else {
-            cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type }))
-            console.log("cols: ", cols);
+            cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
+           
         }
         return cols
     }
@@ -78,13 +81,11 @@ function buildSqlCondition(entity, condition) {
         const entityKeys = Object.keys(condition).filter(key => columns.find(({ name, sqlName }) => key === name || key === sqlName))
         if (entityKeys.length > 0) {
             const entries = Object.entries(condition)
-            console.log({ entries })
             const sqlNames = entries.map(col => ({ key: col[0], sqlCol: columns.find(c => c.name === col[0]).sqlName, type: columns.find(c => c.name === col[0]).type, value: col[1] }))
 
             const conditionList = sqlNames.map(c =>
                 `${tablealias}.${c.sqlCol} =  ${parseNodeToSql({ type: c.type, value: c.value })}`
             )
-            console.log({ conditionList })
             sqlCondition = conditionList.join(' AND ')
             console.log({ sqlCondition })
         }
@@ -111,9 +112,13 @@ function getPKConnectionBetweenEntities(mainEntity, condition) {
 }
 
 function getLeftJoinBetweenEntities(mainEntity, subEntity) {
+    console.log(subEntity,'subEntity');
     const mainPrimaryKey = getPrimaryKeyField(mainEntity).sqlName
+    console.log({mainPrimaryKey})
     const tableAlias = getTableAlias(mainEntity)
     const joincolumn = subEntity.columns.filter((col) => col.foreignkey && col.foreignkey.ref_table === mainEntity.MTDTable.entityName.sqlName && col.foreignkey.ref_column === mainPrimaryKey)
+    console.log(subEntity.columns.filter((col) => col.foreignkey))
+    console.log(mainEntity.MTDTable.entityName.sqlName)
     const subAlias = getTableAlias(subEntity)
     return { tableToJoin: mainEntity.MTDTable.entityName.sqlName, alias: tableAlias, columnToJoin: mainPrimaryKey, entity2: subAlias, column2: joincolumn[0].sqlName }
 }
@@ -134,10 +139,12 @@ function buildSqlJoinAndSelect(configUrl, entity, fields) {
     if (foreignKeyColumns.length > 0) {
         foreignKeyColumns.forEach(column => {
 
-            const tableToJoin = column.foreignkey.ref_table ;
+            const tableToJoin = column.foreignkey.ref_table;
             const columnToJoin = column.foreignkey.ref_column;
             const joinEntity = getEntityFromConfig(configUrl, tableToJoin);
-            const columnName = joinEntity.entity.columns.find(c => c.sqlName === columnToJoin)
+            console.log({columnToJoin})
+            const columnName = joinEntity.entity.columns.find(c => c.sqlName.toLowerCase() === columnToJoin.toLowerCase())
+            console.log(columnName)
             const defaultColumnName = joinEntity.entity.columns.find(c => c.sqlName === joinEntity.entity.MTDTable.defaultColumn)
             const alias = getTableAlias(joinEntity.entity)
             if (joinTables.some(jt => jt.tableToJoin === tableToJoin)) {
