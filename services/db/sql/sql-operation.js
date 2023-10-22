@@ -1,6 +1,6 @@
 const sql = require('mssql');
 const { getPool } = require('./sql-connection');
-const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray, parseObjectValuesToSQLTypeObject, getTableAlias, getTableName } = require('../../../modules/config/config.sql')
+const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray, parseObjectValuesToSQLTypeObject, getTableAlias, getTableName, getSqlTableColumnsType, getTableFromConfig } = require('../../../modules/config/config.sql')
 const { createArrColumns } = require('../../../modules/functions');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
@@ -36,10 +36,14 @@ const poolConfig = () => ({
      }
 });
 
-const createTrac = async function ({ database, entity, columns, values, tran }) {
+const createTrac = async function ({ database, entity, columns, values, tran, trys }) {
      try {
           console.log("____createTran", { database, entity, columns, values, tran });
-          let primarykey = getPrimaryKeyField(entity).sqlName
+          let table = getTableFromConfig(entity)
+          console.log(table, '8888888888888888888888888888888');
+          console.log(trys, 'trtttttttttttttt');
+          // let primarykey = getPrimaryKeyField(trys.entity).sqlName
+          let primarykey = getPrimaryKeyField(table).sqlName
           let connectionPool = new sql.ConnectionPool(poolConfig());
           await connectionPool.connect();
 
@@ -59,19 +63,19 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
                for (const key in tran) {
                     console.log(key, "___key");
                     entity = key
-                    Object.keys(tran[key]).map(t => {
-                         console.log(t);
+                    console.log(tran[key], 'tran[key]');
+                    Object.values(tran[key]).map(t => {
                          t == tran[key][t] ? tran[key][t] = id : null
                          // return t
                     })
                     console.log(tran[key], "tran[key]");
                     const types = getSqlTableColumnsType(entity)
-                    primarykey = getPrimaryKeyField(entity).sqlName
+                    table = getTableFromConfig(entity)/////
+                    primarykey = getPrimaryKeyField(table).sqlName
                     columns = createArrColumns(Object.keys(tran[key])).join(',')
                     console.log(columns, "__co");
                     values = parseObjectValuesToSQLTypeArray(tran[key], types).join(',')
                     console.log({ entity, columns, values, primarykey });
-
                     await tr.prepare(`use ${database} INSERT INTO tbl_${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY `);
                     await tr.execute();
                     await tr.unprepare();
@@ -85,6 +89,7 @@ const createTrac = async function ({ database, entity, columns, values, tran }) 
                console.log('execution failed...');
           }
           console.log('done...');
+          return "sucsses"
      }
      catch (error) {
           console.log({ error });
@@ -107,13 +112,13 @@ const read = async function (query = "", n) {
 
 };
 
-const update = async function (database, {tablename, alias}, updateValues, condition) {
+const update = async function (database, { tablename, alias }, updateValues, condition) {
      try {
-          if(!alias){
+          if (!alias) {
                alias = tablename
           }
           const query = `use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}`
-          console.log({query})
+          console.log({ query })
           const result = await getPool().request().query(query);
           if (result.rowsAffected.length > 0 && result.rowsAffected[0] > 0) {
                return { rowsAffected: result.rowsAffected[0] }
@@ -123,7 +128,7 @@ const update = async function (database, {tablename, alias}, updateValues, condi
                return false;
      }
      catch (error) {
-          console.log({error})
+          console.log({ error })
           throw error
      }
 
@@ -170,10 +175,10 @@ const buildView = async function (entityName, select) {
      }
 }
 
-const count = async function (entityName,dbname="Bubble", condition = "1=1") {
+const count = async function (entityName, dbname = "Bubble", condition = "1=1") {
      try {
           const query = `use ${dbname} SELECT count(*) count  FROM ${entityName} where ${condition}`
-          console.log({query})
+          console.log({ query })
           const result = await getPool().request().query(query);
           if (result.recordset)
                return result.recordset;
