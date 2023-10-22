@@ -900,6 +900,200 @@
                     {
                         "MTDTable": {
                             "entityName": {
+                                "name": "teachersPools",
+                                "sqlName": "tbl_TeachersPools"
+                            },
+                            "description": " ",
+                            "defaultColumn": ""
+                        },
+                        "columns": [
+                            {
+                                "name": "id",
+                                "sqlName": "Id",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
+                            },
+                            {
+                                "name": "teacherId",
+                                "sqlName": "TeacherId",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Teachers",
+                                    "ref_column": "Id"
+                                }
+                            },
+                            {
+                                "name": "poolId",
+                                "sqlName": "PoolId",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_SwimmingPools",
+                                    "ref_column": "Id"
+                                }
+                            },
+                            {
+                                "name": "addedDate",
+                                "sqlName": "AddedDate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "userName",
+                                "sqlName": "UserName",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "disabled",
+                                "sqlName": "Disabled",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
+                            },
+                            {
+                                "name": "disabledDate",
+                                "sqlName": "DisabledDate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "disableUser",
+                                "sqlName": "DisableUser",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "disableReason",
+                                "sqlName": "DisableReason",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "MTDTable": {
+                            "entityName": {
+                                "name": "teachersGenders",
+                                "sqlName": "tbl_TeachersGenders"
+                            },
+                            "description": " ",
+                            "defaultColumn": ""
+                        },
+                        "columns": [
+                            {
+                                "name": "id",
+                                "sqlName": "Id",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "primarykey": true,
+                                "isIdentity": true
+                            },
+                            {
+                                "name": "teacherId",
+                                "sqlName": "TeacherId",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Teachers",
+                                    "ref_column": "Id"
+                                }
+                            },
+                            {
+                                "name": "genderId",
+                                "sqlName": "GenderId",
+                                "type": {
+                                    "type": "INT",
+                                    "isnull": false
+                                },
+                                "foreignkey": {
+                                    "ref_table": "tbl_Genders",
+                                    "ref_column": "Id"
+                                }
+                            },
+                            {
+                                "name": "addedDate",
+                                "sqlName": "AddedDate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "userName",
+                                "sqlName": "UserName",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "disabled",
+                                "sqlName": "Disabled",
+                                "type": {
+                                    "type": "BIT",
+                                    "isnull": false
+                                }
+                            },
+                            {
+                                "name": "disabledDate",
+                                "sqlName": "DisabledDate",
+                                "type": {
+                                    "type": "DATETIME",
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "disableUser",
+                                "sqlName": "DisableUser",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
+                            },
+                            {
+                                "name": "disableReason",
+                                "sqlName": "DisableReason",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "MTDTable": {
+                            "entityName": {
                                 "name": "patient",
                                 "sqlName": "tbl_Patient"
                             },
