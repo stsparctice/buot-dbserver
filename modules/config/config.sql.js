@@ -49,7 +49,11 @@ function getTableColumns(entity, columns = []) {
             cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
         }
         else {
-            cols = entity.entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
+            if (entity.column == undefined)
+                cols = entity.entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
+            else
+                cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
+
         }
 
         return cols
@@ -298,7 +302,7 @@ function parseSQLTypeForColumn(col, tableName) {
 function getSqlTableColumnsType(tablename) {
     try {
         const table = getTableFromConfig(tablename)
-        console.log(table,'-----------------');
+        console.log(table, '-----------------');
         let col = table.columns.map(col => ({ sqlName: col.sqlName, type: col.type.type }))
         return col
     }

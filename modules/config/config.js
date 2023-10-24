@@ -16,17 +16,20 @@ function getEntitiesFromConfig(configUrl) {
     return { sql, mongo }
 }
 
-function getSqlDBWithTablesfromConfig(projectUrl){
+function getSqlDBWithTablesfromConfig(projectUrl) {
     const response = getDBConfig(projectUrl)
     const config = getEntitiesFromConfig(response)
     const { sql } = config
-    const databases = sql.map(({dbName, db})=>({dbName, db:db.map(({collections})=>(collections.map(({MTDTable,columns })=>({tablename:MTDTable.entityName.sqlName, columns}))))}))
+    const databases = sql.map(({ dbName, db }) => ({ dbName, db: db.map(({ collections }) => (collections.map(({ MTDTable, columns }) => ({ tablename: MTDTable.entityName.sqlName, columns })))) }))
     return databases
 }
 
 function getEntityConfigData({ project, entityName }) {
+    console.log({ project, entityName }, '{ project, entityName }');
     const configUrl = getDBConfig(project)
+    console.log(configUrl, 'configUrl');
     let entity = getEntityFromConfig(configUrl, entityName)
+    console.log(entity, 'entity');
     return entity
 }
 
@@ -34,12 +37,12 @@ function getEntityConfigData({ project, entityName }) {
 function getEntityFromConfig(configUrl, entityName) {
     const { sql, mongo } = getEntitiesFromConfig(configUrl)
     if (sql.length > 0) {
-        const mapCollection = sql.map(({ dbName, db }) =>  db.map(({collections})=>collections.map(c => ({ dbName, ...c }))))
-        const entityList = mapCollection.reduce((list, col)=>list=[...list, ...col.reduce((l, c)=>l=[...l, ...c], [])], [])
-        const tables = entityList.filter(c => c.MTDTable.entityName.name === entityName||c.MTDTable.entityName.sqlName === entityName)
+        const mapCollection = sql.map(({ dbName, db }) => db.map(({ collections }) => collections.map(c => ({ dbName, ...c }))))
+        const entityList = mapCollection.reduce((list, col) => list = [...list, ...col.reduce((l, c) => l = [...l, ...c], [])], [])
+        const tables = entityList.filter(c => c.MTDTable.entityName.name === entityName || c.MTDTable.entityName.sqlName === entityName)
         // let existEntity = tables.some(t => t.MTDTable.entityName.name === entityName)
-        if (tables.length>0) {
-            let entityDB = tables.find(t => t.MTDTable.entityName.name === entityName||t.MTDTable.entityName.sqlName === entityName)
+        if (tables.length > 0) {
+            let entityDB = tables.find(t => t.MTDTable.entityName.name === entityName || t.MTDTable.entityName.sqlName === entityName)
             return { entity: entityDB, type: DBTypes.SQL }
         }
     }

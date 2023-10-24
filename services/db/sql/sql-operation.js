@@ -38,6 +38,7 @@ const poolConfig = () => ({
 
 const createTrac = async function ({ database, entity, columns, values, tran, trys }) {
      try {
+          let id
           console.log("____createTran", { database, entity, columns, values, tran });
           let table = getTableFromConfig(entity)
           console.log(table, '8888888888888888888888888888888');
@@ -57,7 +58,7 @@ const createTrac = async function ({ database, entity, columns, values, tran, tr
                console.log("_____________________");
                console.log("db:", database, "entity:", entity, "columns:", columns, "value:", values, "pk:", primarykey);
                let ans = await tr.prepare(`use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY ${primarykey}`);
-               let id = await tr.execute();
+               id = await tr.execute();
                await tr.unprepare();
                id = Object.values(id.recordset[0])[0]
                for (const key in tran) {
@@ -89,7 +90,7 @@ const createTrac = async function ({ database, entity, columns, values, tran, tr
                console.log('execution failed...');
           }
           console.log('done...');
-          return "sucsses"
+          return id
      }
      catch (error) {
           console.log({ error });
