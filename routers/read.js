@@ -1,11 +1,12 @@
-const express = require('express');
+const express = require('express')
 const router = require('express').Router()
 const { startReadMany, startReadOne, getCount } = require('../modules/read');
 
 //שליחה בפרמס שם טבלה ותנאי בקווארי
-router.get('/readMany/:entity', async (req, res) => {  
+router.get('/readMany/:entity', async (req, res) => {
     try {
         let result = await startReadMany({ project: res.project, entityName: req.params.entity, condition: req.query })
+       console.log({result});
         if (result) {
             res.status(201).send(result)
         }

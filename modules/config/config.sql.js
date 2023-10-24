@@ -3,7 +3,7 @@ const { SQL_DBNAME } = process.env
 const { DBTypes } = require('../../utils/types')
 const { getEntityFromConfig } = require('./config');
 const { deleteKeysFromObject } = require('../../utils/code/objects');
-
+const config = require('../../data/waiting-list.json')
 
 
 // function getTableFromConfig(configUrl, tableName) {
@@ -21,7 +21,7 @@ function getTableAlias(entity) {
     }
 }
 
-function getTableName(entity){
+function getTableName(entity) {
     try {
         return entity.MTDTable.entityName.sqlName
     }
@@ -31,23 +31,31 @@ function getTableName(entity){
 }
 
 function getPrimaryKeyField(table) {
+    console.log(table, 'tttt');
     let col = table.columns.find(col => (col.primarykey === true))
+    console.log({ col });
     if (col) {
         return { name: col.name, sqlName: col.sqlName }
     }
+    console.log('undefined')
     return undefined
 }
 
 function getTableColumns(entity, columns = []) {
     try {
         let cols
+        console.log(columns);
         if (columns.length != 0) {
             cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
         }
         else {
-            cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type }))
-            console.log("cols: ", cols);
+            if (entity.column == undefined)
+                cols = entity.entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
+            else
+                cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
+
         }
+
         return cols
     }
     catch (error) {
@@ -56,6 +64,7 @@ function getTableColumns(entity, columns = []) {
 };
 
 function parseNodeToSql({ type, value }) {
+    console.log({ type, value })
     const parse = types[type]
     if (!parse) {
         let error = {}
@@ -87,13 +96,11 @@ function buildSqlCondition(entity, condition) {
         const entityKeys = Object.keys(condition).filter(key => columns.find(({ name, sqlName }) => key === name || key === sqlName))
         if (entityKeys.length > 0) {
             const entries = Object.entries(condition)
-            console.log({ entries })
             const sqlNames = entries.map(col => ({ key: col[0], sqlCol: columns.find(c => c.name === col[0]).sqlName, type: columns.find(c => c.name === col[0]).type, value: col[1] }))
 
             const conditionList = sqlNames.map(c =>
                 `${tablealias}.${c.sqlCol} =  ${parseNodeToSql({ type: c.type, value: c.value })}`
             )
-            console.log({ conditionList })
             sqlCondition = conditionList.join(' AND ')
             console.log({ sqlCondition })
         }
@@ -120,9 +127,13 @@ function getPKConnectionBetweenEntities(mainEntity, condition) {
 }
 
 function getLeftJoinBetweenEntities(mainEntity, subEntity) {
+    console.log(subEntity, 'subEntity');
     const mainPrimaryKey = getPrimaryKeyField(mainEntity).sqlName
+    console.log({ mainPrimaryKey })
     const tableAlias = getTableAlias(mainEntity)
     const joincolumn = subEntity.columns.filter((col) => col.foreignkey && col.foreignkey.ref_table === mainEntity.MTDTable.entityName.sqlName && col.foreignkey.ref_column === mainPrimaryKey)
+    console.log(subEntity.columns.filter((col) => col.foreignkey))
+    console.log(mainEntity.MTDTable.entityName.sqlName)
     const subAlias = getTableAlias(subEntity)
     return { tableToJoin: mainEntity.MTDTable.entityName.sqlName, alias: tableAlias, columnToJoin: mainPrimaryKey, entity2: subAlias, column2: joincolumn[0].sqlName }
 }
@@ -143,10 +154,12 @@ function buildSqlJoinAndSelect(configUrl, entity, fields) {
     if (foreignKeyColumns.length > 0) {
         foreignKeyColumns.forEach(column => {
 
-            const tableToJoin = column.foreignkey.ref_table ;
+            const tableToJoin = column.foreignkey.ref_table;
             const columnToJoin = column.foreignkey.ref_column;
             const joinEntity = getEntityFromConfig(configUrl, tableToJoin);
-            const columnName = joinEntity.entity.columns.find(c => c.sqlName === columnToJoin)
+            console.log({ columnToJoin })
+            const columnName = joinEntity.entity.columns.find(c => c.sqlName.toLowerCase() === columnToJoin.toLowerCase())
+            console.log(columnName)
             const defaultColumnName = joinEntity.entity.columns.find(c => c.sqlName === joinEntity.entity.MTDTable.defaultColumn)
             const alias = getTableAlias(joinEntity.entity)
             if (joinTables.some(jt => jt.tableToJoin === tableToJoin)) {
@@ -246,7 +259,8 @@ function parseObjectValuesToSQLTypeArray(obj, tabledata) {
         let str = []
         for (let i = 0; i < keys.length; i++) {
             if (obj[keys[i]] != null) {
-                let type = tabledata.find(td => td.name.trim().toLowerCase() == keys[i].trim().toLowerCase()).type
+                let type = tabledata.find(td => td.sqlName.trim().toLowerCase() == keys[i].trim().toLowerCase())
+                console.log(type.type)
                 const parse = types[type.type]
                 if (!parse) {
                     let error = {}
@@ -285,13 +299,36 @@ function parseSQLTypeForColumn(col, tableName) {
     return val
 }
 
+function getSqlTableColumnsType(tablename) {
+    try {
+        const table = getTableFromConfig(tablename)
+        console.log(table, '-----------------');
+        let col = table.columns.map(col => ({ sqlName: col.sqlName, type: col.type.type }))
+        return col
+    }
+    catch (error) {
+        throw error
+    }
+};
+function getTableFromConfig(tableName) {
+    let sql = config.find(db => db.db[0].type == 'sql')//????????????????????????????
+    sql = sql.db[0]
+    // let tables = sql.collections.find(obj => obj.type == 'Tables').list
+    let table = sql.collections.find(tbl => tbl.MTDTable.entityName.sqlName.toLowerCase() == tableName.toLowerCase() ||
+        tbl.MTDTable.entityName.name.toLowerCase() == tableName.toLowerCase())
+    return table
+
+}
+
+
 module.exports = {
-    // getTableFromConfig,
+    getTableFromConfig,
     getTableAlias,
     getTableName,
     getPrimaryKeyField,
     getTableColumns,
     getSqlQueryFromConfig,
+    getSqlTableColumnsType,
     getPKConnectionBetweenEntities,
     getLeftJoinBetweenEntities,
     buildSqlCondition,

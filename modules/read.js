@@ -51,7 +51,7 @@ async function startReadOne({ project, entityName, condition, entitiesFields }, 
                     condition[primaryKey.name] = condition.key
 
                     condition = deleteKeysFromObject(condition, ['key'])
-                    console.log({condition})
+                    console.log({ condition })
                 }
                 const items = await readSql(projectConfigUrl, project, entity, condition, n, entitiesFields)
                 if (exist)
@@ -88,11 +88,14 @@ async function readSql(configUrl, project, entity, condition = {}, n, entitiesFi
                 if (entityFields.entity !== getTableAlias(entity)) {
                     let entityName = entityFields.entity
                     const subEntity = getEntityConfigData({ project, entityName })
-                    const primaryKey = getPrimaryKeyField(subEntity.entity).sqlName
+                    console.log({ subEntity }, 'subEntity');
+
+                    const primaryKey = getPrimaryKeyField(subEntity.entity)
+                    console.log({ primaryKey })
                     const connectEntitiesCondition = getPKConnectionBetweenEntities(entity, condition)
                     const subCondition = { connectEntitiesCondition }
                     n.end = n.start + 50
-                    n.orderBy = `${getTableAlias(subEntity.entity)}.${primaryKey}`
+                    n.orderBy = `${getTableAlias(subEntity.entity)}.${primaryKey.sqlName}`
                     const joinToMainTable = getLeftJoinBetweenEntities(entity, subEntity.entity)
                     values = await getValuesFromSQL(configUrl, subEntity.entity, n, subCondition, entityFields.fields, joinToMainTable)
                     const object = { entity: entityFields.entity, values: arrangeFKObjects(values) }
