@@ -8,14 +8,15 @@ const { compareConfigWithSql } = require('./modules/config/compareConfig')
 const { HOST, PORT } = process.env
 // connect().then(_ => {
 //     console.log('connect to mongo');
-    connectSQL().then(_ => {
-        console.log('connect to sql');
-        createTables().then(_ => {
+connectSQL().then(_ => {
+    console.log('connect to sql');
+    createTables().then(_ => {
+        compareConfigWithSql().then(_ => {
             app.listen(PORT, HOST, () => {
                 console.log(`http://${HOST}:${PORT}`);
-                compareConfigWithSql()
             });
         });
-    })
+    });
+})
 // })
 const server = http.createServer(app) 

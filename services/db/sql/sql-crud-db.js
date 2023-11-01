@@ -52,6 +52,7 @@ const addColumnToTable = async (database, tablename, { sqlName }, sqlType) => {
 
 const updateColumnType = async (database, tablename, { sqlName }, sqlType) => {
     try {
+        console.log(`USE ${database} ALTER TABLE ${tablename} ALTER COLUMN ${sqlName} ${sqlType}`)
         const response = await getPool().request().query(`USE ${database} ALTER TABLE ${tablename} ALTER COLUMN ${sqlName} ${sqlType} `)
         return response.recordset
     }
@@ -71,7 +72,7 @@ const addColumn = async function (database, { tablename, columns }, column) {
                 let response = await addColumnToTable(database, tablename, column, sqlType)
                 console.log({ response })
 
-                if (column.updateCommands.length > 0) {
+                if (column.updateCommands&& column.updateCommands.length > 0) {
                     const set = {}
                     const updateResponse = await Promise.all(column.updateCommands.map(async ({ value, condition }) => {
                         set[column.sqlName] = value

@@ -28,7 +28,6 @@ function getAllObjectByEntities(project, entity, obj) {
     )
     let connectedEntities = project.connected_entities.find(ce =>
         ce.entity == entity)
-    console.log({ entity })
     const { subEntities } = connectedEntities
 
     for (let i = 0; i < subEntities.length; i++) {
