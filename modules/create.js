@@ -20,9 +20,9 @@ async function startCreate({ project, entityName, values }) {
 async function createOneSQL(obj) {
     try {
         const types = getTableColumns(obj.entity)
-        let arr = createArrColumns(Object.keys(obj.values))
-        let values = parseObjectValuesToSQLTypeArray(obj.values, types)
-        const ans = await create(obj.entity, arr.join(','), values.join(','))
+        
+        let { columns, values } = buildColumnsValuesPair(obj.values, types)
+        const ans = await create(obj.entity, columns.join(','), values.join(','))
         if (ans) {
             return ans
         }
