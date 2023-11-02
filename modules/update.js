@@ -1,4 +1,4 @@
-const { update } = require('../services/db/sql/sql-operation')
+const { update, createGlobalTran, compareObject } = require('../services/db/sql/sql-operation')
 const { DBTypes } = require('../utils/types')
 const { buildSqlCondition, removeIdentityDataFromObject, getTableName, getTableAlias, parseObjectValuesToSQLTypeObject } = require('./config/config.sql')
 // const { DBTypes, buildSqlCondition } = require('./config/config')
@@ -52,7 +52,58 @@ async function updateManySql({ type, entity, set, condition }) {
         throw error;
     }
 }
+
+async function updateTranzaction({ project, entityName, value }) {
+    try {
+        // database, entity, columns, values, tran
+        const entity = getEntityConfigData({ project, entityName })
+        let tran = []
+        let finalyValues = {}
+        for (const key in value) {
+            if (typeof value[key] == 'object') {
+                let obj = {}
+                obj[key] = value[key]
+                tran = { ...tran, ...obj }
+            }
+            else {
+                let obj = {}
+                obj[key] = value[key]
+                finalyValues = { ...finalyValues, ...obj }
+            }
+        }
+        const types = getTableColumns(entity)
+        let columns = createArrColumns(Object.keys(finalyValues)).join(',')
+        let values = parseObjectValuesToSQLTypeArray(finalyValues, types).join(',')
+        if (entity.type === DBTypes.SQL) {
+            const items = await createTrac({ database: entity.entity.dbName, entity: entity.entity.MTDTable.entityName.sqlName,alias:entity.entity.MTDTable.entityName.names, id: id, set: set })
+            console.log(items, 'items');
+            return items
+        }
+        // database, entity, alias, values, tran
+        // if (entity.type === DBTypes.SQL) {
+        //     const items = await createGlobalTran("use bubble update teachers set teacherName='estar' from tbl_Teachers as teachers where id=2 ")
+        //     console.log(items, 'items');
+        //     return items
+        // }
+    }
+    catch (error) {
+
+    }
+}
+// async function compareWithData(obj) {
+//     console.log('in modulessssssssssssssssss');
+//     try {
+//         const ans = await compareObject(obj)
+//         if (ans) {
+//             return ans
+//         }
+//     }
+//     catch (error) {
+//         throw error
+//     }
+
+// }
 async function updateOneMongo() { }
 async function updateManyMongo() { }
 
-module.exports = { updateManySql, updateOneMongo, updateManyMongo, startupdate }
+module.exports = { updateManySql, updateTranzaction, updateOneMongo, updateManyMongo, startupdate }

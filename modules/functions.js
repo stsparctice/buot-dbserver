@@ -3,7 +3,6 @@ const { getDBConfig } = require('./config/project.config')
 
 
 
-
 function createArrColumns(arr) {
     let arrColumns = []
     let s
@@ -30,4 +29,5 @@ function createArrValues(arr) {
 
 
 
-module.exports = { createArrColumns, createArrValues }
+
+module.exports = { createArrColumns, createArrValues}

@@ -2,6 +2,7 @@ const sql = require('mssql');
 const { getPool } = require('./sql-connection');
 const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray, parseObjectValuesToSQLTypeObject, getTableAlias, getTableName, getSqlTableColumnsType, getTableFromConfig } = require('../../../modules/config/config.sql')
 const { createArrColumns } = require('../../../modules/functions');
+const { getEntityConfigData } = require('../../../modules/config/config');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
 const sqlKeyTypes = {
@@ -36,13 +37,12 @@ const poolConfig = () => ({
      }
 });
 
-const createTrac = async function ({ database, entity, columns, values, tran, trys }) {
+const createTrac = async function ({ database, entity, columns, values, tran }) {
      try {
           let id
           console.log("____createTran", { database, entity, columns, values, tran });
           let table = getTableFromConfig(entity)
-          console.log(table, '8888888888888888888888888888888');
-          console.log(trys, 'trtttttttttttttt');
+          // console.log(table, '8888888888888888888888888888888');
           // let primarykey = getPrimaryKeyField(trys.entity).sqlName
           let primarykey = getPrimaryKeyField(table).sqlName
           let connectionPool = new sql.ConnectionPool(poolConfig());
@@ -78,6 +78,64 @@ const createTrac = async function ({ database, entity, columns, values, tran, tr
                     values = parseObjectValuesToSQLTypeArray(tran[key], types).join(',')
                     console.log({ entity, columns, values, primarykey });
                     await tr.prepare(`use ${database} INSERT INTO tbl_${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY `);
+                    await tr.execute();
+                    await tr.unprepare();
+               }
+
+               await transaction.commit();
+
+          } catch (error) {
+               console.log({ error });
+               await transaction.rollback();
+               console.log('execution failed...');
+          }
+          console.log('done...');
+          return id
+     }
+     catch (error) {
+          console.log({ error });
+          throw error
+     }
+};
+
+const createGlobalTran = async function ({ database, entity, alias, id, set }) {
+     //use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}
+     try {
+          let id
+          let table = getTableFromConfig(entity)
+          let primarykey = getPrimaryKeyField(table).sqlName
+          let connectionPool = new sql.ConnectionPool(poolConfig());
+          await connectionPool.connect();
+
+          //    const transaction: Transaction = new sql.Transaction(this.connectionPool);
+
+          const transaction = new sql.Transaction(connectionPool);
+          const tr = new sql.PreparedStatement(transaction);
+          // tr.input('number', sql.Numeric(18, 0));
+          try {
+               await transaction.begin();
+               console.log("_____________________");
+               let ans = await tr.prepare(`use ${database} update ${alias} set ${updateName} from ${entity} as ${alias} where ${condition}`);
+               id = await tr.execute();
+               await tr.unprepare();
+               id = Object.values(id.recordset[0])[0]
+               for (const key in tran) {
+                    console.log(key, "___key");
+                    entity = key
+                    console.log(tran[key], 'tran[key]');
+                    Object.values(tran[key]).map(t => {
+                         t == tran[key][t] ? tran[key][t] = id : null
+                         // return t
+                    })
+                    console.log(tran[key], "tran[key]");
+                    const types = getSqlTableColumnsType(entity)
+                    table = getTableFromConfig(entity)/////
+                    primarykey = getPrimaryKeyField(table).sqlName
+                    columns = createArrColumns(Object.keys(tran[key])).join(',')
+                    console.log(columns, "__co");
+                    values = parseObjectValuesToSQLTypeArray(tran[key], types).join(',')
+                    console.log({ entity, columns, values, primarykey });
+                    await tr.prepare(query);
                     await tr.execute();
                     await tr.unprepare();
                }
@@ -259,13 +317,33 @@ const getForeignKeysData = async function (database, tablename) {
      }
 }
 
-
-
-
 // let condition ={
 //      CONTAINS:{value:'xl ft', fields:["FirstName", "LastName"]}
 //  }
 
+const compareObject = async function (obj) {
+     try {
+          const entity = getEntityConfigData({ project: 'wl', entityName: obj.entityName })
+          const response = await getPool().request().query(`USE Bubble SELECT * FROM ${entity.entity.MTDTable.entityName.sqlName} WHERE id=${obj.values.id}`)
+          console.log(response);
+          let newObj=[]
+          let element
+          console.log( Object.values(response.recordset[0]),' Object.values(response.recordset[0])');
+          Object.values(response.recordset[0]).forEach((val,i) => {
+               console.log(val,'val');
+               if (val != Object.values(obj.values)[i]) {
+                    element={name:Object.keys(obj.values)[i],oldVal:val,newVal:Object.values(obj.values)[i]}
+                    newObj.push(element)
+               }
+          });
+          console.log(newObj,'pppppppppppppppppppppppppppp');
+          return newObj
+     }
+     catch (error) {
+          throw error
+     }
+
+}
 
 
 module.exports = {
@@ -276,9 +354,12 @@ module.exports = {
      innerJoin,
      searchSQL,
      createTrac,
+     createGlobalTran,
      count,
      getSqlColumns,
      getTableKeys,
      getIdentityColumns,
-     getForeignKeysData
+     getForeignKeysData,
+     compareObject
+
 };
