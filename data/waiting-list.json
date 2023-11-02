@@ -757,11 +757,20 @@
                                 "uniquekey": true
                             },
                             {
+                                "name": "color",
+                                "sqlName": "Color",
+                                "type": {
+                                    "type": "NVARCHAR",
+                                    "max": 50,
+                                    "isnull": true
+                                }
+                            },
+                            {
                                 "name": "addedDate",
                                 "sqlName": "AddedDate",
                                 "type": {
                                     "type": "DATETIME",
-                                    "isnull": false
+                                    "isnull": true
                                 }
                             },
                             {
@@ -798,7 +807,8 @@
                                     "isnull": true
                                 }
                             }
-                        ]
+                        ] 
+                        
                     },
                     {
                         "MTDTable": {

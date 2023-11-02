@@ -31,25 +31,22 @@ function getTableName(entity) {
 }
 
 function getPrimaryKeyField(table) {
-    console.log(table, 'tttt');
     let col = table.columns.find(col => (col.primarykey === true))
-    console.log({ col });
     if (col) {
         return { name: col.name, sqlName: col.sqlName }
     }
-    console.log('undefined')
     return undefined
 }
 
 function getTableColumns(entity, columns = []) {
     try {
         let cols
-        console.log(columns);
+        console.log(entity);
         if (columns.length != 0) {
             cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
         }
         else {
-            if (entity.column == undefined)
+            if (entity.columns == undefined)
                 cols = entity.entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
             else
                 cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
@@ -256,12 +253,17 @@ function parseObjectValuesToSQLTypeObject(obj, tabledata) {
 function parseObjectValuesToSQLTypeArray(obj, tabledata) {
     try {
         const keys = Object.keys(obj)
+        console.log('parseObjectValuesToSQLTypeArray')
+        console.log(tabledata)
+        console.log(obj)
         let str = []
         for (let i = 0; i < keys.length; i++) {
             if (obj[keys[i]] != null) {
                 let type = tabledata.find(td => td.sqlName.trim().toLowerCase() == keys[i].trim().toLowerCase())
-                console.log(type.type)
-                const parse = types[type.type]
+                console.log({ type })
+                if (typeof (type) === 'object')
+                    type = type.type
+                const parse = types[type]
                 if (!parse) {
                     let error = {}
                     error.description = `Type: ${type} does not exist.`

@@ -1,7 +1,8 @@
 require('dotenv');
 const fs = require('fs');
 const { DBTypes } = require('../../utils/types')
-const { getDBConfig } = require('./project.config')
+const { getDBConfig } = require('./project.config');
+const { TYPES } = require('mssql');
 
 
 function readConfigFile(configUrl) {
@@ -25,11 +26,8 @@ function getSqlDBWithTablesfromConfig(projectUrl) {
 }
 
 function getEntityConfigData({ project, entityName }) {
-    console.log({ project, entityName }, '{ project, entityName }');
     const configUrl = getDBConfig(project)
-    console.log(configUrl, 'configUrl');
     let entity = getEntityFromConfig(configUrl, entityName)
-    console.log(entity, 'entity');
     return entity
 }
 
@@ -50,6 +48,18 @@ function getEntityFromConfig(configUrl, entityName) {
 
 }
 
+function getForeignkeyBetweenEntities(project, entityName, subEntityName) {
+    const configUrl = getDBConfig(project)
+    const entity = getEntityFromConfig(configUrl, entityName)
+    const subEntity = getEntityFromConfig(configUrl, subEntityName)
+    if (entity.type === DBTypes.SQL && subEntity.type === DBTypes.SQL) {
+        const foreignKeys = subEntity.entity.columns.filter(({ foreignkey }) => foreignkey)
+        const key = foreignKeys.find(({ foreignkey }) => foreignkey.ref_table === entity.entity.MTDTable.entityName.sqlName)
+        return key
+    }
+    return undefined
+}
+
 
 
 
@@ -58,5 +68,6 @@ module.exports = {
     getEntitiesFromConfig,
     getEntityFromConfig,
     getEntityConfigData,
-    getSqlDBWithTablesfromConfig
+    getSqlDBWithTablesfromConfig,
+    getForeignkeyBetweenEntities
 }

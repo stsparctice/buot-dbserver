@@ -1,8 +1,8 @@
-const { create, createTrac } = require('../services/db/sql/sql-operation')
-const { createArrColumns } = require('../modules/functions')
+const { create, createTrac, buildColumnsValuesPair } = require('../services/db/sql/sql-operation')
 const { getEntityConfigData } = require('./config/config')
-const { parseObjectValuesToSQLTypeArray, getTableColumns,getSqlTableColumnsType } = require('./config/config.sql')
+const { parseObjectValuesToSQLTypeArray, getTableColumns, getSqlTableColumnsType, removeIdentityDataFromObject } = require('./config/config.sql')
 const { DBTypes } = require('../utils/types')
+const { deleteKeysFromObject } = require('../utils/code/objects')
 async function startCreate({ project, entityName, values }) {
     try {
         const entity = getEntityConfigData({ project, entityName })
@@ -20,9 +20,9 @@ async function startCreate({ project, entityName, values }) {
 async function createOneSQL(obj) {
     try {
         const types = getTableColumns(obj.entity)
-        let arr = createArrColumns(Object.keys(obj.values))
-        let values = parseObjectValuesToSQLTypeArray(obj.values, types)
-        const ans = await create(obj.entity, arr.join(','), values.join(','))
+        
+        let { columns, values } = buildColumnsValuesPair(obj.values, types)
+        const ans = await create(obj.entity, columns.join(','), values.join(','))
         if (ans) {
             return ans
         }
@@ -64,33 +64,33 @@ async function createSQL({ type, entity, values }) {
 
 async function createTranzaction({ project, entityName, value }) {
     try {
-        // database, entity, columns, values, tran
+        console.log({ value })
+        const { addedDate, userName, disabled } = value
         const entity = getEntityConfigData({ project, entityName })
-        let tran = []
-        let finalyValues = {}
-        for (const key in value) {
-            if (typeof value[key] == 'object') {
-                let obj = {}
-                obj[key] = value[key]
-                tran = { ...tran, ...obj }
-            }
-            else {
-                let obj = {}
-                obj[key] = value[key]
-                finalyValues = { ...finalyValues, ...obj }
-            }
-        }
-        const types = getTableColumns(entity)
-        let columns = createArrColumns(Object.keys(finalyValues)).join(',')
-        let values = parseObjectValuesToSQLTypeArray(finalyValues, types).join(',')
         if (entity.type === DBTypes.SQL) {
-            const items = await createTrac({ database: entity.entity.dbName, entity: entity.entity.MTDTable.entityName.sqlName, columns: columns, values: values, tran: tran, trys: entity })
-            console.log(items, 'items');
-            return items
+            let tran = []
+            let finalyValues = {}
+            let origin = { ...value }
+            for (const key in value) {
+                if (typeof value[key] == 'object') {
+                    console.log({ key }, value[key])
+                    let obj = { entity: key }
+                    obj.values = value[key].map(data => ({ ...data, addedDate, userName, disabled }))
+                    tran = [...tran, obj]
+                    origin = deleteKeysFromObject(origin, [key])
+                }
+            }
+            console.log({ origin })
+            console.log(tran[1])
+            const types = getTableColumns(entity)
+            let { columns, values } = buildColumnsValuesPair(origin, types)
+
+            const items = await createTrac({ project, database: entity.entity.dbName, entity: entity.entity.MTDTable.entityName.sqlName, columns: columns.join(','), values: values.join(','), tran: tran, trys: entity })
+             return items
         }
     }
     catch (error) {
-
+        console.log(error)
     }
 }
 
