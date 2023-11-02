@@ -328,7 +328,7 @@ const compareObject = async function (obj) {
           console.log(response);
           let newObj=[]
           let element
-          console.log( Object.values(response.recordset[0]),' Object.values(response.recordset[0])');
+          console.log( Object.values(response.recordset[0]));
           Object.values(response.recordset[0]).forEach((val,i) => {
                console.log(val,'val');
                if (val != Object.values(obj.values)[i]) {
@@ -336,7 +336,7 @@ const compareObject = async function (obj) {
                     newObj.push(element)
                }
           });
-          console.log(newObj,'pppppppppppppppppppppppppppp');
+          console.log(newObj);
           return newObj
      }
      catch (error) {
