@@ -3,7 +3,7 @@ const { getPool } = require('./sql-connection');
 const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray,
      getTableColumns, getSqlTableColumnsType, getTableFromConfig, buildSqlCondition } = require('../../../modules/config/config.sql')
 const { types } = require('../../../modules/config/config.objects')
-const { getForeignkeyBetweenEntities } = require('../../../modules/config/config');
+const { getForeignkeyBetweenEntities, getEntitiesFromConfig } = require('../../../modules/config/config');
 const { getEntityConfigData } = require('../../../modules/config/config');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
@@ -22,13 +22,14 @@ function buildColumnsValuesPair(object, columns) {
           const parse = types[column.type]
           pairs.values.push(parse.parseNodeTypeToSqlType(object[key]))
      }
-     console.log({ pairs })
      return pairs
 }
 
-const buildInsertQuery = (entity, columns, values) => {
+const buildInsertQuery = ({ entity }, columns, values) => {
      let primarykey = getPrimaryKeyField(entity).sqlName
-     const query = `use ${entity.dbName} INSERT INTO ${entity.MTDTable.entityName.sqlName} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`
+     const tableName = entity.MTDTable.entityName.sqlName
+     const query = `use ${entity.dbName} INSERT INTO ${tableName} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`
+     console.log({ query })
      return query
 }
 
@@ -41,7 +42,7 @@ const buildUpdateQuery = (database, { tablename, alias }, updateValues, conditio
 }
 
 
-const create = async function ( entity, columns, values) {
+const create = async function (entity, columns, values) {
      try {
           const query = buildInsertQuery(entity, columns, values)
           const result = await getPool().request().query(query);
@@ -65,44 +66,48 @@ const poolConfig = () => ({
      }
 });
 
-const createTrac = async function ({ project,  entity, columns, values, tran, trys }) {
+const createTrac = async function ({ project, entity, columns, values, tran, trys }) {
      try {
           let id
-          let table = getTableFromConfig(entity)
-          let primarykey = getPrimaryKeyField(table).sqlName
-          let connectionPool = new sql.ConnectionPool(poolConfig());
-          await connectionPool.connect();
+          console.log({ entity })
+          let primarykey = getPrimaryKeyField(entity.entity).sqlName
+          const connectionPool = new sql.ConnectionPool(poolConfig());
+          _ = await connectionPool.connect();
 
           const transaction = new sql.Transaction(connectionPool);
           const tr = new sql.PreparedStatement(transaction);
           try {
                await transaction.begin();
-               // const query = `use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY ${primarykey}`
-               const query = buildInsertQuery(entity, columns, values)
+               let query = buildInsertQuery(entity, columns, values)
                _ = await tr.prepare(query);
                id = await tr.execute();
                await tr.unprepare();
                id = Object.values(id.recordset[0])[0]
+               console.log({ id })
                for (const connectEntity of tran) {
                     const subEntity = connectEntity.entity
-                    table = getTableFromConfig(subEntity)
-                    const types = getTableColumns(table)
-                    primarykey = getPrimaryKeyField(table).sqlName
-                    const foreignKey = getForeignkeyBetweenEntities(project, entity, subEntity)
-                    const fullValues = connectEntity.values.map(item => {
-                         item[foreignKey.name] = id
-                         return item
-                    })
-                    const pairs = fullValues.map(item => buildColumnsValuesPair(item, types))
-                    for (const oneItem of pairs) {
-                         console.log({ oneItem })
-                         await tr.prepare(`use ${database} INSERT INTO ${table.MTDTable.entityName.sqlName} (${oneItem.columns.join()}) VALUES ( ${oneItem.values.join()} ); SELECT @@IDENTITY `);
-                         await tr.execute();
-                         await tr.unprepare();
+                    const subEntityData = getEntityConfigData({ project, entityName: subEntity })
+                    if (subEntityData) {
+                         const types = getTableColumns(subEntityData)
+                         primarykey = getPrimaryKeyField(subEntityData.entity).sqlName
+                         const foreignKey = getForeignkeyBetweenEntities(entity, subEntityData)
+                         const fullValues = connectEntity.values.map(item => {
+                              item[foreignKey.name] = id
+                              return item
+                         })
+                         const pairs = fullValues.map(item => buildColumnsValuesPair(item, types))
+                         for (const oneItem of pairs) {
+                              console.log({ oneItem })
+                              query = buildInsertQuery(subEntityData, oneItem.columns, oneItem.values)
+                              await tr.prepare(query);
+                              await tr.execute();
+                              await tr.unprepare();
+                         }
                     }
                }
                console.log('commit')
                await transaction.commit();
+
 
           } catch (error) {
 
@@ -114,7 +119,6 @@ const createTrac = async function ({ project,  entity, columns, values, tran, tr
           return id
      }
      catch (error) {
-          await transaction.rollback();
           console.log({ error });
           throw error
      }

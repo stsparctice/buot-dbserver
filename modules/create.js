@@ -66,10 +66,9 @@ async function createTranzaction({ project, entityName, value }) {
     try {
         console.log({ value })
         const { addedDate, userName, disabled } = value
-        const {entity, type} = getEntityConfigData({ project, entityName })
-        if (type === DBTypes.SQL) {
+        const entity = getEntityConfigData({ project, entityName })
+        if (entity.type === DBTypes.SQL) {
             let tran = []
-            let finalyValues = {}
             let origin = { ...value }
             for (const key in value) {
                 if (typeof value[key] == 'object') {
@@ -80,9 +79,7 @@ async function createTranzaction({ project, entityName, value }) {
                     origin = deleteKeysFromObject(origin, [key])
                 }
             }
-            console.log({ origin })
-            console.log(tran[1])
-            const types = getTableColumns(entity)
+            const types = getTableColumns(entity.entity)
             let { columns, values } = buildColumnsValuesPair(origin, types)
 
             const items = await createTrac({ project, entity, columns: columns.join(','), values: values.join(','), tran: tran, trys: entity })

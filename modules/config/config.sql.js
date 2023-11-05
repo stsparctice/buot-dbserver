@@ -25,8 +25,8 @@ function getTableName(entity) {
     }
 }
 
-function getPrimaryKeyField(table) {
-    let col = table.columns.find(col => (col.primarykey === true))
+function getPrimaryKeyField(entity) {
+    let col = entity.columns.find(col => (col.primarykey === true))
     if (col) {
         return { name: col.name, sqlName: col.sqlName }
     }
@@ -306,19 +306,19 @@ function getSqlTableColumnsType(tablename) {
         throw error
     }
 };
-function getTableFromConfig(tableName) {
-    let sql = config.find(db => db.db[0].type == 'sql')//????????????????????????????
-    sql = sql.db[0]
-    // let tables = sql.collections.find(obj => obj.type == 'Tables').list
-    let table = sql.collections.find(tbl => tbl.MTDTable.entityName.sqlName.toLowerCase() == tableName.toLowerCase() ||
-        tbl.MTDTable.entityName.name.toLowerCase() == tableName.toLowerCase())
-    return table
+// function getTableFromConfig(tableName) {
+//     let sql = config.find(db => db.db[0].type == 'sql')//????????????????????????????
+//     sql = sql.db[0]
+//     // let tables = sql.collections.find(obj => obj.type == 'Tables').list
+//     let table = sql.collections.find(tbl => tbl.MTDTable.entityName.sqlName.toLowerCase() == tableName.toLowerCase() ||
+//         tbl.MTDTable.entityName.name.toLowerCase() == tableName.toLowerCase())
+//     return table
 
-}
+// }
 
 
 module.exports = {
-    getTableFromConfig,
+    // getTableFromConfig,
     getTableAlias,
     getTableName,
     getPrimaryKeyField,
