@@ -2,7 +2,7 @@ const { update, createGlobalTran, compareObject } = require('../services/db/sql/
 const { DBTypes } = require('../utils/types')
 const { buildSqlCondition, removeIdentityDataFromObject, getTableName, getTableAlias, parseObjectValuesToSQLTypeObject } = require('./config/config.sql')
 // const { DBTypes, buildSqlCondition } = require('./config/config')
-const { getEntityConfigData } = require('./config/config')
+const { getEntityConfigData, isSimpleEntity } = require('./config/config')
 
 
 async function startupdate({ project, entityName, data, condition }) {
@@ -10,8 +10,13 @@ async function startupdate({ project, entityName, data, condition }) {
         const { entity, type } = getEntityConfigData({ project, entityName })
         console.log({ entity })
         if (type === DBTypes.SQL) {
-            
-            const items = await updateManySql({ type: entity.dbName, entity, data, condition })
+            const isSimple = isSimpleEntity(project, entityName)
+            if (isSimple) {
+const response = updateSimpleObject({})
+            }
+            else {
+                const items = await updateManySql({ type: entity.dbName, entity, data, condition })
+            }
             return items
         }
     }

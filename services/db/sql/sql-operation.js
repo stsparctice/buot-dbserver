@@ -1,7 +1,7 @@
 const sql = require('mssql');
 const { getPool } = require('./sql-connection');
 const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray,
-      getTableColumns,  getSqlTableColumnsType, getTableFromConfig, buildSqlCondition } = require('../../../modules/config/config.sql')
+     getTableColumns, getSqlTableColumnsType, getTableFromConfig, buildSqlCondition } = require('../../../modules/config/config.sql')
 const { types } = require('../../../modules/config/config.objects')
 const { getForeignkeyBetweenEntities } = require('../../../modules/config/config');
 const { getEntityConfigData } = require('../../../modules/config/config');
@@ -14,10 +14,6 @@ const sqlKeyTypes = {
 }
 
 function buildColumnsValuesPair(object, columns) {
-
-
-     console.log({ object })
-     console.log({ columns })
      const pairs = { columns: [], values: [] }
 
      for (let key in object) {
@@ -30,12 +26,25 @@ function buildColumnsValuesPair(object, columns) {
      return pairs
 }
 
+const buildInsertQuery = (entity, columns, values) => {
+     let primarykey = getPrimaryKeyField(entity).sqlName
+     const query = `use ${entity.dbName} INSERT INTO ${entity.MTDTable.entityName.sqlName} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`
+     return query
+}
 
-const create = async function (entity, columns, values) {
+const buildUpdateQuery = (database, { tablename, alias }, updateValues, condition) => {
+     if (!alias) {
+          alias = tablename
+     }
+     const query = `use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}`
+     return query
+}
+
+
+const create = async function ( entity, columns, values) {
      try {
-          let primarykey = getPrimaryKeyField(entity).sqlName
-
-          const result = await getPool().request().query(`use ${entity.dbName} INSERT INTO ${entity.MTDTable.entityName.sqlName} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`);
+          const query = buildInsertQuery(entity, columns, values)
+          const result = await getPool().request().query(query);
           if (result)
                return result;
           return 'no create';
@@ -56,7 +65,7 @@ const poolConfig = () => ({
      }
 });
 
-const createTrac = async function ({ project, database, entity, columns, values, tran, trys }) {
+const createTrac = async function ({ project,  entity, columns, values, tran, trys }) {
      try {
           let id
           let table = getTableFromConfig(entity)
@@ -68,7 +77,8 @@ const createTrac = async function ({ project, database, entity, columns, values,
           const tr = new sql.PreparedStatement(transaction);
           try {
                await transaction.begin();
-               const query = `use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY ${primarykey}`
+               // const query = `use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY ${primarykey}`
+               const query = buildInsertQuery(entity, columns, values)
                _ = await tr.prepare(query);
                id = await tr.execute();
                await tr.unprepare();
@@ -183,13 +193,11 @@ const read = async function (query = "", n) {
 
 };
 
+
+
 const update = async function (database, { tablename, alias }, updateValues, condition) {
      try {
-          if (!alias) {
-               alias = tablename
-          }
-          const query = `use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}`
-          console.log({ query })
+          const query = buildUpdateQuery(database, { tablename, alias }, updateValues, condition)
           const result = await getPool().request().query(query);
           if (result.rowsAffected.length > 0 && result.rowsAffected[0] > 0) {
                return { rowsAffected: result.rowsAffected[0] }
@@ -335,15 +343,15 @@ const getForeignKeysData = async function (database, tablename) {
 
 const compareObject = async function (entity, object, condition) {
      try {
-         const sqlCondition= buildSqlCondition(entity, condition)
+          const sqlCondition = buildSqlCondition(entity, condition)
           const query = `USE Bubble SELECT * FROM ${entity.MTDTable.entityName.sqlName} WHERE ${sqlCondition}`
-          console.log({query})
+          console.log({ query })
           const response = await getPool().request().query(query)
           let newObj = []
           let element
           if (response.recordset.length === 1) {
                const sqlData = response.recordset[0]
-               
+
                Object.values(sqlData).forEach((val, i) => {
                     console.log(val, 'val');
                     if (val != Object.values(object.values)[i]) {
@@ -352,7 +360,7 @@ const compareObject = async function (entity, object, condition) {
                     }
                });
                console.log(newObj);
-              
+
                return newObj
           }
      }
