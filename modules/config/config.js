@@ -41,10 +41,19 @@ function getEntityFromConfig(configUrl, entityName) {
         // let existEntity = tables.some(t => t.MTDTable.entityName.name === entityName)
         if (tables.length > 0) {
             let entityDB = tables.find(t => t.MTDTable.entityName.name === entityName || t.MTDTable.entityName.sqlName === entityName)
+
             return { entity: entityDB, type: DBTypes.SQL }
         }
     }
     return undefined
+
+}
+
+function isSimpleEntity(project, entityName) {
+    const configUrl = getDBConfig(project)
+    const { entity } = getEntityFromConfig(configUrl, entityName)
+    const foreignKeys = entity.columns.filter(({ foreignkey }) => foreignkey)
+    return foreignKeys.length ===0
 
 }
 
@@ -69,5 +78,6 @@ module.exports = {
     getEntityFromConfig,
     getEntityConfigData,
     getSqlDBWithTablesfromConfig,
-    getForeignkeyBetweenEntities
+    getForeignkeyBetweenEntities,
+    isSimpleEntity
 }

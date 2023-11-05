@@ -5,12 +5,13 @@ const { buildSqlCondition, removeIdentityDataFromObject, getTableName, getTableA
 const { getEntityConfigData } = require('./config/config')
 
 
-async function startupdate({ project, entityName, set, condition }) {
-    console.log('startUpdate')
+async function startupdate({ project, entityName, data, condition }) {
     try {
         const { entity, type } = getEntityConfigData({ project, entityName })
+        console.log({ entity })
         if (type === DBTypes.SQL) {
-            const items = await updateManySql({ type: entity.dbName, entity, set: set, condition: condition })
+            
+            const items = await updateManySql({ type: entity.dbName, entity, data, condition })
             return items
         }
     }
@@ -20,26 +21,33 @@ async function startupdate({ project, entityName, set, condition }) {
 
 }
 
-// async function updateOneSQL(obj) {
-//     try {
-//         // let find = findCollection(obj.entity)
-//         let ans = await update(obj.type, obj.entity, obj.set, obj.condition)
-//         if (ans.rowsAffected[0] > 0)
-//             return ans.rowsAffected[0]
-//         return 'no effect'
-//     }
-//     catch (error) {
-//         throw error;
-//     }
-// }
-
-async function updateManySql({ type, entity, set, condition }) {
+async function updateSimpleObject({ type, entity, data, condition }) {
     try {
         condition = buildSqlCondition(entity, condition)
-        set = removeIdentityDataFromObject(entity, set)
+        set = removeIdentityDataFromObject(entity, data)
         const alias = getTableAlias(entity)
         const tablename = getTableName(entity)
-        const sqlObject = parseObjectValuesToSQLTypeObject(set, entity.columns)
+        const sqlObject = parseObjectValuesToSQLTypeObject(data, entity.columns)
+        const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
+        const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
+        let ans = await update(type, { tablename, alias }, updateValues, condition)
+        if (ans) {
+            return ans
+        }
+        return 'no effect'
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+async function updateManySql({ type, entity, data, condition }) {
+    try {
+        condition = buildSqlCondition(entity, condition)
+        set = removeIdentityDataFromObject(entity, data)
+        const alias = getTableAlias(entity)
+        const tablename = getTableName(entity)
+        const sqlObject = parseObjectValuesToSQLTypeObject(data, entity.columns)
         const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
         const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
         let ans = await update(type, { tablename, alias }, updateValues, condition)
@@ -75,7 +83,7 @@ async function updateTranzaction({ project, entityName, value }) {
         let columns = createArrColumns(Object.keys(finalyValues)).join(',')
         let values = parseObjectValuesToSQLTypeArray(finalyValues, types).join(',')
         if (entity.type === DBTypes.SQL) {
-            const items = await createTrac({ database: entity.entity.dbName, entity: entity.entity.MTDTable.entityName.sqlName,alias:entity.entity.MTDTable.entityName.names, id: id, set: set })
+            const items = await createTrac({ database: entity.entity.dbName, entity: entity.entity.MTDTable.entityName.sqlName, alias: entity.entity.MTDTable.entityName.names, id: id, set: set })
             console.log(items, 'items');
             return items
         }
@@ -106,4 +114,4 @@ async function updateTranzaction({ project, entityName, value }) {
 async function updateOneMongo() { }
 async function updateManyMongo() { }
 
-module.exports = { updateManySql, updateTranzaction, updateOneMongo, updateManyMongo, startupdate }
+module.exports = { updateManySql, updateTranzaction, updateOneMongo, updateManyMongo, startupdate, updateSimpleObject }

@@ -6,11 +6,6 @@ const { deleteKeysFromObject } = require('../../utils/code/objects');
 const config = require('../../data/waiting-list.json')
 
 
-// function getTableFromConfig(configUrl, tableName) {
-
-//     const config = getEntityFromConfig(configUrl, tableName)
-
-// }
 
 function getTableAlias(entity) {
     try {
@@ -85,7 +80,6 @@ function removeIdentityDataFromObject(entity, object) {
 }
 
 function buildSqlCondition(entity, condition) {
-    console.log({ condition })
     const tablealias = getTableAlias(entity)
     let sqlCondition = ''
     if (condition) {

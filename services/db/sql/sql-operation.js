@@ -1,7 +1,8 @@
 const sql = require('mssql');
 const { getPool } = require('./sql-connection');
-const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray, getTableColumns, parseObjectValuesToSQLTypeObject, getTableAlias, getTableName, getSqlTableColumnsType, getTableFromConfig } = require('../../../modules/config/config.sql')
-const {types} = require('../../../modules/config/config.objects')
+const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray,
+      getTableColumns,  getSqlTableColumnsType, getTableFromConfig, buildSqlCondition } = require('../../../modules/config/config.sql')
+const { types } = require('../../../modules/config/config.objects')
 const { getForeignkeyBetweenEntities } = require('../../../modules/config/config');
 const { getEntityConfigData } = require('../../../modules/config/config');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
@@ -14,9 +15,9 @@ const sqlKeyTypes = {
 
 function buildColumnsValuesPair(object, columns) {
 
-  
+
      console.log({ object })
-     console.log({columns})
+     console.log({ columns })
      const pairs = { columns: [], values: [] }
 
      for (let key in object) {
@@ -59,7 +60,6 @@ const createTrac = async function ({ project, database, entity, columns, values,
      try {
           let id
           let table = getTableFromConfig(entity)
-          // let primarykey = getPrimaryKeyField(trys.entity).sqlName
           let primarykey = getPrimaryKeyField(table).sqlName
           let connectionPool = new sql.ConnectionPool(poolConfig());
           await connectionPool.connect();
@@ -69,7 +69,6 @@ const createTrac = async function ({ project, database, entity, columns, values,
           try {
                await transaction.begin();
                const query = `use ${database} INSERT INTO ${entity} (${columns}) VALUES ( ${values} ); SELECT @@IDENTITY ${primarykey}`
-               console.log({ query })
                _ = await tr.prepare(query);
                id = await tr.execute();
                await tr.unprepare();
@@ -84,13 +83,7 @@ const createTrac = async function ({ project, database, entity, columns, values,
                          item[foreignKey.name] = id
                          return item
                     })
-                    console.log(fullValues)
-                 
-                    // const pair = buildColumnsValuesPair(table.columns.filter(({ primarykey }) => primarykey === undefined).map(({ sqlName }) => sqlName))
                     const pairs = fullValues.map(item => buildColumnsValuesPair(item, types))
-                    console.log({ pairs })
-                    // values = fullValues.map(val => parseObjectValuesToSQLTypeArray(val, types).join(','))
-                    console.log({ subEntity, pairs, primarykey });
                     for (const oneItem of pairs) {
                          console.log({ oneItem })
                          await tr.prepare(`use ${database} INSERT INTO ${table.MTDTable.entityName.sqlName} (${oneItem.columns.join()}) VALUES ( ${oneItem.values.join()} ); SELECT @@IDENTITY `);
@@ -340,23 +333,28 @@ const getForeignKeysData = async function (database, tablename) {
 //      CONTAINS:{value:'xl ft', fields:["FirstName", "LastName"]}
 //  }
 
-const compareObject = async function (obj) {
+const compareObject = async function (entity, object, condition) {
      try {
-          const entity = getEntityConfigData({ project: 'wl', entityName: obj.entityName })
-          const response = await getPool().request().query(`USE Bubble SELECT * FROM ${entity.entity.MTDTable.entityName.sqlName} WHERE id=${obj.values.id}`)
-          console.log(response);
-          let newObj=[]
+         const sqlCondition= buildSqlCondition(entity, condition)
+          const query = `USE Bubble SELECT * FROM ${entity.MTDTable.entityName.sqlName} WHERE ${sqlCondition}`
+          console.log({query})
+          const response = await getPool().request().query(query)
+          let newObj = []
           let element
-          console.log( Object.values(response.recordset[0]));
-          Object.values(response.recordset[0]).forEach((val,i) => {
-               console.log(val,'val');
-               if (val != Object.values(obj.values)[i]) {
-                    element={name:Object.keys(obj.values)[i],oldVal:val,newVal:Object.values(obj.values)[i]}
-                    newObj.push(element)
-               }
-          });
-          console.log(newObj);
-          return newObj
+          if (response.recordset.length === 1) {
+               const sqlData = response.recordset[0]
+               
+               Object.values(sqlData).forEach((val, i) => {
+                    console.log(val, 'val');
+                    if (val != Object.values(object.values)[i]) {
+                         element = { name: Object.keys(object.values)[i], oldVal: val, newVal: Object.values(object.values)[i] }
+                         newObj.push(element)
+                    }
+               });
+               console.log(newObj);
+              
+               return newObj
+          }
      }
      catch (error) {
           throw error

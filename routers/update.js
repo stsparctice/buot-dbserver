@@ -5,7 +5,7 @@ const { startupdate, updateTranzaction, compareWithData } = require('../modules/
 
 router.post('/updateOne', express.json(), async (req, res) => {
     try {
-        let ans = await startupdate({ project: res.project, entityName: req.body.entity, set: req.body.set, condition: req.body.condition })
+        let ans = await startupdate({ project: res.project, entityName: req.body.entity, data: req.body.data, condition: req.body.condition })
         if (ans) {
             if (ans.rowsAffected === 1) {
                 res.status(204).send()
@@ -25,7 +25,7 @@ router.post('/updateOne', express.json(), async (req, res) => {
 
 router.post('/updateMany', express.json(), async (req, res) => {
     try {
-        let result = await startupdate({ project: res.project, entityName: req.body.entity, set: req.body.set, condition: req.body.condition })
+        let result = await startupdate({ project: res.project, entityName: req.body.entity, data: req.body.data, condition: req.body.condition })
         if (result)
             res.status(201).send(result)
         else {
