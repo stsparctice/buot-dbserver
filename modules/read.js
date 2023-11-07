@@ -3,7 +3,7 @@ const { deleteKeysFromObject } = require('../utils/code/objects')
 const { read, searchSQL, count } = require("../services/db/sql/sql-operation")
 const { getDBConfig } = require('../modules/config/project.config')
 const { getEntityConfigData } = require("./config/config")
-const { getPrimaryKeyField, getTableAlias, getSqlQueryFromConfig, buildSqlCondition, getPKConnectionBetweenEntities, getLeftJoinBetweenEntities } = require('./config/config.sql')
+const { getPrimaryKeyField, getTableAlias, getSqlQueryFromConfig,  getPKConnectionBetweenEntities, getLeftJoinBetweenEntities } = require('./config/config.sql')
 
 
 // {

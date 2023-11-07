@@ -17,7 +17,7 @@ const poolConfig = () => ({
 let pool;
 const connectSQL = async () => {
     if (!poolConfig().server || !poolConfig().user || !poolConfig().password) {
-        throw new Error('.env file is not valid or is not exsist.')
+        throw new Error('.env file is not valid or does not exist.')
     }
     if (!pool) {
         pool = new sql.ConnectionPool(poolConfig());

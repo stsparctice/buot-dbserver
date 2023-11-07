@@ -1,8 +1,7 @@
 const sql = require('mssql');
 const { getPool } = require('./sql-connection');
 const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray,
-     getTableColumns, getSqlTableColumnsType, getTableFromConfig, buildSqlCondition } = require('../../../modules/config/config.sql')
-const { types } = require('../../../modules/config/config.objects')
+     getTableColumns, getSqlTableColumnsType, buildSqlCondition, getTableAlias, buildColumnsValuesPair, parseObjectValuesToSQLTypeObject } = require('../../../modules/config/config.sql')
 const { getForeignkeyBetweenEntities, getEntitiesFromConfig } = require('../../../modules/config/config');
 const { getEntityConfigData } = require('../../../modules/config/config');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
@@ -13,17 +12,7 @@ const sqlKeyTypes = {
      UNIQUE: 'UNIQUE'
 }
 
-function buildColumnsValuesPair(object, columns) {
-     const pairs = { columns: [], values: [] }
 
-     for (let key in object) {
-          const column = columns.find(({ name }) => name === key)
-          pairs.columns.push(`[${column.sqlName}]`)
-          const parse = types[column.type]
-          pairs.values.push(parse.parseNodeTypeToSqlType(object[key]))
-     }
-     return pairs
-}
 
 const buildInsertQuery = ({ entity }, columns, values) => {
      let primarykey = getPrimaryKeyField(entity).sqlName
@@ -38,6 +27,13 @@ const buildUpdateQuery = (database, { tablename, alias }, updateValues, conditio
           alias = tablename
      }
      const query = `use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}`
+     return query
+}
+
+const buildOneTableSelectQuery = (database, tablename, alias, condition = '1=1') => {
+
+     const query = `USE ${database} SELECT * FROM ${tablename} ${alias} WHERE ${condition}`
+     console.log({ query })
      return query
 }
 
@@ -66,7 +62,7 @@ const poolConfig = () => ({
      }
 });
 
-const createTrac = async function ({ project, entity, columns, values, tran, trys }) {
+const createTransaction = async function ({ project, entity, columns, values, tran, trys }) {
      try {
           let id
           console.log({ entity })
@@ -124,57 +120,43 @@ const createTrac = async function ({ project, entity, columns, values, tran, try
      }
 };
 
-const createGlobalTran = async function ({ database, entity, alias, id, set }) {
-     //use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}
+const sqlTransaction = async function (list) {
      try {
-          let id
-          let table = getTableFromConfig(entity)
-          let primarykey = getPrimaryKeyField(table).sqlName
+
+          const updateCommands = list.map(({ entity, updates, condition }) => {
+               condition = buildSqlCondition(entity, condition)
+               const alias = getTableAlias(entity)
+               const tablename = entity.MTDTable.entityName.sqlName
+               const databse = entity.dbName
+               const object = updates.reduce((obj, { key, newVal }) => {
+                    obj[key] = newVal
+                    return obj
+               }, {})
+               const sqlObject = parseObjectValuesToSQLTypeObject(object, entity.columns)
+               const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
+               const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
+               const query = buildUpdateQuery(databse, { tablename, alias }, updateValues, condition)
+               return query
+          })
+
           let connectionPool = new sql.ConnectionPool(poolConfig());
           await connectionPool.connect();
-
-          //    const transaction: Transaction = new sql.Transaction(this.connectionPool);
-
           const transaction = new sql.Transaction(connectionPool);
           const tr = new sql.PreparedStatement(transaction);
-          // tr.input('number', sql.Numeric(18, 0));
           try {
                await transaction.begin();
-               console.log("_____________________");
-               let ans = await tr.prepare(`use ${database} update ${alias} set ${updateName} from ${entity} as ${alias} where ${condition}`);
-               id = await tr.execute();
-               await tr.unprepare();
-               id = Object.values(id.recordset[0])[0]
-               for (const key in tran) {
-                    console.log(key, "___key");
-                    entity = key
-                    console.log(tran[key], 'tran[key]');
-                    Object.values(tran[key]).map(t => {
-                         t == tran[key][t] ? tran[key][t] = id : null
-                         // return t
-                    })
-                    console.log(tran[key], "tran[key]");
-                    const types = getSqlTableColumnsType(entity)
-                    table = getTableFromConfig(entity)/////
-                    primarykey = getPrimaryKeyField(table).sqlName
-                    columns = createArrColumns(Object.keys(tran[key])).join(',')
-                    console.log(columns, "__co");
-                    values = parseObjectValuesToSQLTypeArray(tran[key], types).join(',')
-                    console.log({ entity, columns, values, primarykey });
-                    await tr.prepare(query);
-                    await tr.execute();
-                    await tr.unprepare();
-               }
-
+               await Promise.all(updateCommands.map(async command => {
+                    await tr.prepare(command)
+                    await tr.execute()
+                    await tr.unprepare()
+               }))
                await transaction.commit();
 
           } catch (error) {
                console.log({ error });
                await transaction.rollback();
-               console.log('execution failed...');
           }
-          console.log('done...');
-          return id
+          return true
      }
      catch (error) {
           console.log({ error });
@@ -184,9 +166,11 @@ const createGlobalTran = async function ({ database, entity, alias, id, set }) {
 
 const read = async function (query = "", n) {
      try {
-          console.log({ n })
-          console.log({ query: `${query.trim()} ORDER BY ${n.orderBy} OFFSET (${n.start}) ROWS FETCH NEXT (${n.end}) ROWS ONLY` })
-          const result = await getPool().request().query(`${query.trim()} ORDER BY ${n.orderBy} OFFSET (${n.start}) ROWS FETCH NEXT (${n.end}) ROWS ONLY`);
+          if (n) {
+               query = `${query.trim()} ORDER BY ${n.orderBy} OFFSET (${n.start}) ROWS FETCH NEXT (${n.end}) ROWS ONLY`
+          }
+          const result = await getPool().request().query(query);
+          console.log(result)
           if (result.recordset)
                return result.recordset;
           return false
@@ -345,34 +329,7 @@ const getForeignKeysData = async function (database, tablename) {
 //      CONTAINS:{value:'xl ft', fields:["FirstName", "LastName"]}
 //  }
 
-const compareObject = async function (entity, object, condition) {
-     try {
-          const sqlCondition = buildSqlCondition(entity, condition)
-          const query = `USE Bubble SELECT * FROM ${entity.MTDTable.entityName.sqlName} WHERE ${sqlCondition}`
-          console.log({ query })
-          const response = await getPool().request().query(query)
-          let newObj = []
-          let element
-          if (response.recordset.length === 1) {
-               const sqlData = response.recordset[0]
 
-               Object.values(sqlData).forEach((val, i) => {
-                    console.log(val, 'val');
-                    if (val != Object.values(object.values)[i]) {
-                         element = { name: Object.keys(object.values)[i], oldVal: val, newVal: Object.values(object.values)[i] }
-                         newObj.push(element)
-                    }
-               });
-               console.log(newObj);
-
-               return newObj
-          }
-     }
-     catch (error) {
-          throw error
-     }
-
-}
 
 
 module.exports = {
@@ -382,14 +339,13 @@ module.exports = {
      update,
      innerJoin,
      searchSQL,
-     createTrac,
-     buildColumnsValuesPair,
-     createGlobalTran,
+     createTransaction,
+     sqlTransaction,
      count,
      getSqlColumns,
      getTableKeys,
      getIdentityColumns,
      getForeignKeysData,
-     compareObject
+     buildOneTableSelectQuery
 
 };

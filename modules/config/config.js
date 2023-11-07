@@ -24,7 +24,7 @@ function getSqlDBWithTablesfromConfig(projectUrl) {
     return databases
 }
 
-function getEntityConfigData({project, entityName }) {
+function getEntityConfigData({ project, entityName }) {
     const configUrl = getDBConfig(project)
     let entity = getEntityFromConfig(configUrl, entityName)
     return entity
@@ -32,7 +32,6 @@ function getEntityConfigData({project, entityName }) {
 
 
 function getEntityFromConfig(configUrl, entityName) {
-    console.log({entityName})
     const { sql, mongo } = getEntitiesFromConfig(configUrl)
     if (sql.length > 0) {
         const mapCollection = sql.map(({ dbName, db }) => db.map(({ collections }) => collections.map(c => ({ dbName, ...c }))))
@@ -50,12 +49,19 @@ function getEntityFromConfig(configUrl, entityName) {
 function isSimpleEntity(project, entityName) {
     const configUrl = getDBConfig(project)
     const { entity } = getEntityFromConfig(configUrl, entityName)
-    const foreignKeys = entity.columns.filter(({ foreignkey }) => foreignkey)
-    return foreignKeys.length === 0
+    const { sql } = getEntitiesFromConfig(configUrl)
+    if (sql.length > 0) {
+        const mapCollection = sql.map(({ dbName, db }) => db.map(({ collections }) => collections.map(c => ({ dbName, ...c }))))
+        const entityList = mapCollection.reduce((list, col) => list = [...list, ...col.reduce((l, c) => l = [...l, ...c], [])], [])
+        const foreignKeys = entityList.filter(({ columns }) => columns.filter(({ foreignkey }) => foreignkey&& foreignkey.ref_table === entity.MTDTable.entityName.sqlName))
+        console.log({foreignKeys})
+        // const foreignKeys = entity.columns.filter(({ foreignkey }) => foreignkey)
+        return foreignKeys.length === 0
+    }
 
 }
 
-function getForeignkeyBetweenEntities( entity, subentity) {
+function getForeignkeyBetweenEntities(entity, subentity) {
     console.log(entity.type, subentity.type)
     if (entity.type === DBTypes.SQL && subentity.type === DBTypes.SQL) {
         const foreignKeys = subentity.entity.columns.filter(({ foreignkey }) => foreignkey)

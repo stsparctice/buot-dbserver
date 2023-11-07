@@ -1,10 +1,93 @@
-const { types } = require('./config.objects');
 const { SQL_DBNAME } = process.env
 const { DBTypes } = require('../../utils/types')
 const { getEntityFromConfig } = require('./config');
 const { deleteKeysFromObject } = require('../../utils/code/objects');
 const config = require('../../data/waiting-list.json')
 
+const convertToSQLString = (value) => {
+    let special = ["'", "&", "%", "#", "$"]
+    const sqlStrings = []
+    const split = value.split('')
+    if (split.some(ch => special.includes(ch))) {
+        for (let i = 0; i < split.length; i++) {
+            let word = ''
+            while (i < split.length && special.indexOf(split[i]) == -1) {
+                word += split[i]
+                i++
+            }
+            sqlStrings.push(`N'${word}'`)
+            if (i < split.length && special.indexOf(split[i]) != -1) {
+                sqlStrings.push(`char(${split[i].charCodeAt()})`)
+            }
+        }
+        const concat = `concat(${sqlStrings.join(',')})`
+        return concat
+    }
+
+    return `N'${value}'`
+}
+
+
+const types = {
+
+    NVARCHAR: {
+        typeNodeName: 'string',
+        parseNodeTypeToSqlType: (value) => {
+            return convertToSQLString(value)
+        }
+    },
+
+    NTEXT:{
+        typeNodeName: 'string',
+        parseNodeTypeToSqlType: (value) => {
+            return convertToSQLString(value)
+        }
+    },
+
+    BIT: {
+        typeNodeName: 'boolean',
+        parseNodeTypeToSqlType: (boolean) => {
+            return `'${boolean}'`
+        }
+    },
+
+    DATETIME: {
+        typeNodeName: 'Date',
+        parseNodeTypeToSqlType: (Date) => {
+
+            return `'${Date}'`
+        }
+    },
+
+    INT: {
+        typeNodeName: 'number',
+        parseNodeTypeToSqlType: (number) => {
+           console.log({number})
+            if (isNaN(number)|| number=='')
+                return 0
+            else
+                return number
+        }
+    },
+    REAL: {
+        typeNodeName: 'number',
+        parseNodeTypeToSqlType: (number) => {
+            if (isNaN(number)|| number=='')
+                return 0
+            else
+                return number
+        }
+    },
+    FLOAT: {
+        typeNodeName: 'number',
+        parseNodeTypeToSqlType: (number) => {
+            if (isNaN(number)|| number=='')
+                return 0
+            else
+                return number
+        }
+    }
+}
 
 
 function getTableAlias(entity) {
@@ -26,6 +109,7 @@ function getTableName(entity) {
 }
 
 function getPrimaryKeyField(entity) {
+    console.log({entity})
     let col = entity.columns.find(col => (col.primarykey === true))
     if (col) {
         return { name: col.name, sqlName: col.sqlName }
@@ -53,7 +137,19 @@ function getTableColumns(entity, columns = []) {
     catch (error) {
         throw error
     }
-};
+}
+
+function buildColumnsValuesPair(object, columns) {
+    const pairs = { columns: [], values: [] }
+
+    for (let key in object) {
+         const column = columns.find(({ name }) => name === key)
+         pairs.columns.push(`[${column.sqlName}]`)
+         const parse = types[column.type]
+         pairs.values.push(parse.parseNodeTypeToSqlType(object[key]))
+    }
+    return pairs
+}
 
 function parseNodeToSql({ type, value }) {
     console.log({ type, value })
@@ -219,10 +315,12 @@ function composeSQLColumns(columns) {
 
 function parseObjectValuesToSQLTypeObject(obj, tabledata) {
     try {
+        console.log(tabledata)
         const keys = Object.keys(obj)
         let sqlObject = {}
         for (let i = 0; i < keys.length; i++) {
-            let { type, sqlName } = tabledata.find(td => td.name.trim().toLowerCase() == keys[i].trim().toLowerCase())
+            console.log(keys)
+            let { type, sqlName } = tabledata.find(td => td.name.trim().toLowerCase() === keys[i].trim().toLowerCase())
             if (obj[keys[i]] != null) {
                 const parse = types[type.type]
                 if (!parse) {
@@ -295,11 +393,9 @@ function parseSQLTypeForColumn(col, tableName) {
     return val
 }
 
-function getSqlTableColumnsType(tablename) {
+function getSqlTableColumnsType(entity) {
     try {
-        const table = getTableFromConfig(tablename)
-        console.log(table, '-----------------');
-        let col = table.columns.map(col => ({ sqlName: col.sqlName, type: col.type.type }))
+        let col = entity.columns.map(col => ({ sqlName: col.sqlName,name:col.name, type: col.type.type }))
         return col
     }
     catch (error) {
@@ -319,10 +415,12 @@ function getSqlTableColumnsType(tablename) {
 
 module.exports = {
     // getTableFromConfig,
+    convertToSQLString,
     getTableAlias,
     getTableName,
     getPrimaryKeyField,
     getTableColumns,
+    buildColumnsValuesPair,
     getSqlQueryFromConfig,
     getSqlTableColumnsType,
     getPKConnectionBetweenEntities,

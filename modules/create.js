@@ -1,6 +1,6 @@
-const { create, createTrac, buildColumnsValuesPair } = require('../services/db/sql/sql-operation')
+const { create, createTransaction } = require('../services/db/sql/sql-operation')
 const { getEntityConfigData } = require('./config/config')
-const { parseObjectValuesToSQLTypeArray, getTableColumns, getSqlTableColumnsType, removeIdentityDataFromObject } = require('./config/config.sql')
+const { getTableColumns, buildColumnsValuesPair } = require('./config/config.sql')
 const { DBTypes } = require('../utils/types')
 const { deleteKeysFromObject } = require('../utils/code/objects')
 async function startCreate({ project, entityName, values }) {
@@ -20,7 +20,7 @@ async function startCreate({ project, entityName, values }) {
 async function createOneSQL(obj) {
     try {
         const types = getTableColumns(obj.entity)
-        
+
         let { columns, values } = buildColumnsValuesPair(obj.values, types)
         const ans = await create(obj.entity, columns.join(','), values.join(','))
         if (ans) {
@@ -62,7 +62,7 @@ async function createSQL({ type, entity, values }) {
     }
 }
 
-async function createTranzaction({ project, entityName, value }) {
+async function startTransaction({ project, entityName, value }) {
     try {
         console.log({ value })
         const { addedDate, userName, disabled } = value
@@ -82,8 +82,8 @@ async function createTranzaction({ project, entityName, value }) {
             const types = getTableColumns(entity.entity)
             let { columns, values } = buildColumnsValuesPair(origin, types)
 
-            const items = await createTrac({ project, entity, columns: columns.join(','), values: values.join(','), tran: tran, trys: entity })
-             return items
+            const items = await createTransaction({ project, entity, columns: columns.join(','), values: values.join(','), tran: tran, trys: entity })
+            return items
         }
     }
     catch (error) {
@@ -93,4 +93,4 @@ async function createTranzaction({ project, entityName, value }) {
 
 
 
-module.exports = { createOneSQL, createSQL, startCreate, createTranzaction }
+module.exports = { createOneSQL, createSQL, startCreate, startTransaction }
