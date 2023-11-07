@@ -11,8 +11,6 @@ const { compareObject, splitComplicatedObject } = require('./config/config.objec
 async function startupdate({ project, entityName, data, condition }) {
     try {
         const { entity, type } = getEntityConfigData({ project, entityName })
-
-        console.log({ entity })
         if (type === DBTypes.SQL) {
             const isSimple = isSimpleEntity(project, entityName)
             if (isSimple) {

@@ -69,7 +69,7 @@ router.post('/exist/:entity', express.json(), async (req, res) => {
     try {
         let ans = await startReadOne({ project: res.project, entityName: req.params.entity, condition: req.body.condition, entitiesFields: req.body.entitiesFields }, true)
 
-        res.status(201).send(ans)
+        res.status(200).send(ans)
 
     }
     catch (error) {
