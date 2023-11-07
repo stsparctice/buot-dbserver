@@ -6,7 +6,7 @@ const { startReadMany, startReadOne, getCount } = require('../modules/read');
 router.get('/readMany/:entity', async (req, res) => {
     try {
         let result = await startReadMany({ project: res.project, entityName: req.params.entity, condition: req.query })
-       console.log({result});
+        console.log({ result });
         if (result) {
             res.status(201).send(result)
         }
@@ -24,7 +24,7 @@ router.post('/readMany/:entity', express.json(), async (req, res) => {
     try {
         let ans = await startReadMany({ project: res.project, entityName: req.params.entity, condition: req.body.condition })
         if (ans)
-            res.status(201).send(ans)
+            res.status(200).send(ans)
         else
             res.status(500).send(ans)
     }
@@ -40,7 +40,7 @@ router.get('/readOne/:entity', async (req, res) => {
 
         let result = await startReadOne({ project: res.project, entityName: req.params.entity, condition: req.query })
         if (result) {
-            res.status(201).send(result)
+            res.status(200).send(result)
         }
         else {
             res.status(500).send(result)
@@ -56,7 +56,7 @@ router.post('/readOne/:entity', express.json(), async (req, res) => {
     try {
         let ans = await startReadOne({ project: res.project, entityName: req.params.entity, condition: req.body.condition, entitiesFields: req.body.entitiesFields })
         if (ans)
-            res.status(201).send(ans)
+            res.status(200).send(ans)
         else
             res.status(500).send(ans)
     }
@@ -68,7 +68,7 @@ router.post('/readOne/:entity', express.json(), async (req, res) => {
 router.post('/exist/:entity', express.json(), async (req, res) => {
     try {
         let ans = await startReadOne({ project: res.project, entityName: req.params.entity, condition: req.body.condition, entitiesFields: req.body.entitiesFields }, true)
-
+        console.log({ ans })
         res.status(200).send(ans)
 
     }
@@ -84,7 +84,7 @@ router.get('/readOne/:entity/:id', async (req, res) => {
         let condition = { key: req.params.id }
         let result = await startReadOne({ project: res.project, entityName: req.params.entity, condition })
         if (result) {
-            res.status(201).send(result)
+            res.status(200).send(result)
         }
         else {
             res.status(500).send(result)
@@ -101,7 +101,7 @@ router.post('/count/:entity', express.json(), async (req, res) => {
     try {
         let result = await getCount({ project: res.project, entityName: req.params.entity, condition: req.body.condition })
         if (result) {
-            res.status(201).send({ "result": result })
+            res.status(200).send({ "result": result })
         }
         else {
             res.status(500).send(result)
