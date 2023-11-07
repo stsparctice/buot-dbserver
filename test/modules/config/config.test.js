@@ -10,8 +10,8 @@ describe('IS_SIMPLE_ENTITY', ()=>{
     })
 })
 
-describe('GET_ENTITY_FROM_CONFIG', ()=>{
-    it('should retutn a full entity', ()=>{
-        
-    })
-})
+// describe('GET_ENTITY_FROM_CONFIG', ()=>{
+//     it('should retutn a full entity', ()=>{
+
+//     })
+// })
