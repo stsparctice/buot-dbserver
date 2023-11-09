@@ -8,6 +8,7 @@ const { DBTypes } = require('../../../utils/types')
 
 
 async function createTables() {
+    console.log('createTables')
     const list = getAllDBConfig()
     for (const dbConfig of list) {
         const sqlConfig = getEntitiesFromConfig(dbConfig).sql
