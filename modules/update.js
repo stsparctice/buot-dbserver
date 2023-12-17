@@ -1,9 +1,11 @@
-const { update, sqlTransaction, read } = require('../services/db/sql/sql-operation')
+const { update, sqlTransaction } = require('../services/db/sql/sql-operation')
 const { DBTypes } = require('../utils/types')
-const { buildSqlCondition, removeIdentityDataFromObject, getTableName, getTableAlias, parseObjectValuesToSQLTypeObject } = require('./config/config.sql')
-// const { DBTypes, buildSqlCondition } = require('./config/config')
-const { getEntityConfigData, isSimpleEntity, getEntityFromConfig } = require('./config/config')
+const {  removeIdentityDataFromObject,  buildUpdateQuery, buildInsertQuery } = require('./config/config.sql')
+const { getEntityConfigData, isSimpleEntity,  getSqlColumnsUpdateCopy, simplifiedObject , disableItem,updateTheChanges, addItem} = require('./config/config')
 const { compareObject, splitComplicatedObject } = require('./config/config.objects')
+const { startReadOne } = require('./read')
+const { removeKeysFromObject } = require('../utils/code/objects')
+const { convertToOneLevelArray } = require('../utils/code/functions')
 
 
 
@@ -14,31 +16,88 @@ async function startupdate({ project, entityName, data, condition }) {
         if (type === DBTypes.SQL) {
             const isSimple = isSimpleEntity(project, entityName)
             if (isSimple) {
-                const response = await updateSimpleObject({ type: entity.dbName, entity, data, condition })
-                if (response.rowsAffected === 1)
-                    return true
-                else
-                    return false
+                if (Array.isArray(data)) {
+
+                }
+                else {
+                    const difference = await compareObject(entity.dbName, entity, data, condition)
+                    console.log({difference})
+                    if (difference !== true) {
+                        const create = difference.update.some(key => key.update === 'create')
+                        if (create) {
+                            let updateItem = await startReadOne({ project, entityName, condition: difference.condition })
+                            updateItem = disableItem({item:updateItem, reason:'update data', entity})
+                            let newItem = { ...removeIdentityDataFromObject(entity, updateItem) }
+                            const removeProps = getSqlColumnsUpdateCopy(entity)
+                            newItem = removeKeysFromObject(newItem, removeProps)
+                            const queries = [
+                                buildUpdateQuery(entity, updateItem),
+                                buildInsertQuery(entity, newItem)
+                            ]
+                            const result = sqlTransaction(queries)
+                            console.log({ result })
+                            return result
+                        }
+                        else {
+                            const response = await updateSimpleObject({ entity, data, condition })
+                            if (response.rowsAffected === 1)
+                                return true
+                            else
+                                return false
+                        }
+                    }
+                }
             }
             else {
                 const splitObject = splitComplicatedObject(data, entityName)
-                console.log({ splitObject })
                 const updateEntities = splitObject.map(obj => ({ entity: getEntityConfigData({ project, entityName: obj.entityName }).entity, value: obj.value }))
                 let updatesData = await Promise.all(updateEntities.map(async obj => {
                     let data = obj.value
                     if (Array.isArray(data) === false) {
                         data = [data]
                     }
-                    let result = await Promise.all(data.map(async item => await compareObject(entity.dbName, obj.entity, item)))
-                    result = result.filter(({ updates }) => updates.length > 0)
-
+                    let result = await Promise.all(data.map(async item => await compareObject(obj.entity.dbName, obj.entity, item)))
+                    result = result.filter(item => item !== true)
                     return result
                 }))
-                updatesData = updatesData.filter(item => item.length > 0)
-                updatesData = updatesData.reduce((list, up) => list = [...list, ...up], [])
-                console.log(updatesData)
-                const result = await sqlTransaction(updatesData)
+                updatesData = convertToOneLevelArray(updatesData)
+               
+                const updateObjects = updatesData.filter(({ updates }) => updates.every(item => item.update === undefined))
+                const createObjects = updatesData.filter(({ updates }) => updates.some(item => item.update === "create"))
+                let queries = []
+                if (updateObjects.length > 0) {
+                    updateObjects.forEach(up => {
+                        up.updates = up.updates.reduce((obj, { key, newVal }) => {
+                            obj[key] = newVal
+                            return obj
+                        }, {})
+                        // console.log(up.updates)
+                    })
+                    queries = [updateObjects.map(({ entity, updates, condition }) => buildUpdateQuery(entity, updates, condition))]
+                }
+                if (createObjects.length > 0) {
+
+                    queries = [...queries, await Promise.all(createObjects.map(async cr => {
+                        let updateItem = await startReadOne({ project, entityName: cr.entity.MTDTable.entityName.name, condition: cr.condition })
+                        let simpleItem = simplifiedObject({project,entity, object: updateItem})
+                        const {item, condition} = disableItem({item:simpleItem, reason:'update data', entity:cr.entity})
+                        let newItem = { ...removeIdentityDataFromObject(cr.entity, simpleItem) }
+                        newItem = updateTheChanges(newItem, cr.updates)
+                        const removeProps = getSqlColumnsUpdateCopy(cr.entity)
+                        newItem = removeKeysFromObject(newItem, removeProps)
+                        newItem = addItem({item:newItem})
+                        return [
+                            buildUpdateQuery(cr.entity, item, condition),
+                            buildInsertQuery(cr.entity, newItem)
+                        ]
+
+                    }))]
+                }
+              queries = convertToOneLevelArray(queries)
+                const result = await sqlTransaction(queries)
+                console.log({ result })
                 return result
+                
 
             }
 
@@ -53,16 +112,11 @@ async function startupdate({ project, entityName, data, condition }) {
 
 }
 
-async function updateSimpleObject({ type, entity, data, condition }) {
+async function updateSimpleObject({ entity, data, condition }) {
     try {
-        condition = buildSqlCondition(entity, condition)
-        set = removeIdentityDataFromObject(entity, data)
-        const alias = getTableAlias(entity)
-        const tablename = getTableName(entity)
-        const sqlObject = parseObjectValuesToSQLTypeObject(set, entity.columns)
-        const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
-        const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
-        let ans = await update(type, { tablename, alias }, updateValues, condition)
+
+        const query = buildUpdateQuery(entity, data, condition)
+        let ans = await update(query)
         console.log({ ans })
         if (ans) {
             return ans
@@ -76,18 +130,18 @@ async function updateSimpleObject({ type, entity, data, condition }) {
 
 async function updateManySql({ type, entity, data, condition }) {
     try {
-        condition = buildSqlCondition(entity, condition)
-        set = removeIdentityDataFromObject(entity, data)
-        const alias = getTableAlias(entity)
-        const tablename = getTableName(entity)
-        const sqlObject = parseObjectValuesToSQLTypeObject(data, entity.columns)
-        const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
-        const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
-        let ans = await update(type, { tablename, alias }, updateValues, condition)
-        if (ans) {
-            return ans
-        }
-        return false
+        // condition = buildSqlCondition(entity, condition)
+        // set = removeIdentityDataFromObject(entity, data)
+        // const alias = getTableAlias(entity)
+        // const tablename = getTableName(entity)
+        // const sqlObject = parseObjectValuesToSQLTypeObject(data, entity.columns)
+        // const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
+        // const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
+        // let ans = await update(type, { tablename, alias }, updateValues, condition)
+        // if (ans) {
+        //     return ans
+        // }
+        // return false
     }
     catch (error) {
         throw error;

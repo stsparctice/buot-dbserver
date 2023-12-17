@@ -1,33 +1,25 @@
-const { getPrimaryKeyField } = require('../../../modules/config/config.sql')
+const { buildColumnsValuesPair,
+    buildInsertQuery } = require('../../../modules/config/config.sql')
+const { getTableColumns } = require('../../../modules/config/config')
+const { mockEntity } = require('../../test-utils/entities')
 
+describe('BUILD COLUMNS VALUES PAIR', () => {
+    it('should return an object', () => {
+        const object = { name: 'x', createData: 'hello world' }
+        const types = getTableColumns(mockEntity)
+        const { columns, values } = buildColumnsValuesPair(object, types)
 
-describe('GET_PRIMARY KEY FIELD', () => {
-    it('should return the primary key field with name attr and sqlName attr', () => {
-        const entity = {
-            "MTDTable": {
-                "entityName": {
-                    "name": "levels",
-                    "sqlName": "tbl_Levels"
-                },
-                "description": "Table for the details of levels",
-                "defaultColumn": "Name"
-            },
-            "columns": [
-                {
-                    "name": "id",
-                    "sqlName": "Id",
-                    "type": {
-                        "type": "INT",
-                        "isnull": false
-                    },
-                    "primarykey": true,
-                    "isIdentity": true
-                }]
-        }
+        expect(columns.length).toBe(2)
+        expect(values.length).toBe(2)
+    })
+})
 
-        const primaryKey = getPrimaryKeyField(entity)
+describe('BUILD INSERT QUERY', () => {
+    it('should return a good sql query', () => {
+        const object = { name: 'x', createData: 'hello world' }
+        mockEntity.dbName = 'try'
+        const query = buildInsertQuery(mockEntity, object)
 
-        expect(primaryKey.name).toEqual("id")
-        expect(primaryKey.sqlName).toEqual('Id')
+        expect(query).toMatch(/INSERT INTO/)
     })
 })

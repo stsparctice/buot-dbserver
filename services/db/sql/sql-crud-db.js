@@ -1,6 +1,6 @@
 const { getPool } = require('./sql-connection');
 const { count, update } = require('./sql-operation');
-const { parseObjectValuesToSQLTypeObject } = require('../../../modules/config/config.sql')
+const { parseObjectValuesToSQLTypeObject, buildUpdateQuery } = require('../../../modules/config/config.sql')
 const SQLTypes = {
     NTEXT: 'NTEXT'
 }
@@ -73,17 +73,18 @@ const addColumn = async function (database, { tablename, columns }, column) {
                 console.log({ response })
 
                 if (column.updateCommands&& column.updateCommands.length > 0) {
-                    const set = {}
-                    const updateResponse = await Promise.all(column.updateCommands.map(async ({ value, condition }) => {
-                        set[column.sqlName] = value
-                        console.log({ database, tablename, set })
-                        const sqlObject = parseObjectValuesToSQLTypeObject(set, columns)
-                        const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
-                        const updateValues = entries.map(({ key, value }) => `${tablename}.${key} = ${value}`).join(',')
-                        const response = await update(database, {tablename}, updateValues, condition)
-                        return response
-                    }))
-                    console.log({ updateResponse })
+                    // const set = {}
+                    // const updateResponse = await Promise.all(column.updateCommands.map(async ({ value, condition }) => {
+                    //     set[column.sqlName] = value
+                    //     console.log({ database, tablename, set })
+                    //     const query = buildUpdateQuery()
+                    //     const sqlObject = parseObjectValuesToSQLTypeObject(set, columns)
+                    //     const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
+                    //     const updateValues = entries.map(({ key, value }) => `${tablename}.${key} = ${value}`).join(',')
+                    //     const response = await update(database, {tablename}, updateValues, condition)
+                    //     return response
+                    // }))
+                    // console.log({ updateResponse })
                 }
                  sqlType = buildColumnType(column)
                  response = await updateColumnType(database, tablename, column, sqlType)

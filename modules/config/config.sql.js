@@ -1,8 +1,5 @@
-const { SQL_DBNAME } = process.env
-const { DBTypes } = require('../../utils/types')
-const { getEntityFromConfig } = require('./config');
-const { deleteKeysFromObject } = require('../../utils/code/objects');
-const config = require('../../data/waiting-list.json')
+const { getTableAlias, getPrimaryKeyField, getTableColumns, getTableName, getEntityFromConfig } = require('./config');
+const { removeKeysFromObject } = require('../../utils/code/objects');
 
 const convertToSQLString = (value) => {
     let special = ["'", "&", "%", "#", "$"]
@@ -37,7 +34,7 @@ const types = {
         }
     },
 
-    NTEXT:{
+    NTEXT: {
         typeNodeName: 'string',
         parseNodeTypeToSqlType: (value) => {
             return convertToSQLString(value)
@@ -53,17 +50,37 @@ const types = {
 
     DATETIME: {
         typeNodeName: 'Date',
-        parseNodeTypeToSqlType: (Date) => {
+        parseNodeTypeToSqlType: (date) => {
+            console.log({ date })
+            if (typeof (date) === 'string') {
+                if (date.includes('T') && date.includes('Z')) {
+                    const splitDate = date.split('T')
+                    const datePart = splitDate[0]
+                    const timePart = splitDate[1].split('Z')[0]
+                    console.log({datePart, timePart})
+                    const datePartArray = datePart.split('-')
+                    const timePartArray = timePart.split(':')
+                    console.log({timePartArray, datePartArray})
+                    const times = timePartArray.map(t=>parseInt(t))
+                    const dates = datePartArray.map(d=>parseInt(d))
+                    console.log({times, dates})
+                    date=new Date(dates[0], dates[1]-1, dates[2], times[0], times[1], times[2])
+                }
+                else {
+                    throw new Error(`date ${date} is not in correct format`)
+                }
+            }
 
-            return `'${Date}'`
+            date = new Date(date)
+            console.log({ date })
+            return `'${date.toISOString()}'`
         }
     },
 
     INT: {
         typeNodeName: 'number',
         parseNodeTypeToSqlType: (number) => {
-           console.log({number})
-            if (isNaN(number)|| number=='')
+            if (isNaN(number) || number == '')
                 return 0
             else
                 return number
@@ -72,7 +89,7 @@ const types = {
     REAL: {
         typeNodeName: 'number',
         parseNodeTypeToSqlType: (number) => {
-            if (isNaN(number)|| number=='')
+            if (isNaN(number) || number == '')
                 return 0
             else
                 return number
@@ -81,7 +98,7 @@ const types = {
     FLOAT: {
         typeNodeName: 'number',
         parseNodeTypeToSqlType: (number) => {
-            if (isNaN(number)|| number=='')
+            if (isNaN(number) || number == '')
                 return 0
             else
                 return number
@@ -90,69 +107,59 @@ const types = {
 }
 
 
-function getTableAlias(entity) {
-    try {
-        return entity.MTDTable.entityName.name
-    }
-    catch (error) {
-        throw error
-    }
+
+
+const buildInsertQuery = (entity, data) => {
+    let primarykey = getPrimaryKeyField(entity).sqlName
+    const types = getTableColumns(entity)
+    const { columns, values } = buildColumnsValuesPair(data, types)
+    const tableName = entity.MTDTable.entityName.sqlName
+    const query = `use ${entity.dbName} INSERT INTO ${tableName} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`
+    return query
 }
 
-function getTableName(entity) {
-    try {
-        return entity.MTDTable.entityName.sqlName
+const buildUpdateQuery = (entity, data, condition) => {
+    const database = entity.dbName
+    if (!condition) {
+        const { name } = getPrimaryKeyField(entity)
+        const pkValue = data[name]
+        condition = {}
+        condition[name] = pkValue
     }
-    catch (error) {
-        throw error
-    }
+    console.log({ condition })
+    condition = buildSqlCondition(entity, condition)
+    set = removeIdentityDataFromObject(entity, data)
+    const alias = getTableAlias(entity)
+    const tablename = getTableName(entity)
+    const sqlObject = parseObjectValuesToSQLTypeObject(set, entity.columns)
+    const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
+    const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
+    const query = `use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}`
+    return query
 }
 
-function getPrimaryKeyField(entity) {
-    console.log({entity})
-    let col = entity.columns.find(col => (col.primarykey === true))
-    if (col) {
-        return { name: col.name, sqlName: col.sqlName }
-    }
-    return undefined
+const buildOneTableSelectQuery = ({ database, tablename, alias, columns = '*', condition = '1=1' }) => {
+
+    const query = `USE ${database} SELECT ${columns} FROM ${tablename} ${alias} WHERE ${condition}`
+    return query
 }
 
-function getTableColumns(entity, columns = []) {
-    try {
-        let cols
-        console.log(entity);
-        if (columns.length != 0) {
-            cols = entity.columns.filter(col => columns.includes(col.name)).map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
-        }
-        else {
-            if (entity.columns == undefined)
-                cols = entity.entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
-            else
-                cols = entity.columns.map(({ name, sqlName, type }) => ({ name, sqlName, type: type.type }))
 
-        }
 
-        return cols
-    }
-    catch (error) {
-        throw error
-    }
-}
 
 function buildColumnsValuesPair(object, columns) {
     const pairs = { columns: [], values: [] }
 
     for (let key in object) {
-         const column = columns.find(({ name }) => name === key)
-         pairs.columns.push(`[${column.sqlName}]`)
-         const parse = types[column.type]
-         pairs.values.push(parse.parseNodeTypeToSqlType(object[key]))
+        const column = columns.find(({ name }) => name === key)
+        pairs.columns.push(`[${column.sqlName}]`)
+        const parse = types[column.type]
+        pairs.values.push(parse.parseNodeTypeToSqlType(object[key]))
     }
     return pairs
 }
 
 function parseNodeToSql({ type, value }) {
-    console.log({ type, value })
     const parse = types[type]
     if (!parse) {
         let error = {}
@@ -169,7 +176,8 @@ function removeIdentityDataFromObject(entity, object) {
     const { columns } = entity
     const identities = columns.filter(c => c.isIdentity)
     const removeKeys = identities.map(({ name }) => name)
-    object = deleteKeysFromObject(object, removeKeys)
+    object = removeKeysFromObject(object, removeKeys)
+    // console.log({object})
     //  const {id, ...rest} = object
     return object
 
@@ -189,7 +197,6 @@ function buildSqlCondition(entity, condition) {
                 `${tablealias}.${c.sqlCol} =  ${parseNodeToSql({ type: c.type, value: c.value })}`
             )
             sqlCondition = conditionList.join(' AND ')
-            console.log({ sqlCondition })
         }
 
     }
@@ -214,13 +221,9 @@ function getPKConnectionBetweenEntities(mainEntity, condition) {
 }
 
 function getLeftJoinBetweenEntities(mainEntity, subEntity) {
-    console.log(subEntity, 'subEntity');
     const mainPrimaryKey = getPrimaryKeyField(mainEntity).sqlName
-    console.log({ mainPrimaryKey })
     const tableAlias = getTableAlias(mainEntity)
     const joincolumn = subEntity.columns.filter((col) => col.foreignkey && col.foreignkey.ref_table === mainEntity.MTDTable.entityName.sqlName && col.foreignkey.ref_column === mainPrimaryKey)
-    console.log(subEntity.columns.filter((col) => col.foreignkey))
-    console.log(mainEntity.MTDTable.entityName.sqlName)
     const subAlias = getTableAlias(subEntity)
     return { tableToJoin: mainEntity.MTDTable.entityName.sqlName, alias: tableAlias, columnToJoin: mainPrimaryKey, entity2: subAlias, column2: joincolumn[0].sqlName }
 }
@@ -285,7 +288,7 @@ const getSqlQueryFromConfig = (configUrl, entity, condition = {}, fields = [], j
 
     if (condition.connectEntitiesCondition) {
         conditionList.push(condition.connectEntitiesCondition)
-        condition = deleteKeysFromObject(condition, ['connectEntitiesCondition'])
+        condition = removeKeysFromObject(condition, ['connectEntitiesCondition'])
     }
 
     // delete condition.connectEntitiesCondition
@@ -395,7 +398,7 @@ function parseSQLTypeForColumn(col, tableName) {
 
 function getSqlTableColumnsType(entity) {
     try {
-        let col = entity.columns.map(col => ({ sqlName: col.sqlName,name:col.name, type: col.type.type }))
+        let col = entity.columns.map(col => ({ sqlName: col.sqlName, name: col.name, type: col.type.type }))
         return col
     }
     catch (error) {
@@ -416,9 +419,9 @@ function getSqlTableColumnsType(entity) {
 module.exports = {
     // getTableFromConfig,
     convertToSQLString,
-    getTableAlias,
-    getTableName,
-    getPrimaryKeyField,
+    buildInsertQuery,
+    buildOneTableSelectQuery,
+    buildUpdateQuery,
     getTableColumns,
     buildColumnsValuesPair,
     getSqlQueryFromConfig,

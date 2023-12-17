@@ -19,7 +19,6 @@ async function checkDataBase(dbName, tables, db) {
         const sqlConfigColumns = await buildSqlColumnsToCompare(dbName, table)
         const { tablename, columns } = table
         const newColumns = columns.filter(({ sqlName }) => sqlConfigColumns.find(col => col.sqlName === sqlName) === undefined)
-        console.log({newColumns})
         if (newColumns.length > 0) {
             console.log(sqlConfigColumns.map(({ sqlName }) => sqlName), columns.map(({ sqlName }) => sqlName), newColumns)
             const response = await Promise.all(newColumns.map(async col => {

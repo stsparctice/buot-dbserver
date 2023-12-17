@@ -1,46 +1,17 @@
 const sql = require('mssql');
+const { sqlKeyTypes } = require('../../../utils/types')
 const { getPool } = require('./sql-connection');
-const { getPrimaryKeyField, parseObjectValuesToSQLTypeArray,
-     getTableColumns, getSqlTableColumnsType, buildSqlCondition, getTableAlias, buildColumnsValuesPair, parseObjectValuesToSQLTypeObject } = require('../../../modules/config/config.sql')
-const { getForeignkeyBetweenEntities, getEntitiesFromConfig } = require('../../../modules/config/config');
-const { getEntityConfigData } = require('../../../modules/config/config');
+const { buildInsertQuery,
+     getTableColumns,
+     buildSqlCondition,
+     buildColumnsValuesPair,
+     parseObjectValuesToSQLTypeObject } = require('../../../modules/config/config.sql')
+const { getForeignkeyBetweenEntities, getEntityConfigData, getPrimaryKeyField, getTableAlias } = require('../../../modules/config/config');
 const { SQL_PORT, SQL_SERVER, SQL_USERNAME, SQL_PASSWORD } = process.env
 
-const sqlKeyTypes = {
-     PRIMARY_KEY: 'PRIMARY KEY',
-     FOREIGN_KEY: 'FOREIGN KEY',
-     UNIQUE: 'UNIQUE'
-}
 
-
-
-const buildInsertQuery = ({ entity }, columns, values) => {
-     let primarykey = getPrimaryKeyField(entity).sqlName
-     const tableName = entity.MTDTable.entityName.sqlName
-     const query = `use ${entity.dbName} INSERT INTO ${tableName} (${columns}) VALUES ( ${values} ) ; SELECT @@IDENTITY ${primarykey}`
-     console.log({ query })
-     return query
-}
-
-const buildUpdateQuery = (database, { tablename, alias }, updateValues, condition) => {
-     if (!alias) {
-          alias = tablename
-     }
-     const query = `use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}`
-     return query
-}
-
-const buildOneTableSelectQuery = (database, tablename, alias, condition = '1=1') => {
-
-     const query = `USE ${database} SELECT * FROM ${tablename} ${alias} WHERE ${condition}`
-     console.log({ query })
-     return query
-}
-
-
-const create = async function (entity, columns, values) {
+const create = async function (query) {
      try {
-          const query = buildInsertQuery(entity, columns, values)
           const result = await getPool().request().query(query);
           if (result)
                return result;
@@ -79,7 +50,6 @@ const createTransaction = async function ({ project, entity, columns, values, tr
                id = await tr.execute();
                await tr.unprepare();
                id = Object.values(id.recordset[0])[0]
-               console.log({ id })
                for (const connectEntity of tran) {
                     const subEntity = connectEntity.entity
                     const subEntityData = getEntityConfigData({ project, entityName: subEntity })
@@ -120,36 +90,23 @@ const createTransaction = async function ({ project, entity, columns, values, tr
      }
 };
 
-const sqlTransaction = async function (list) {
+const sqlTransaction = async function (queries) {
      try {
-
-          const updateCommands = list.map(({ entity, updates, condition }) => {
-               condition = buildSqlCondition(entity, condition)
-               const alias = getTableAlias(entity)
-               const tablename = entity.MTDTable.entityName.sqlName
-               const databse = entity.dbName
-               const object = updates.reduce((obj, { key, newVal }) => {
-                    obj[key] = newVal
-                    return obj
-               }, {})
-               const sqlObject = parseObjectValuesToSQLTypeObject(object, entity.columns)
-               const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
-               const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
-               const query = buildUpdateQuery(databse, { tablename, alias }, updateValues, condition)
-               return query
-          })
-
           let connectionPool = new sql.ConnectionPool(poolConfig());
           await connectionPool.connect();
           const transaction = new sql.Transaction(connectionPool);
           const tr = new sql.PreparedStatement(transaction);
           try {
                await transaction.begin();
-               await Promise.all(updateCommands.map(async command => {
+               for(const command of queries){
                     await tr.prepare(command)
-                    await tr.execute()
-                    await tr.unprepare()
-               }))
+                    try {
+                         await tr.execute()
+                    }
+                    finally {
+                         await tr.unprepare()
+                    }
+               }
                await transaction.commit();
 
           } catch (error) {
@@ -183,9 +140,8 @@ const read = async function (query = "", n) {
 
 
 
-const update = async function (database, { tablename, alias }, updateValues, condition) {
+const update = async function (query) {
      try {
-          const query = buildUpdateQuery(database, { tablename, alias }, updateValues, condition)
           const result = await getPool().request().query(query);
           if (result.rowsAffected.length > 0 && result.rowsAffected[0] > 0) {
                return { rowsAffected: result.rowsAffected[0] }
@@ -346,6 +302,4 @@ module.exports = {
      getTableKeys,
      getIdentityColumns,
      getForeignKeysData,
-     buildOneTableSelectQuery
-
 };

@@ -2,4 +2,10 @@ const DBTypes = {
     SQL: 'sql', MONGODB: 'mongoDB'
 }
 
-module.exports = {DBTypes}
+const sqlKeyTypes = {
+    PRIMARY_KEY: 'PRIMARY KEY',
+    FOREIGN_KEY: 'FOREIGN KEY',
+    UNIQUE: 'UNIQUE'
+}
+
+module.exports = {DBTypes, sqlKeyTypes}

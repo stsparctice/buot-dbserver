@@ -1,10 +1,12 @@
 const { create, createTransaction } = require('../services/db/sql/sql-operation')
-const { getEntityConfigData } = require('./config/config')
-const { getTableColumns, buildColumnsValuesPair } = require('./config/config.sql')
+const { getEntityConfigData, addItem } = require('./config/config')
+const { getTableColumns, buildColumnsValuesPair, buildInsertQuery } = require('./config/config.sql')
 const { DBTypes } = require('../utils/types')
-const { deleteKeysFromObject } = require('../utils/code/objects')
+const { removeKeysFromObject } = require('../utils/code/objects')
+
 async function startCreate({ project, entityName, values }) {
     try {
+        console.log(values, entityName)
         const entity = getEntityConfigData({ project, entityName })
         if (entity.type === DBTypes.SQL) {
             const items = await createSQL({ type: entity.type, entity: entity.entity, values: values })
@@ -19,10 +21,8 @@ async function startCreate({ project, entityName, values }) {
 
 async function createOneSQL(obj) {
     try {
-        const types = getTableColumns(obj.entity)
-
-        let { columns, values } = buildColumnsValuesPair(obj.values, types)
-        const ans = await create(obj.entity, columns.join(','), values.join(','))
+        const query = buildInsertQuery(obj.entity,obj.values)
+        const ans = await create(query)
         if (ans) {
             return ans
         }
@@ -41,6 +41,7 @@ async function createSQL({ type, entity, values }) {
         if (Array.isArray(values)) {
             for (let i = 0; i < values.length; i++) {
                 newObj = { type, entity, values: values[i] }
+                newObj= addItem({item:newObj})
                 ans = await createOneSQL(newObj)
                 // if (ans.rowsAffected[0]) {
                 //     ans.rowsAffected++
@@ -49,6 +50,7 @@ async function createSQL({ type, entity, values }) {
         }
         else {
             newObj = { type, entity, values }
+            newObj= addItem({item:newObj})
             ans = await createOneSQL(newObj)
         }
         // if (ans.rowsAffected > 0) {
@@ -76,7 +78,7 @@ async function startTransaction({ project, entityName, value }) {
                     let obj = { entity: key }
                     obj.values = value[key].map(data => ({ ...data, addedDate, userName, disabled }))
                     tran = [...tran, obj]
-                    origin = deleteKeysFromObject(origin, [key])
+                    origin = removeKeysFromObject(origin, [key])
                 }
             }
             const types = getTableColumns(entity.entity)

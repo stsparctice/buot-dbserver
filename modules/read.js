@@ -1,9 +1,9 @@
 const { DBTypes } = require('../utils/types')
-const { deleteKeysFromObject } = require('../utils/code/objects')
+const { removeKeysFromObject } = require('../utils/code/objects')
 const { read, searchSQL, count } = require("../services/db/sql/sql-operation")
 const { getDBConfig } = require('../modules/config/project.config')
-const { getEntityConfigData } = require("./config/config")
-const { getPrimaryKeyField, getTableAlias, getSqlQueryFromConfig,  getPKConnectionBetweenEntities, getLeftJoinBetweenEntities } = require('./config/config.sql')
+const { getEntityConfigData, getPrimaryKeyField, getTableAlias } = require("./config/config")
+const {  getSqlQueryFromConfig,  getPKConnectionBetweenEntities, getLeftJoinBetweenEntities } = require('./config/config.sql')
 
 
 // {
@@ -50,7 +50,7 @@ async function startReadOne({ project, entityName, condition, entitiesFields }, 
                 if (condition.key) {
                     condition[primaryKey.name] = condition.key
 
-                    condition = deleteKeysFromObject(condition, ['key'])
+                    condition = removeKeysFromObject(condition, ['key'])
                     console.log({ condition })
                 }
                 const items = await readSql(projectConfigUrl, project, entity, condition, n, entitiesFields)
@@ -164,6 +164,7 @@ function arrangeFKObjects(values) {
             return obj
         }, {})
         items.push(newObj)
+
     }
 
     return items;
@@ -179,7 +180,7 @@ function mapConnetedObject(item) {
             mappedValEntries.forEach(va => {
                 if (item.entity === va.entity) {
                     const en = item.values.find(v => v[va.key] === va.value[va.key])
-                    val = deleteKeysFromObject(val, [va.key])
+                    val = removeKeysFromObject(val, [va.key])
                     // delete val[va.key]
                     if (en[entity]) {
                         en[entity] = [...en[entity], val]

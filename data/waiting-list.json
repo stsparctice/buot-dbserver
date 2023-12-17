@@ -59,7 +59,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -68,7 +69,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -76,7 +78,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -84,7 +87,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -93,7 +97,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -102,7 +107,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -178,13 +184,11 @@
                                 "updateCommands": [
                                     {
                                         "value": 1,
-                                        "condition":
-                                            "Sex1=1 AND MaxAge1 >9"
+                                        "condition": "Sex1=1 AND MaxAge1 >9"
                                     },
                                     {
                                         "value": 2,
-                                        "condition":
-                                            "(Sex1=1 AND MaxAge1 <=9) or Sex2 = 2"
+                                        "condition": "(Sex1=1 AND MaxAge1 <=9) or Sex2 = 2"
                                     }
                                 ]
                             },
@@ -203,7 +207,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -212,7 +217,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -220,7 +226,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -228,7 +235,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -237,7 +245,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -246,7 +255,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -308,7 +318,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update": "create"
                             },
                             {
                                 "name": "endHour",
@@ -316,7 +327,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update": "create"
                             },
                             {
                                 "name": "addedDate",
@@ -324,7 +336,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -333,7 +346,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -341,7 +355,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -349,7 +364,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -358,7 +374,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -367,7 +384,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -460,7 +478,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -469,7 +488,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -477,7 +497,8 @@
                                 "type": {
                                     "type": "INT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -485,7 +506,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -494,7 +516,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -503,7 +526,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -557,7 +581,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -566,7 +591,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -574,7 +600,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -582,7 +609,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -591,7 +619,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -600,7 +629,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -654,7 +684,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update": "create"
                             },
                             {
                                 "name": "endHour",
@@ -662,7 +693,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update": "create"
                             },
                             {
                                 "name": "addedDate",
@@ -670,7 +702,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -679,7 +712,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -687,7 +721,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -695,7 +730,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -704,7 +740,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -713,7 +750,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -744,7 +782,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "name",
@@ -771,7 +810,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -779,7 +819,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -787,7 +828,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -796,7 +838,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -805,10 +848,10 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
-                        ] 
-                        
+                        ]
                     },
                     {
                         "MTDTable": {
@@ -860,7 +903,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -869,7 +913,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -877,7 +922,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -885,7 +931,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -894,7 +941,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -903,7 +951,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -957,7 +1006,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -966,7 +1016,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -974,7 +1025,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -982,7 +1034,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -991,7 +1044,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1000,7 +1054,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -1054,7 +1109,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -1063,7 +1119,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -1071,7 +1128,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -1079,7 +1137,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -1088,7 +1147,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1097,7 +1157,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -1125,7 +1186,8 @@
                                 "name": "identityNumber",
                                 "sqlName": "IdentityNumber",
                                 "type": {
-                                    "type": "INT",
+                                    "type": "NVARCHAR",
+                                    "max": 20,
                                     "isnull": false
                                 },
                                 "uniquekey": true
@@ -1203,7 +1265,7 @@
                                 "sqlName": "LastEvaluationDate",
                                 "type": {
                                     "type": "DATETIME",
-                                    "isnull": false
+                                   "isnull":true
                                 }
                             },
                             {
@@ -1228,7 +1290,7 @@
                                 "sqlName": "SendMedDocumentsDate",
                                 "type": {
                                     "type": "DATETIME",
-                                    "isnull": false
+                                    "isnull": true
                                 }
                             },
                             {
@@ -1237,7 +1299,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -1246,7 +1309,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -1254,7 +1318,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -1262,7 +1327,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -1271,7 +1337,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1280,7 +1347,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -1334,7 +1402,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -1343,7 +1412,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -1351,7 +1421,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -1359,7 +1430,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -1368,7 +1440,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1377,7 +1450,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -1407,7 +1481,8 @@
                                 "type": {
                                     "type": "INT",
                                     "isnull": false
-                                }
+                                },
+                                "update": "create"
                             },
                             {
                                 "name": "patientId",
@@ -1427,7 +1502,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -1436,7 +1512,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -1444,7 +1521,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -1452,7 +1530,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledUser",
@@ -1461,7 +1540,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1470,7 +1550,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -1524,7 +1605,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -1533,7 +1615,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -1541,7 +1624,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -1549,7 +1633,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -1558,7 +1643,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1567,7 +1653,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -1618,7 +1705,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -1627,7 +1715,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -1635,7 +1724,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -1643,7 +1733,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -1652,7 +1743,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1661,7 +1753,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -1715,7 +1808,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -1724,7 +1818,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -1732,7 +1827,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -1740,7 +1836,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -1749,7 +1846,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1758,7 +1856,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -1821,7 +1920,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -1830,7 +1930,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -1838,7 +1939,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -1846,7 +1948,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableUser",
@@ -1855,7 +1958,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1864,7 +1968,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     },
@@ -1934,7 +2039,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "userName",
@@ -1943,7 +2049,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabled",
@@ -1951,7 +2058,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledDate",
@@ -1959,7 +2067,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disabledUser",
@@ -1968,7 +2077,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             },
                             {
                                 "name": "disableReason",
@@ -1977,7 +2087,8 @@
                                     "type": "NVARCHAR",
                                     "max": 20,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": false
                             }
                         ]
                     }

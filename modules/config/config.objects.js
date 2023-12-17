@@ -1,7 +1,7 @@
-const { getPrimaryKeyField,
-    buildSqlCondition, getTableAlias, getSqlTableColumnsType } = require('./config.sql')
+const { buildSqlCondition, getSqlTableColumnsType, buildOneTableSelectQuery } = require('./config.sql')
+const { getPrimaryKeyField, getTableAlias } = require('./config')
 
-const { buildOneTableSelectQuery, read } = require('../../services/db/sql/sql-operation')
+const { read, update } = require('../../services/db/sql/sql-operation')
 
 function splitComplicatedObject(object, entityName = 'default') {
 
@@ -28,13 +28,13 @@ const compareObject = async function (database, entity, object, condition) {
         }
         const sqlCondition = buildSqlCondition(entity, condition)
         const alias = getTableAlias(entity)
-        const query = buildOneTableSelectQuery(database, entity.MTDTable.entityName.sqlName, alias, sqlCondition)
+        const columns = getSqlTableColumnsType(entity)
+        const objectKeys = Object.keys(object)
+        const selectColumns = columns.filter(({ name }) => objectKeys.includes(name)).map(({sqlName})=>sqlName)
+        const query = buildOneTableSelectQuery({ database, tablename: entity.MTDTable.entityName.sqlName, alias,columns:selectColumns, condition: sqlCondition })
         const response = await read(query)
-        console.log({response})
         if (response.length === 1) {
-            const columns = getSqlTableColumnsType(entity)
             const data = response[0]
-            const objectKeys = Object.keys(object)
             const sqlKeys = Object.keys(data)
             const sqlData = sqlKeys.reduce((element, key) => {
                 const col = columns.find(({ sqlName }) => sqlName === key)
@@ -42,13 +42,17 @@ const compareObject = async function (database, entity, object, condition) {
                 return element
             }, {})
             const updateKeys = objectKeys.filter(key => sqlData[key] != object[key])
-            const updates = updateKeys.map(key => ({ key, oldValue: sqlData[key], newVal: object[key] }))
-            return {entity,updates, condition}
+            const updates = updateKeys.map(key => ({ key, oldValue: sqlData[key], newVal: object[key], update: entity.columns.find(({ name }) => name === key).update }))
+            if (updates.length === 0) {
+                return true
+            }
+            return { entity, updates, condition }
 
         }
         return false
     }
     catch (error) {
+        console.log({ error })
         throw error
     }
 

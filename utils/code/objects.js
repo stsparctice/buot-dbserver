@@ -1,5 +1,5 @@
-const deleteKeysFromObject = (origin, keys) => {
-    console.log({ origin, keys })
+const removeKeysFromObject = (origin, keys) => {
+    // console.log({origin, keys})
     const newObject = Object.keys(origin).filter(k => keys.includes(k) === false)
         .reduce((obj, key) => {
             obj[key] = origin[key]
@@ -9,4 +9,4 @@ const deleteKeysFromObject = (origin, keys) => {
 }
 
 
-module.exports = { deleteKeysFromObject }
+module.exports = { removeKeysFromObject }
