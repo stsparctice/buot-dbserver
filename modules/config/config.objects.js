@@ -66,7 +66,6 @@ const compareObject = async function (database, entity, object, condition) {
             }
         }
         if (response.length === 1) {
-
             const data = response[0]
             const sqlKeys = Object.keys(data)
             const sqlData = sqlKeys.reduce((element, key) => {
@@ -83,9 +82,7 @@ const compareObject = async function (database, entity, object, condition) {
             if (updates.length > 0) {
                 return { entity, updates, condition }
             }
-
         }
-
         return false;
 
     }

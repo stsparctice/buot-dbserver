@@ -531,110 +531,7 @@
                             }
                         ]
                     },
-                    {
-                        "MTDTable": {
-                            "entityName": {
-                                "name": "teachersPoolGenders",
-                                "sqlName": "tbl_TeachersPoolGenders"
-                            },
-                            "description": " ",
-                            "defaultColumn": ""
-                        },
-                        "columns": [
-                            {
-                                "name": "id",
-                                "sqlName": "Id",
-                                "type": {
-                                    "type": "INT",
-                                    "isnull": false
-                                },
-                                "primarykey": true,
-                                "isIdentity": true
-                            },
-                            {
-                                "name": "teacherId",
-                                "sqlName": "TeacherId",
-                                "type": {
-                                    "type": "INT",
-                                    "isnull": false
-                                },
-                                "foreignkey": {
-                                    "ref_table": "tbl_Teachers",
-                                    "ref_column": "Id"
-                                }
-                            },
-                            {
-                                "name": "genderId",
-                                "sqlName": "GenderId",
-                                "type": {
-                                    "type": "INT",
-                                    "isnull": false
-                                },
-                                "foreignkey": {
-                                    "ref_table": "tbl_Genders",
-                                    "ref_column": "Id"
-                                }
-                            },
-                            {
-                                "name": "addedDate",
-                                "sqlName": "AddedDate",
-                                "type": {
-                                    "type": "DATETIME",
-                                    "isnull": false
-                                },
-                                "update_copy": false
-                            },
-                            {
-                                "name": "userName",
-                                "sqlName": "UserName",
-                                "type": {
-                                    "type": "NVARCHAR",
-                                    "max": 50,
-                                    "isnull": true
-                                },
-                                "update_copy": false
-                            },
-                            {
-                                "name": "disabled",
-                                "sqlName": "Disabled",
-                                "type": {
-                                    "type": "BIT",
-                                    "isnull": true
-                                },
-                                "update_copy": false
-                            },
-                            {
-                                "name": "disabledDate",
-                                "sqlName": "DisabledDate",
-                                "type": {
-                                    "type": "DATETIME",
-                                    "isnull": true
-                                },
-                                "update_copy": false
-                            },
-                            {
-                                "name": "disableUser",
-                                "sqlName": "DisableUser",
-                                "type": {
-                                    "type": "NVARCHAR",
-                                    "max": 50,
-                                    "isnull": true
-                                },
-                                "update_copy": false
-                            },
-                            {
-                                "name": "disableReason",
-                                "sqlName": "DisableReason",
-                                "type": {
-                                    "type": "NVARCHAR",
-                                    "max": 50,
-                                    "isnull": true
-                                },
-                                "update_copy": false
-                            }
-                        ]
-                    },
-                    {
+                                      {
                         "MTDTable": {
                             "entityName": {
                                 "name": "teacherSchedule",
@@ -654,18 +551,21 @@
                                 "primarykey": true,
                                 "isIdentity": true
                             },
+                        
                             {
-                                "name": "teacherPoolGenderId",
-                                "sqlName": "TeacherPoolGenderId",
+                                "name": "teacherId",
+                                "sqlName": "TeacherId",
                                 "type": {
                                     "type": "INT",
                                     "isnull": false
                                 },
                                 "foreignkey": {
-                                    "ref_table": "tbl_TeachersPoolGenders",
+                                    "ref_table": "tbl_Teachers",
                                     "ref_column": "Id"
                                 }
                             },
+                        
+                           
                             {
                                 "name": "pooldayScheduleId",
                                 "sqlName": "PooldayScheduleId",

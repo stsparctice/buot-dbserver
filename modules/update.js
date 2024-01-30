@@ -58,10 +58,8 @@ async function startupdate({ project, entityName, data, condition }) {
                     result = result.filter(item => item !== true)
                     return result
                 }))
-                console.log( updatesData );
                 updatesData = convertToOneLevelArray(updatesData)
                 updatesData = updatesData.filter(item=>item!=false)
-
                 const updateObjects = updatesData.filter(({ updates }) => updates.every(item => item.update === undefined))
                 const createObjects = updatesData.filter(({ updates }) => updates.some(item => item.update === "create"))
                 const createNewObjects = updatesData.filter(({ updates }) => updates.some(item => item.update === "createnew"))
