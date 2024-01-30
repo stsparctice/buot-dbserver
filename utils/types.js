@@ -8,4 +8,6 @@ const sqlKeyTypes = {
     UNIQUE: 'UNIQUE'
 }
 
+
+
 module.exports = {DBTypes, sqlKeyTypes}

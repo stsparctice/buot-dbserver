@@ -1,7 +1,7 @@
 const { update, sqlTransaction } = require('../services/db/sql/sql-operation')
 const { DBTypes } = require('../utils/types')
-const {  removeIdentityDataFromObject,  buildUpdateQuery, buildInsertQuery } = require('./config/config.sql')
-const { getEntityConfigData, isSimpleEntity,  getSqlColumnsUpdateCopy, simplifiedObject , disableItem,updateTheChanges, addItem} = require('./config/config')
+const { removeIdentityDataFromObject, buildUpdateQuery, buildInsertQuery } = require('./config/config.sql')
+const { getEntityConfigData, isSimpleEntity, getSqlColumnsUpdateCopy, simplifiedObject, disableItem, updateTheChanges, addItem } = require('./config/config')
 const { compareObject, splitComplicatedObject } = require('./config/config.objects')
 const { startReadOne } = require('./read')
 const { removeKeysFromObject } = require('../utils/code/objects')
@@ -21,12 +21,11 @@ async function startupdate({ project, entityName, data, condition }) {
                 }
                 else {
                     const difference = await compareObject(entity.dbName, entity, data, condition)
-                    console.log({difference})
                     if (difference !== true) {
                         const create = difference.update.some(key => key.update === 'create')
                         if (create) {
                             let updateItem = await startReadOne({ project, entityName, condition: difference.condition })
-                            updateItem = disableItem({item:updateItem, reason:'update data', entity})
+                            updateItem = disableItem({ item: updateItem, reason: 'update data', entity })
                             let newItem = { ...removeIdentityDataFromObject(entity, updateItem) }
                             const removeProps = getSqlColumnsUpdateCopy(entity)
                             newItem = removeKeysFromObject(newItem, removeProps)
@@ -35,7 +34,6 @@ async function startupdate({ project, entityName, data, condition }) {
                                 buildInsertQuery(entity, newItem)
                             ]
                             const result = sqlTransaction(queries)
-                            console.log({ result })
                             return result
                         }
                         else {
@@ -49,7 +47,7 @@ async function startupdate({ project, entityName, data, condition }) {
                 }
             }
             else {
-                const splitObject = splitComplicatedObject(data, entityName)
+                const splitObject = splitComplicatedObject(project, data, entityName)
                 const updateEntities = splitObject.map(obj => ({ entity: getEntityConfigData({ project, entityName: obj.entityName }).entity, value: obj.value }))
                 let updatesData = await Promise.all(updateEntities.map(async obj => {
                     let data = obj.value
@@ -60,10 +58,13 @@ async function startupdate({ project, entityName, data, condition }) {
                     result = result.filter(item => item !== true)
                     return result
                 }))
+                console.log( updatesData );
                 updatesData = convertToOneLevelArray(updatesData)
-               
+                updatesData = updatesData.filter(item=>item!=false)
+
                 const updateObjects = updatesData.filter(({ updates }) => updates.every(item => item.update === undefined))
                 const createObjects = updatesData.filter(({ updates }) => updates.some(item => item.update === "create"))
+                const createNewObjects = updatesData.filter(({ updates }) => updates.some(item => item.update === "createnew"))
                 let queries = []
                 if (updateObjects.length > 0) {
                     updateObjects.forEach(up => {
@@ -79,13 +80,13 @@ async function startupdate({ project, entityName, data, condition }) {
 
                     queries = [...queries, await Promise.all(createObjects.map(async cr => {
                         let updateItem = await startReadOne({ project, entityName: cr.entity.MTDTable.entityName.name, condition: cr.condition })
-                        let simpleItem = simplifiedObject({project,entity, object: updateItem})
-                        const {item, condition} = disableItem({item:simpleItem, reason:'update data', entity:cr.entity})
+                        let simpleItem = simplifiedObject({ project, entity, object: updateItem })
+                        const { item, condition } = disableItem({ item: simpleItem, reason: 'update data', entity: cr.entity })
                         let newItem = { ...removeIdentityDataFromObject(cr.entity, simpleItem) }
                         newItem = updateTheChanges(newItem, cr.updates)
                         const removeProps = getSqlColumnsUpdateCopy(cr.entity)
                         newItem = removeKeysFromObject(newItem, removeProps)
-                        newItem = addItem({item:newItem})
+                        newItem = addItem({ item: newItem })
                         return [
                             buildUpdateQuery(cr.entity, item, condition),
                             buildInsertQuery(cr.entity, newItem)
@@ -93,11 +94,20 @@ async function startupdate({ project, entityName, data, condition }) {
 
                     }))]
                 }
-              queries = convertToOneLevelArray(queries)
+                if(createNewObjects.length>0){
+                    createNewObjects.forEach(up => {
+                        up.values = up.updates.reduce((obj, { key, newVal }) => {
+                            obj[key] = newVal
+                            return obj
+                        }, {})
+                    })
+                    queries = [createNewObjects.map(({ entity, values }) => buildInsertQuery(entity, {...addItem({item:values})}))]
+                    console.log({queries});
+                }
+                queries = convertToOneLevelArray(queries)
                 const result = await sqlTransaction(queries)
-                console.log({ result })
                 return result
-                
+
 
             }
 

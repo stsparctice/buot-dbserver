@@ -116,6 +116,7 @@ function getForeignkeyBetweenEntities(entity, subentity) {
     if (entity.type === DBTypes.SQL && subentity.type === DBTypes.SQL) {
         const foreignKeys = subentity.entity.columns.filter(({ foreignkey }) => foreignkey)
         const key = foreignKeys.find(({ foreignkey }) => foreignkey.ref_table === entity.entity.MTDTable.entityName.sqlName)
+        key.foreignkey.ref_column_name = entity.entity.columns.find(({ sqlName})=>sqlName===key.foreignkey.ref_column).name
         return key
     }
     return undefined

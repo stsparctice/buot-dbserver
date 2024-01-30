@@ -5,7 +5,6 @@ const { startupdate, updateTranzaction } = require('../modules/update');
 
 router.post('/updateOne', express.json(), async (req, res) => {
     try {
-        console.log('update')
         let ans = await startupdate({ project: res.project, entityName: req.body.entity, data: req.body.data, condition: req.body.condition })
         if (ans) {
             res.status(204).send()
