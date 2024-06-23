@@ -33,10 +33,11 @@ const poolConfig = () => ({
      }
 });
 
-const createTransaction = async function ({ project, entity, columns, values, tran, trys }) {
+const createTransaction = async function ({ project, entity,object, tran, trys }) {
      try {
           let id
           console.log({ entity })
+          console.log({object})
           let primarykey = getPrimaryKeyField(entity.entity).sqlName
           const connectionPool = new sql.ConnectionPool(poolConfig());
           _ = await connectionPool.connect();
@@ -45,7 +46,7 @@ const createTransaction = async function ({ project, entity, columns, values, tr
           const tr = new sql.PreparedStatement(transaction);
           try {
                await transaction.begin();
-               let query = buildInsertQuery(entity, columns, values)
+               let query = buildInsertQuery(entity.entity, object)
                _ = await tr.prepare(query);
                id = await tr.execute();
                await tr.unprepare();
@@ -61,10 +62,9 @@ const createTransaction = async function ({ project, entity, columns, values, tr
                               item[foreignKey.name] = id
                               return item
                          })
-                         const pairs = fullValues.map(item => buildColumnsValuesPair(item, types))
-                         for (const oneItem of pairs) {
+                         for (const oneItem of fullValues) {
                               console.log({ oneItem })
-                              query = buildInsertQuery(subEntityData, oneItem.columns, oneItem.values)
+                              query = buildInsertQuery(subEntityData.entity, oneItem)
                               await tr.prepare(query);
                               await tr.execute();
                               await tr.unprepare();
@@ -91,6 +91,7 @@ const createTransaction = async function ({ project, entity, columns, values, tr
 };
 
 const sqlTransaction = async function (queries) {
+     let responses =[]
      try {
           let connectionPool = new sql.ConnectionPool(poolConfig());
           await connectionPool.connect();
@@ -101,19 +102,19 @@ const sqlTransaction = async function (queries) {
                for(const command of queries){
                     await tr.prepare(command)
                     try {
-                         await tr.execute()
+                        responses = [...responses,{command, response: (await tr.execute()).recordset}]
                     }
                     finally {
                          await tr.unprepare()
                     }
                }
                await transaction.commit();
+               return responses
 
           } catch (error) {
                console.log({ error });
                await transaction.rollback();
           }
-          return true
      }
      catch (error) {
           console.log({ error });
@@ -122,6 +123,7 @@ const sqlTransaction = async function (queries) {
 };
 
 const read = async function (query = "", n) {
+     console.log({query});
      try {
           if (n) {
                query = `${query.trim()} ORDER BY ${n.orderBy} OFFSET (${n.start}) ROWS FETCH NEXT (${n.end}) ROWS ONLY`

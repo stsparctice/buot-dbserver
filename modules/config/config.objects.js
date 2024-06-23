@@ -14,19 +14,16 @@ function splitComplicatedObject(project, object, entityName = 'default') {
     for (const key in object) {
         if (Array.isArray(object[key])) {
             const subEntity = getEntityConfigData({ project, entityName: key })
-            console.log({ mainEntity })
             let { name, foreignkey } = getForeignkeyBetweenEntities(mainEntityConfig, subEntity)
-            console.log({ foreignkey });
             entityList = [...entityList, ...object[key].reduce((list, item) => {
                 let value = { ...item };
-
                 value[name] = mainEntity.value[foreignkey.ref_column_name]
                 let obj = { entityName: key, value }
                 return [...list, obj]
             }, [])]
         }
         else if (typeof object[key] === 'object' && typeof object[key] !== null) {
-            let obj = { entityName: key, value: object[key] }
+            let obj = { entityName: object[key].entity, value: object[key] }
             entityList = [...entityList, obj]
         }
 
@@ -48,8 +45,6 @@ const compareObject = async function (database, entity, object, condition) {
             condition = {}
             condition[name] = pkValue
         }
-        console.log(entity.MTDTable.entityName)
-        console.log({ object, condition });
         const sqlCondition = buildSqlCondition(entity, condition)
         const alias = getTableAlias(entity)
         const columns = getSqlTableColumnsType(entity)
@@ -61,7 +56,6 @@ const compareObject = async function (database, entity, object, condition) {
             if (response.length === 0)
             {
                 const updates = Object.keys(condition).map(key => ({ key, oldValue: undefined, newVal: condition[key], update: "createnew" }))
-                console.log({updates})
                 return {entity, updates, condition:undefined}
             }
         }
@@ -69,15 +63,14 @@ const compareObject = async function (database, entity, object, condition) {
             const data = response[0]
             const sqlKeys = Object.keys(data)
             const sqlData = sqlKeys.reduce((element, key) => {
-                const col = columns.find(({ sqlName, update_copy }) => sqlName === key && update_copy)
+                const col = columns.find(({ sqlName }) => sqlName === key )  //update_copy
                 if (col) {
                     element[col.name] = data[col.sqlName]
-                    return element
                 }
-                else
-                    return {undefined}
+                return element
             }, {})
-            const updateKeys = objectKeys.filter(key => sqlData[key] && sqlData[key] != object[key])
+            const sqlDataKeys = Object.keys(sqlData)
+            const updateKeys = objectKeys.filter(key =>sqlDataKeys.includes(key) && sqlData[key] !== object[key])
             const updates = updateKeys.map(key => ({ key, oldValue: sqlData[key], newVal: object[key], update: entity.columns.find(({ name }) => name === key).update }))
             if (updates.length > 0) {
                 return { entity, updates, condition }

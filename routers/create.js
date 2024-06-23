@@ -1,6 +1,6 @@
 const express = require('express');
 const router = require('express').Router()
-const { startCreate, createTranzaction } = require('../modules/create');
+const { startCreate, startTransaction } = require('../modules/create');
 
 router.post('/createOne', express.json(), async (req, res) => {
     try {
@@ -35,7 +35,7 @@ router.post('/createMany', express.json(), async (req, res) => {
 router.post('/createTran', express.json(), async (req, res) => {
     try {
         console.log(res.project);
-        const result = await createTranzaction({ project: res.project, entityName: req.body.entity, value: req.body.values })
+        const result = await startTransaction({ project: res.project, entityName: req.body.entity, value: req.body.values })
        
         if (result) {
             res.status(201).send({ result: result })

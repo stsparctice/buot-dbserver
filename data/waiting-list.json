@@ -33,7 +33,8 @@
                                     "max": 50,
                                     "isnull": false
                                 },
-                                "uniquekey": true
+                                "uniquekey": true,
+                                "update_copy": true
                             },
                             {
                                 "name": "address",
@@ -42,7 +43,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "color",
@@ -51,7 +53,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "addedDate",
@@ -140,7 +143,8 @@
                                     "max": 50,
                                     "isnull": false
                                 },
-                                "uniquekey": true
+                                "uniquekey": true,
+                                "update_copy": true
                             },
                             {
                                 "name": "sex1",
@@ -148,7 +152,8 @@
                                 "type": {
                                     "type": "INT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "maxAge1",
@@ -156,7 +161,8 @@
                                 "type": {
                                     "type": "INT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "sex2",
@@ -164,7 +170,8 @@
                                 "type": {
                                     "type": "INT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "maxAge2",
@@ -172,7 +179,8 @@
                                 "type": {
                                     "type": "INT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "teacherGender",
@@ -199,7 +207,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "addedDate",
@@ -316,7 +325,8 @@
                                 "name": "startHour",
                                 "sqlName": "startHour",
                                 "type": {
-                                    "type": "DATETIME",
+                                    "type": "NVARCHAR",
+                                    "max":5,
                                     "isnull": false
                                 },
                                 "update": "create"
@@ -325,7 +335,8 @@
                                 "name": "endHour",
                                 "sqlName": "EndHour",
                                 "type": {
-                                    "type": "DATETIME",
+                                    "type": "NVARCHAR",
+                                    "max":5,
                                     "isnull": false
                                 },
                                 "update": "create"
@@ -408,6 +419,7 @@
                                 },
                                 "primarykey": true,
                                 "isIdentity": true
+                              
                             },
                             {
                                 "name": "teacherName",
@@ -417,7 +429,8 @@
                                     "max": 20,
                                     "isnull": false
                                 },
-                                "uniquekey": true
+                                "uniquekey": true,
+                                "update_copy": true
                             },
                             {
                                 "name": "phone",
@@ -426,7 +439,8 @@
                                     "type": "NVARCHAR",
                                     "max": 15,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "email",
@@ -435,7 +449,8 @@
                                     "type": "NVARCHAR",
                                     "max": 40,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "address",
@@ -444,7 +459,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "city",
@@ -453,7 +469,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "gender",
@@ -461,7 +478,8 @@
                                 "type": {
                                     "type": "INT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "annotation",
@@ -470,7 +488,8 @@
                                     "type": "NVARCHAR",
                                     "max": "max",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "addedDate",
@@ -582,14 +601,14 @@
                                 "name": "startHour",
                                 "sqlName": "startHour",
                                 "type": {
-                                    "type": "DATETIME",
+                                    "type": "NVARCHAR",
                                     "isnull": false
                                 },
                                 "update": "create"
                             },
                             {
                                 "name": "endHour",
-                                "sqlName": "EndHour",
+                                "sqlName": "NVARCHAR",
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": false
@@ -702,7 +721,8 @@
                                     "type": "NVARCHAR",
                                     "max": 50,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "addedDate",
@@ -1174,7 +1194,8 @@
                                 "type": {
                                     "type": "BIT",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "noEvaluationUser",
@@ -1183,7 +1204,8 @@
                                     "type": "NVARCHAR",
                                     "max": 30,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "sendMedDocumentsDate",
@@ -1191,7 +1213,7 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                }, "update_copy": true
                             },
                             {
                                 "name": "addedDate",
@@ -1597,7 +1619,8 @@
                                     "type": "NVARCHAR",
                                     "max": 100,
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "addedDate",
@@ -1812,7 +1835,8 @@
                                 "type": {
                                     "type": "INT",
                                     "isnull": false
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "addedDate",
@@ -1923,7 +1947,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "endHour",
@@ -1931,7 +1956,8 @@
                                 "type": {
                                     "type": "DATETIME",
                                     "isnull": true
-                                }
+                                },
+                                "update_copy": true
                             },
                             {
                                 "name": "addedDate",

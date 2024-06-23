@@ -6,12 +6,19 @@ const { startupdate, updateTranzaction } = require('../modules/update');
 router.post('/updateOne', express.json(), async (req, res) => {
     try {
         let ans = await startupdate({ project: res.project, entityName: req.body.entity, data: req.body.data, condition: req.body.condition })
-        if (ans) {
-            res.status(204).send()
+        console.log(ans);
+        if (Array.isArray(ans)) {
+            res.status(201).send(ans[0])
         }
-        else {
-            throw new Error('more rows were updated')
-        }
+        else
+
+            if (ans === true) {
+                res.status(204).send()
+            }
+
+            else {
+                throw new Error('more rows were updated')
+            }
     }
     catch (error) {
         console.log(error)

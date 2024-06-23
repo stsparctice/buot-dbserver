@@ -57,14 +57,14 @@ const types = {
                     const splitDate = date.split('T')
                     const datePart = splitDate[0]
                     const timePart = splitDate[1].split('Z')[0]
-                    console.log({datePart, timePart})
+                    console.log({ datePart, timePart })
                     const datePartArray = datePart.split('-')
                     const timePartArray = timePart.split(':')
-                    console.log({timePartArray, datePartArray})
-                    const times = timePartArray.map(t=>parseInt(t))
-                    const dates = datePartArray.map(d=>parseInt(d))
-                    console.log({times, dates})
-                    date=new Date(dates[0], dates[1]-1, dates[2], times[0], times[1], times[2])
+                    console.log({ timePartArray, datePartArray })
+                    const times = timePartArray.map(t => parseInt(t))
+                    const dates = datePartArray.map(d => parseInt(d))
+                    console.log({ times, dates })
+                    date = new Date(dates[0], dates[1] - 1, dates[2], times[0], times[1], times[2])
                 }
                 else {
                     throw new Error(`date ${date} is not in correct format`)
@@ -110,7 +110,8 @@ const types = {
 
 
 const buildInsertQuery = (entity, data) => {
-    let primarykey = getPrimaryKeyField(entity).sqlName
+    console.log({ data });
+    let primarykey = getPrimaryKeyField(entity).name
     const types = getTableColumns(entity)
     const { columns, values } = buildColumnsValuesPair(data, types)
     const tableName = entity.MTDTable.entityName.sqlName
@@ -149,8 +150,8 @@ const buildOneTableSelectQuery = ({ database, tablename, alias, columns = '*', c
 
 function buildColumnsValuesPair(object, columns) {
     const pairs = { columns: [], values: [] }
-
     for (let key in object) {
+        console.log({ key });
         const column = columns.find(({ name }) => name === key)
         pairs.columns.push(`[${column.sqlName}]`)
         const parse = types[column.type]
@@ -192,7 +193,7 @@ function buildSqlCondition(entity, condition) {
         if (entityKeys.length > 0) {
             const entries = Object.entries(condition)
             const sqlNames = entries.map(col => ({ key: col[0], sqlCol: columns.find(c => c.name === col[0]).sqlName, type: columns.find(c => c.name === col[0]).type, value: col[1] }))
-
+            console.log({ sqlNames });
             const conditionList = sqlNames.map(c =>
                 `${tablealias}.${c.sqlCol} =  ${parseNodeToSql({ type: c.type, value: c.value })}`
             )
@@ -247,9 +248,7 @@ function buildSqlJoinAndSelect(configUrl, entity, fields) {
             const tableToJoin = column.foreignkey.ref_table;
             const columnToJoin = column.foreignkey.ref_column;
             const joinEntity = getEntityFromConfig(configUrl, tableToJoin);
-            console.log({ columnToJoin })
             const columnName = joinEntity.entity.columns.find(c => c.sqlName.toLowerCase() === columnToJoin.toLowerCase())
-            console.log(columnName)
             const defaultColumnName = joinEntity.entity.columns.find(c => c.sqlName === joinEntity.entity.MTDTable.defaultColumn)
             const alias = getTableAlias(joinEntity.entity)
             if (joinTables.some(jt => jt.tableToJoin === tableToJoin)) {
@@ -398,7 +397,7 @@ function parseSQLTypeForColumn(col, tableName) {
 
 function getSqlTableColumnsType(entity) {
     try {
-        let col = entity.columns.map(col => ({ sqlName: col.sqlName, name: col.name, type: col.type.type }))
+        let col = entity.columns.map(col => ({ sqlName: col.sqlName, name: col.name, type: col.type.type, update_copy: col.update_copy }))
         return col
     }
     catch (error) {

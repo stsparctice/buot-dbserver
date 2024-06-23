@@ -45,6 +45,7 @@ function getTableColumns(entity, columns = []) {
 }
 
 function getPrimaryKeyField(entity) {
+    console.log({entity});
     let col = entity.columns.find(col => (col.primarykey === true))
     if (col) {
         return { name: col.name, sqlName: col.sqlName }
@@ -67,7 +68,7 @@ function getSqlDBWithTablesfromConfig(projectUrl) {
     return databases
 }
 
-function getEntityConfigData({ project, entityName }) {
+function getEntityConfigData({ project = 'wl', entityName }) {
     const configUrl = getDBConfig(project)
     let entity = getEntityFromConfig(configUrl, entityName)
     return entity
@@ -100,6 +101,7 @@ function isSimpleEntity(project, entityName) {
             const fk = columns.filter(({ foreignkey }) => foreignkey && foreignkey.ref_table === entity.MTDTable.entityName.sqlName)
             return fk.length > 0
         })
+        console.log({foreignKeys});
         return foreignKeys.length === 0
     }
 

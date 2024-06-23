@@ -5,23 +5,36 @@ const { DBTypes } = require('../utils/types')
 const { removeKeysFromObject } = require('../utils/code/objects')
 
 async function startCreate({ project, entityName, values }) {
-    try {
-        console.log(values, entityName)
-        const entity = getEntityConfigData({ project, entityName })
-        if (entity.type === DBTypes.SQL) {
-            const items = await createSQL({ type: entity.type, entity: entity.entity, values: values })
-            return items
+    const isTransaction = Object.values(values).some(val => Array.isArray(val) || val instanceof Object)
+    if (isTransaction) {
+        try {
+            const response = startTransaction({ project, entityName, value: values })
+            return response
+        }
+        catch (error) {
+            throw error
         }
     }
-    catch (error) {
-        throw error
+    else {
+        try {
+            console.log(values, entityName)
+            const entity = getEntityConfigData({ project, entityName })
+            if (entity.type === DBTypes.SQL) {
+                const items = await createSQL({ type: entity.type, entity: entity.entity, values: values })
+                return items
+            }
+        }
+        catch (error) {
+            throw error
+        }
     }
 
 }
 
 async function createOneSQL(obj) {
     try {
-        const query = buildInsertQuery(obj.entity,obj.values)
+        const query = buildInsertQuery(obj.entity, obj.values)
+        console.log({ query });
         const ans = await create(query)
         if (ans) {
             return ans
@@ -41,7 +54,7 @@ async function createSQL({ type, entity, values }) {
         if (Array.isArray(values)) {
             for (let i = 0; i < values.length; i++) {
                 newObj = { type, entity, values: values[i] }
-                newObj= addItem({item:newObj})
+                newObj = addItem({ item: newObj })
                 ans = await createOneSQL(newObj)
                 // if (ans.rowsAffected[0]) {
                 //     ans.rowsAffected++
@@ -50,7 +63,7 @@ async function createSQL({ type, entity, values }) {
         }
         else {
             newObj = { type, entity, values }
-            newObj= addItem({item:newObj})
+            newObj = addItem({ item: newObj })
             ans = await createOneSQL(newObj)
         }
         // if (ans.rowsAffected > 0) {
@@ -82,9 +95,8 @@ async function startTransaction({ project, entityName, value }) {
                 }
             }
             const types = getTableColumns(entity.entity)
-            let { columns, values } = buildColumnsValuesPair(origin, types)
 
-            const items = await createTransaction({ project, entity, columns: columns.join(','), values: values.join(','), tran: tran, trys: entity })
+            const items = await createTransaction({ project, entity, object: origin, tran: tran, trys: entity })
             return items
         }
     }

@@ -1,9 +1,9 @@
 const { update, sqlTransaction } = require('../services/db/sql/sql-operation')
 const { DBTypes } = require('../utils/types')
-const { removeIdentityDataFromObject, buildUpdateQuery, buildInsertQuery } = require('./config/config.sql')
-const { getEntityConfigData, isSimpleEntity, getSqlColumnsUpdateCopy, simplifiedObject, disableItem, updateTheChanges, addItem } = require('./config/config')
+const { removeIdentityDataFromObject, buildUpdateQuery, buildInsertQuery, buildOneTableSelectQuery } = require('./config/config.sql')
+const { getEntityConfigData, isSimpleEntity, getSqlColumnsUpdateCopy, simplifiedObject, disableItem, updateTheChanges, addItem, getPrimaryKeyField } = require('./config/config')
 const { compareObject, splitComplicatedObject } = require('./config/config.objects')
-const { startReadOne } = require('./read')
+const { startReadOne, readSql } = require('./read')
 const { removeKeysFromObject } = require('../utils/code/objects')
 const { convertToOneLevelArray } = require('../utils/code/functions')
 
@@ -15,6 +15,15 @@ async function startupdate({ project, entityName, data, condition }) {
         const { entity, type } = getEntityConfigData({ project, entityName })
         if (type === DBTypes.SQL) {
             const isSimple = isSimpleEntity(project, entityName)
+            if (!condition) {
+                condition = {}
+                const entity = getEntityConfigData({ project, entityName })
+                const primaryKey = getPrimaryKeyField(entity.entity)
+                if (data[primaryKey.name]) {
+                    condition[primaryKey.name] = data[primaryKey.name]
+                }
+            }
+            const origin = await startReadOne({ project, entityName, condition })
             if (isSimple) {
                 if (Array.isArray(data)) {
 
@@ -33,8 +42,10 @@ async function startupdate({ project, entityName, data, condition }) {
                                 buildUpdateQuery(entity, updateItem),
                                 buildInsertQuery(entity, newItem)
                             ]
-                            const result = sqlTransaction(queries)
-                            return result
+                            console.log({ queries });
+                            const response = await sqlTransaction(queries)
+                            const keys = response.filter(res => res.response && res.command.indexOf('SELECT @@IDENTITY Id') !== -1).map(res => res.response[0])
+                            return keys
                         }
                         else {
                             const response = await updateSimpleObject({ entity, data, condition })
@@ -49,17 +60,20 @@ async function startupdate({ project, entityName, data, condition }) {
             else {
                 const splitObject = splitComplicatedObject(project, data, entityName)
                 const updateEntities = splitObject.map(obj => ({ entity: getEntityConfigData({ project, entityName: obj.entityName }).entity, value: obj.value }))
+                console.log({ updateEntities: updateEntities[0] });
+                console.log({ updateEntities: updateEntities[1] });
                 let updatesData = await Promise.all(updateEntities.map(async obj => {
                     let data = obj.value
                     if (Array.isArray(data) === false) {
                         data = [data]
                     }
                     let result = await Promise.all(data.map(async item => await compareObject(obj.entity.dbName, obj.entity, item)))
+                    console.log({ result });
                     result = result.filter(item => item !== true)
                     return result
                 }))
                 updatesData = convertToOneLevelArray(updatesData)
-                updatesData = updatesData.filter(item=>item!=false)
+                updatesData = updatesData.filter(item => item != false)
                 const updateObjects = updatesData.filter(({ updates }) => updates.every(item => item.update === undefined))
                 const createObjects = updatesData.filter(({ updates }) => updates.some(item => item.update === "create"))
                 const createNewObjects = updatesData.filter(({ updates }) => updates.some(item => item.update === "createnew"))
@@ -70,10 +84,10 @@ async function startupdate({ project, entityName, data, condition }) {
                             obj[key] = newVal
                             return obj
                         }, {})
-                        // console.log(up.updates)
                     })
                     queries = [updateObjects.map(({ entity, updates, condition }) => buildUpdateQuery(entity, updates, condition))]
                 }
+                console.log({ queries });
                 if (createObjects.length > 0) {
 
                     queries = [...queries, await Promise.all(createObjects.map(async cr => {
@@ -92,19 +106,24 @@ async function startupdate({ project, entityName, data, condition }) {
 
                     }))]
                 }
-                if(createNewObjects.length>0){
+                if (createNewObjects.length > 0) {
                     createNewObjects.forEach(up => {
                         up.values = up.updates.reduce((obj, { key, newVal }) => {
                             obj[key] = newVal
                             return obj
                         }, {})
                     })
-                    queries = [createNewObjects.map(({ entity, values }) => buildInsertQuery(entity, {...addItem({item:values})}))]
-                    console.log({queries});
+                    queries = [createNewObjects.map(({ entity, values }) => buildInsertQuery(entity, { ...addItem({ item: values }) }))]
+                    console.log({ queries });
                 }
                 queries = convertToOneLevelArray(queries)
-                const result = await sqlTransaction(queries)
-                return result
+                const response = await sqlTransaction(queries)
+                const keys = response.filter(res => res.response && res.command.indexOf('SELECT @@IDENTITY') !== -1).map(res => res.response[0])
+                if (keys.length > 0) {
+                    const newData = await Promise.all(keys.map(async key => await startReadOne({ project, entityName, condition: key })))
+                    return newData
+                }
+                return true
 
 
             }

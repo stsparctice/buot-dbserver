@@ -30,7 +30,7 @@ async function startReadMany({ project, entityName, condition }) {
                     return answer
                 }
             }
-            const items = await readSql(projectConfigUrl, project, entity, condition, n)
+            const items = await readSql({configUrl:projectConfigUrl, project, entity, condition, n})
             return items
         }
     }
@@ -41,6 +41,7 @@ async function startReadMany({ project, entityName, condition }) {
 
 async function startReadOne({ project, entityName, condition, entitiesFields }, exist) {
     try {
+        console.log({condition});
         const projectConfigUrl = getDBConfig(project)
         const { entity, type } = getEntityConfigData({ project, entityName })
         if (type === DBTypes.SQL) {
@@ -53,7 +54,7 @@ async function startReadOne({ project, entityName, condition, entitiesFields }, 
                     condition = removeKeysFromObject(condition, ['key'])
                     console.log({ condition })
                 }
-                const items = await readSql(projectConfigUrl, project, entity, condition, n, entitiesFields)
+                const items = await readSql({configUrl:projectConfigUrl, project, entity, condition, n, entitiesFields})
                 if (exist)
                     return items.length > 0
                 return items[0]
@@ -79,7 +80,7 @@ async function getValuesFromSQL(configUrl, entity, n, condition, fields = [], jo
 }
 
 
-async function readSql(configUrl, project, entity, condition = {}, n, entitiesFields = []) {
+async function readSql({configUrl, project, entity, condition = {}, n={start:0, end:50}, entitiesFields = []}) {
     try {
         if (entitiesFields.length > 0) {
             let mainItem = { connections: [] }
