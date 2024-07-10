@@ -15,15 +15,10 @@ async function createTables() {
             for (const item of sqlConfig) {
                 try {
                     _ = await getPool().request().query(`use master IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = '${item.dbName}') begin use master CREATE DATABASE [${item.dbName}]; end`);
-
-                    for (const db of item.db) {
-                        if (db.type === DBTypes.SQL) {
-                            for (let table of db.collections) {
-                                const response = await getPool().request().query(`use ${item.dbName} IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${table.MTDTable.entityName.sqlName}')
+                    for (let table of item.tables) {
+                        const response = await getPool().request().query(`use ${item.dbName} IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${table.MTDTable.entityName.sqlName}')
                     CREATE TABLE [dbo].[${table.MTDTable.entityName.sqlName}](${buildColumns(table.columns)})`);
-                    
-                            }
-                        }
+
                     }
                 }
                 catch (error) {

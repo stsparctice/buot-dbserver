@@ -45,17 +45,22 @@ function getTableColumns(entity, columns = []) {
 }
 
 function getPrimaryKeyField(entity) {
-    console.log({entity});
-    let col = entity.columns.find(col => (col.primarykey === true))
+    console.log({ entity });
+    const col = entity.columns.find(col => (col.primarykey === true))
     if (col) {
         return { name: col.name, sqlName: col.sqlName }
     }
     return undefined
 }
 
+function getForeignKeysFields(entity) {
+    const foreignKeys = entity.columns.filter(({ foreignkey }) => foreignkey).map(({ name, sqlName, foreignkey }) => ({ name, sqlName, foreignkey }))
+    return foreignKeys ? foreignKeys : undefined
+}
+
 function getEntitiesFromConfig(configUrl) {
     const config = readConfigFile(configUrl)
-    const sql = config.filter(({ db }) => db.some(({ type }) => type == DBTypes.SQL))
+    const sql = config.filter(({ db }) => db.some(({ type }) => type === DBTypes.SQL)).map(({ dbName, db }) => ({ dbName, tables: db.find(({ type }) => type === DBTypes.SQL).collections }))
     const mongo = config.filter(db => db.db.type == DBTypes.MONGODB)
     return { sql, mongo }
 }
@@ -64,7 +69,7 @@ function getSqlDBWithTablesfromConfig(projectUrl) {
     const response = getDBConfig(projectUrl)
     const config = getEntitiesFromConfig(response)
     const { sql } = config
-    const databases = sql.map(({ dbName, db }) => ({ dbName, db: db.map(({ collections }) => (collections.map(({ MTDTable, columns }) => ({ tablename: MTDTable.entityName.sqlName, columns })))) }))
+    const databases = sql.map(({ dbName, tables }) => ({ dbName, db: tables.map(({ MTDTable, columns }) => ({ tablename: MTDTable.entityName.sqlName, columns })) }))
     return databases
 }
 
@@ -72,6 +77,26 @@ function getEntityConfigData({ project = 'wl', entityName }) {
     const configUrl = getDBConfig(project)
     let entity = getEntityFromConfig(configUrl, entityName)
     return entity
+    //TODO return entity.entity - no need to  
+}
+
+function getConnectedEntites({ project, entityName }) {
+    const configurl = getDBConfig(project)
+    const config = getEntitiesFromConfig(configurl)
+
+    const database = config.sql.find(({ tables }) => tables.find(({ MTDTable }) => MTDTable.entityName.name === entityName))
+    const { dbName } = database
+    const myTable = database.tables.find(({ MTDTable }) => MTDTable.entityName.name === entityName)
+    const sqlName = getTableName(myTable)
+    const connectedTables = database.tables.filter(({ columns }) =>
+        columns.some(({ foreignkey }) => foreignkey && foreignkey.ref_table === sqlName))
+    console.log(connectedTables);
+    const connectedEntities = connectedTables.map(({ MTDTable, columns }) => ({
+        dbName, MTDTable, column: columns.filter(({ foreignkey }) => foreignkey && foreignkey.ref_table === sqlName)
+        // .map(({ name, sqlName, foreignkey }) => { name, sqlName, foreignkey })
+    }))
+    return connectedEntities
+
 }
 
 
@@ -101,7 +126,7 @@ function isSimpleEntity(project, entityName) {
             const fk = columns.filter(({ foreignkey }) => foreignkey && foreignkey.ref_table === entity.MTDTable.entityName.sqlName)
             return fk.length > 0
         })
-        console.log({foreignKeys});
+        console.log({ foreignKeys });
         return foreignKeys.length === 0
     }
 
@@ -118,7 +143,7 @@ function getForeignkeyBetweenEntities(entity, subentity) {
     if (entity.type === DBTypes.SQL && subentity.type === DBTypes.SQL) {
         const foreignKeys = subentity.entity.columns.filter(({ foreignkey }) => foreignkey)
         const key = foreignKeys.find(({ foreignkey }) => foreignkey.ref_table === entity.entity.MTDTable.entityName.sqlName)
-        key.foreignkey.ref_column_name = entity.entity.columns.find(({ sqlName})=>sqlName===key.foreignkey.ref_column).name
+        key.foreignkey.ref_column_name = entity.entity.columns.find(({ sqlName }) => sqlName === key.foreignkey.ref_column).name
         return key
     }
     return undefined
@@ -143,25 +168,25 @@ function simplifiedObject({ project, entity, object }, func = getEntityConfigDat
     return simple
 }
 
-function disableItem({item, reason, user = 'develop', entity},  getPrimaryKeyFielsMethod = getPrimaryKeyField) {
-    const  pk  = getPrimaryKeyFielsMethod(entity)
+function disableItem({ item, reason, user = 'develop', entity }, getPrimaryKeyFielsMethod = getPrimaryKeyField) {
+    const pk = getPrimaryKeyFielsMethod(entity)
     const condition = {}
-    condition[pk.name]= item[pk.name]
+    condition[pk.name] = item[pk.name]
     item = { disableReason: reason, disableUser: user, disabled: 1, disabledDate: new Date() }
-    return {item, condition}
+    return { item, condition }
 }
 
-function updateTheChanges(item, updates){
+function updateTheChanges(item, updates) {
     console.log(updates)
-    updates.forEach(({key, newVal}) => {
-        console.log({key, newVal})
+    updates.forEach(({ key, newVal }) => {
+        console.log({ key, newVal })
         item[key] = newVal
     });
     return item
 }
 
-function addItem({item, userName='develop'}){
-    return {...item, addedDate:new Date(), userName, disabled:false}
+function addItem({ item, userName = 'develop' }) {
+    return { ...item, addedDate: new Date(), userName, disabled: false }
 }
 
 
@@ -169,12 +194,15 @@ function addItem({item, userName='develop'}){
 
 module.exports = {
     readConfigFile,
+
     getEntitiesFromConfig,
     getEntityFromConfig,
+    getConnectedEntites,
     getEntityConfigData,
     getTableAlias,
     getTableName,
     getPrimaryKeyField,
+    getForeignKeysFields,
     getSqlColumnsUpdateCopy,
     getTableColumns,
     getSqlDBWithTablesfromConfig,

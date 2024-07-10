@@ -36,9 +36,7 @@ const poolConfig = () => ({
 const createTransaction = async function ({ project, entity,object, tran, trys }) {
      try {
           let id
-          console.log({ entity })
-          console.log({object})
-          let primarykey = getPrimaryKeyField(entity.entity).sqlName
+          const primarykey = getPrimaryKeyField(entity.entity).sqlName
           const connectionPool = new sql.ConnectionPool(poolConfig());
           _ = await connectionPool.connect();
 
@@ -63,7 +61,6 @@ const createTransaction = async function ({ project, entity,object, tran, trys }
                               return item
                          })
                          for (const oneItem of fullValues) {
-                              console.log({ oneItem })
                               query = buildInsertQuery(subEntityData.entity, oneItem)
                               await tr.prepare(query);
                               await tr.execute();
@@ -76,8 +73,6 @@ const createTransaction = async function ({ project, entity,object, tran, trys }
 
 
           } catch (error) {
-
-               console.log({ error });
                await transaction.rollback();
                console.log('execution failed...');
           }
@@ -85,7 +80,6 @@ const createTransaction = async function ({ project, entity,object, tran, trys }
           return id
      }
      catch (error) {
-          console.log({ error });
           throw error
      }
 };

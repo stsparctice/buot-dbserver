@@ -8,26 +8,26 @@ async function compareConfigWithSql(projectUrl = 'wl') {
     const dataBases = getSqlDBWithTablesfromConfig(projectUrl)
     for (let database of dataBases) {
         const { dbName, db } = database
-        for (let tables of db) {
-            checkDataBase(dbName, tables, db)
+        for (let table of db) {
+            checkDataBase(dbName, table, db)
         }
     }
 }
 
-async function checkDataBase(dbName, tables, db) {
-    for (let table of tables) {
+async function checkDataBase(dbName, table, db) {
+    // console.log({table});
+    // for (let tabl/e of tables) {
         const sqlConfigColumns = await buildSqlColumnsToCompare(dbName, table)
         const { tablename, columns } = table
         const newColumns = columns.filter(({ sqlName }) => sqlConfigColumns.find(col => col.sqlName === sqlName) === undefined)
         if (newColumns.length > 0) {
-            console.log(sqlConfigColumns.map(({ sqlName }) => sqlName), columns.map(({ sqlName }) => sqlName), newColumns)
             const response = await Promise.all(newColumns.map(async col => {
                 const response = await addColumn(dbName, table, col)
                 return response
             }))
             console.log({ response })
         }
-    }
+    // }
 }
 
 async function buildSqlColumnsToCompare(dbName, table) {
