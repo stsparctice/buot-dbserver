@@ -74,8 +74,11 @@ function getSqlDBWithTablesfromConfig(projectUrl) {
 }
 
 function getEntityConfigData({ project = 'wl', entityName }) {
+    console.log({entityName});
     const configUrl = getDBConfig(project)
-    let entity = getEntityFromConfig(configUrl, entityName)
+    console.log({configUrl});
+    const entity = getEntityFromConfig(configUrl, entityName)
+    console.log({entity});
     return entity
     //TODO return entity.entity - no need to  
 }
@@ -90,10 +93,8 @@ function getConnectedEntites({ project, entityName }) {
     const sqlName = getTableName(myTable)
     const connectedTables = database.tables.filter(({ columns }) =>
         columns.some(({ foreignkey }) => foreignkey && foreignkey.ref_table === sqlName))
-    console.log(connectedTables);
     const connectedEntities = connectedTables.map(({ MTDTable, columns }) => ({
         dbName, MTDTable, column: columns.filter(({ foreignkey }) => foreignkey && foreignkey.ref_table === sqlName)
-        // .map(({ name, sqlName, foreignkey }) => { name, sqlName, foreignkey })
     }))
     return connectedEntities
 
@@ -103,11 +104,10 @@ function getConnectedEntites({ project, entityName }) {
 function getEntityFromConfig(configUrl, entityName) {
     const { sql, mongo } = getEntitiesFromConfig(configUrl)
     if (sql.length > 0) {
-        const mapCollection = sql.map(({ dbName, db }) => db.map(({ collections }) => collections.map(c => ({ dbName, ...c }))))
-        const entityList = mapCollection.reduce((list, col) => list = [...list, ...col.reduce((l, c) => l = [...l, ...c], [])], [])
-        const tables = entityList.filter(c => c.MTDTable.entityName.name === entityName || c.MTDTable.entityName.sqlName === entityName)
-        if (tables.length > 0) {
-            let entityDB = tables.find(t => t.MTDTable.entityName.name === entityName || t.MTDTable.entityName.sqlName === entityName)
+        const db = sql.find(({tables} )=> tables.some(tbl=> tbl.MTDTable.entityName.name === entityName || tbl.MTDTable.entityName.sqlName === entityName))
+        if (db) {
+            const entityDB = db.tables.find(t => t.MTDTable.entityName.name === entityName || t.MTDTable.entityName.sqlName === entityName)
+            entityDB.dbName = db.dbName
             return { entity: entityDB, type: DBTypes.SQL }
         }
     }
@@ -168,8 +168,8 @@ function simplifiedObject({ project, entity, object }, func = getEntityConfigDat
     return simple
 }
 
-function disableItem({ item, reason, user = 'develop', entity }, getPrimaryKeyFielsMethod = getPrimaryKeyField) {
-    const pk = getPrimaryKeyFielsMethod(entity)
+function disableItem({ item, reason, user = 'develop', entity }) {
+    const pk = getPrimaryKeyField(entity)
     const condition = {}
     condition[pk.name] = item[pk.name]
     item = { disableReason: reason, disableUser: user, disabled: 1, disabledDate: new Date() }

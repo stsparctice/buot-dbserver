@@ -2,6 +2,7 @@ const { getTableAlias, getPrimaryKeyField, getTableColumns, getTableName, getEnt
 const { removeKeysFromObject } = require('../../utils/code/objects');
 
 const convertToSQLString = (value) => {
+    console.log(value);
     let special = ["'", "&", "%", "#", "$"]
     const sqlStrings = []
     const split = value.split('')
@@ -120,23 +121,28 @@ const buildInsertQuery = (entity, data) => {
 }
 
 const buildUpdateQuery = (entity, data, condition) => {
+    try{
     const database = entity.dbName
     if (!condition) {
         const { name } = getPrimaryKeyField(entity)
         const pkValue = data[name]
-        condition = {}
-        condition[name] = pkValue
+        condition = Object.fromEntries([[name, pkValue]])
     }
     console.log({ condition })
-    condition = buildSqlCondition(entity, condition)
-    set = removeIdentityDataFromObject(entity, data)
-    const alias = getTableAlias(entity)
-    const tablename = getTableName(entity)
-    const sqlObject = parseObjectValuesToSQLTypeObject(set, entity.columns)
+    condition = buildSqlCondition(entity.entity, condition)
+    console.log({condition});
+    set = removeIdentityDataFromObject(entity.entity, data)
+    const alias = getTableAlias(entity.entity)
+    const tablename = getTableName(entity.entity)
+    const sqlObject = parseObjectValuesToSQLTypeObject(set, entity.entity.columns)
     const entries = Object.entries(sqlObject).map(e => ({ key: e[0], value: e[1] }))
     const updateValues = entries.map(({ key, value }) => `${alias}.${key} = ${value}`).join(',')
     const query = `use ${database} UPDATE ${alias} SET ${updateValues} FROM ${tablename} AS ${alias} WHERE ${condition}`
     return query
+}
+catch(error){
+    console.log({error});
+}
 }
 
 const buildOneTableSelectQuery = ({ database, tablename, alias, columns = '*', condition = '1=1' }) => {
@@ -185,6 +191,7 @@ function removeIdentityDataFromObject(entity, object) {
 }
 
 function buildSqlCondition(entity, condition) {
+    console.log({entity});
     const tablealias = getTableAlias(entity)
     let sqlCondition = ''
     if (condition) {
@@ -321,7 +328,7 @@ function parseObjectValuesToSQLTypeObject(obj, tabledata) {
         const keys = Object.keys(obj)
         let sqlObject = {}
         for (let i = 0; i < keys.length; i++) {
-            console.log(keys)
+            console.log(keys[i])
             let { type, sqlName } = tabledata.find(td => td.name.trim().toLowerCase() === keys[i].trim().toLowerCase())
             if (obj[keys[i]] != null) {
                 const parse = types[type.type]
@@ -341,6 +348,7 @@ function parseObjectValuesToSQLTypeObject(obj, tabledata) {
         return sqlObject
     }
     catch (error) {
+        console.log(error);
         throw error
     }
 }
